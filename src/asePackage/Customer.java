@@ -1,7 +1,9 @@
 package asePackage;
 
 public class Customer {
-
+	
+	
+	//comment sdfsdfsdfsdfdfsd
 	private int customerId;
 	private String customerFullName;
 
