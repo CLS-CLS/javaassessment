@@ -3,7 +3,7 @@ package asePackage;
 public class Customer {
 	
 	
-	//comment sdfsdfsdfsdfdfsd
+	//comment sdfsdfsd
 	private int customerId;
 	private String customerFullName;
 
