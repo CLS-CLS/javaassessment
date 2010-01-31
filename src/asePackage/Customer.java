@@ -4,7 +4,7 @@ public class Customer {
 	
 	
 	//comment sdfsdfsd
-	private int customerId;
+	private double customerId;
 	private String customerFullName;
 
 	public Customer(int customerId, String customerFullName) {
@@ -16,7 +16,7 @@ public class Customer {
 		return customerFullName;
 	}
 
-	public int getId() {
+	public double getId() {
 		return customerId;
 	}
 
