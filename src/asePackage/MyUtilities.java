@@ -63,9 +63,16 @@ public class MyUtilities<E> {
 		return accounts;
 	}
 	
-	public static ArrayList<String[]> loadCustomers(String fileName) throws FileNotFoundException{
-		ArrayList<String[]> customers = loadFile(fileName);
+	public static ArrayList<Customer> loadCustomers(String fileName) throws FileNotFoundException{
+		ArrayList<String[]> data = loadFile(fileName);
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		for(String[] str :data){
+			Customer customer = new Customer(str[0], str[1], Integer.parseInt(str[2]));
+			customers.add(customer);
+		}
 		return customers;
 	}
+	
+	
 
 }
