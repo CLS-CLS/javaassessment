@@ -1,33 +1,58 @@
 package asePackage;
+
 /**
- * Person class holds details about a person 
+ * Person class that holds details about a person (first name and last name)
+ * and methods to get and set first name and last name
  */
 public class Person
 {
-	String firstName;
-	String lastName;
 	/**
+	 * Instance variables
+	 */
+	private String firstName;
+	private String lastName;
+
+	/**
+	 * Creates a person with a first name and last name
 	 * @param firstName
 	 * @param lastName
 	 */
-	public Person(String firstName, String lastName) {
-		super();
+	public Person(String firstName, String lastName) 
+	{
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	public String getFirstName() {
+
+	/**
+	 * Gets the first name of the person
+	 * @return the first name of the person
+	 */
+	public String getFirstName() 
+	{
 		return firstName;
 	}
-	public void setFirstName(String firstName) {
+	/**
+	 * Modifies the first name of the person
+	 * @param firstName the first name of the person
+	 */
+	public void setFirstName(String firstName) 
+	{
 		this.firstName = firstName;
 	}
-	public String getLastName() {
+	/**
+	 * Gets the last name of the person
+	 * @return the last name of the person
+	 */
+	public String getLastName() 
+	{
 		return lastName;
 	}
-	public void setLastName(String lastName) {
+	/**
+	 * Modifies the last name of the person
+	 * @param lastName the last name of the person
+	 */
+	public void setLastName(String lastName) 
+	{
 		this.lastName = lastName;
 	}
-	
-	
-	
 }
