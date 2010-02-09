@@ -38,6 +38,29 @@ public class MyUtilities<E> {
 		}
 	}
 	
+	public static void saveStringToFile(String[] data,String fileName){
+		File f = new File(fileName);
+		String stringToAppend = new String();
+		for (String str: data){
+			stringToAppend +=","+str;
+		}
+		
+		try {
+			BufferedWriter bw;
+			bw = new BufferedWriter(new PrintWriter(f));
+			try {
+				bw.append(stringToAppend);
+			}finally{
+				bw.close();
+			}
+		}
+		catch (IOException ioe) {
+			System.out.println("Error while saving file : ");
+			ioe.printStackTrace();
+		}
+		
+	}
+	
 	/**
 	 * Loads data from the given file. The data is extracted as follows:
 	 * each line of the file is divided in substrings separated by commas and saved
@@ -63,12 +86,19 @@ public class MyUtilities<E> {
 		return accounts;
 	}
 	
-	public static ArrayList<Customer> loadCustomers(String fileName) throws FileNotFoundException{
+	public static ArrayList<Customer> loadCustomers(String fileName) throws FileNotFoundException,
+	NotValidFileTypeException{
 		ArrayList<String[]> data = loadFile(fileName);
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		for(String[] str :data){
-			Customer customer = new Customer(str[0], str[1], Integer.parseInt(str[2]));
-			customers.add(customer);
+			if (str.length!=3)throw new NotValidFileTypeException("Customer");
+			try{
+				Customer customer = new Customer(str[0], str[1], Integer.parseInt(str[2]));
+				customers.add(customer);
+			}
+			catch(NumberFormatException mfe){
+				throw new NotValidFileTypeException("Customer");
+			}
 		}
 		return customers;
 	}
