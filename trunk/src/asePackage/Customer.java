@@ -9,9 +9,10 @@ public class Customer extends Person
 	/**
 	 * instance variables
 	 */
+	public static final int MAXACCOUNTS = 2;
 	private String customerFirstName;
 	private String customerLastName;
-	private String customerID;
+	private int customerID;
 	private ArrayList <Account> accountList;
 
 	/**
@@ -20,10 +21,11 @@ public class Customer extends Person
 	 * @param customerLastName
 	 * @param customerID
 	 */
-	public Customer(String customerFirstName,String customerLastName, String customerID)
+	public Customer(String customerFirstName,String customerLastName, int customerID)
 	{        
 		super(customerFirstName,customerLastName);
 		this.customerID = customerID;
+		accountList = new ArrayList<Account>();
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class Customer extends Person
 	 * get method to get the ID of the customer
 	 * @return
 	 */
-	public String getCustomerID()
+	public int getCustomerID()
 	{
 		return customerID;
 	}
@@ -75,8 +77,35 @@ public class Customer extends Person
 	 * set method to modify the ID of the customer
 	 * @param customerID
 	 */
-	public void setCustomerID(String customerID)
+	public void setCustomerID(int customerID)
 	{
 		this.customerID = customerID;
+	}
+	
+	public void addAccount(Account aca){
+		accountList.add(aca);
+	}
+	
+	/**
+	 * Removes the selected account from the ownership of the client. For this assessment 
+	 * an account is removed from the customer if the account is closed.
+	 * @param accountId the account id of the account to be removed
+	 * @return true if the account is removed false if this account does not exist
+	 */
+	public boolean removeAccount(int accountId){
+		boolean isRemoved = false;
+		int index=-1;
+		for (Account aca: accountList){
+			if (aca.getId()== accountId)index = accountList.indexOf(aca);
+		}
+		if(index!=-1){
+			accountList.remove(index);
+			isRemoved = true;
+		}
+		return isRemoved;
+	}
+	
+	public boolean removeAccount(Account aca){
+		return accountList.remove(aca);
 	}
 }
