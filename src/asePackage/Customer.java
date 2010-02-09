@@ -1,86 +1,46 @@
 package asePackage;
 import java.util.ArrayList;
 
-/**
- * Customer class holds details about a customer 
+/**Ali Ali Ali.....
+ * I have changed 95% of your code!!! :)
+ * Just comment all the methods ..you know.. what a method does what parameters it takes etc.. i have added 2 methods in the end
+ * of the class with comments so you can see how you should comment the other things. Also you have written the code
+ * twice .. one for person and one for customer... The customer extends person,,, that means you dont have to rewrite the get/Set First/Last name
+ * methods.
+ * Plus, just to know.. the names you are using are not so good.. for example you said customerFullName. 
+ * You are already in the Customer class... So you should say just fullName. 
+ * 
+ * 
+ * Customer class holds details about a customer ... (What details exactly?)
  */
 public class Customer extends Person
 {	
-	/**
-	 * instance variables
-	 */
+	
 	public static final int MAXACCOUNTS = 2;
-	private String customerFirstName;
-	private String customerLastName;
-	private int customerID;
+	
+	private int id;
 	private ArrayList <Account> accountList;
 
-	/**
-	 * constructor to create a customer
-	 * @param customerFirstName
-	 * @param customerLastName
-	 * @param customerID
-	 */
-	public Customer(String customerFirstName,String customerLastName, int customerID)
+	
+	public Customer(String firstName,String lastName, int id)
 	{        
-		super(customerFirstName,customerLastName);
-		this.customerID = customerID;
+		super(firstName,lastName);
+		this.id = id;
 		accountList = new ArrayList<Account>();
 	}
 
-	/**
-	 * get method to get the first name of the customer
-	 * @return
-	 */
-	public String getCustomerFirstName()
+		
+	public int getId()
 	{
-		return customerFirstName;	
+		return id;
 	}
 
-	/**
-	 * get method to get the last name of the customer
-	 * @return
-	 */
-	public String getCustomerLastName()
+		
+	public void setId(int customerId)
 	{
-		return customerLastName;
+		this.id = customerId;
 	}
-
-	/**
-	 * get method to get the ID of the customer
-	 * @return
-	 */
-	public int getCustomerID()
-	{
-		return customerID;
-	}
-
-	/**
-	 * set method to modify the first name of the customer
-	 * @param customerFirstName
-	 */
-	public void setCustomerFirstName(String customerFirstName)
-	{
-		this.customerFirstName = customerFirstName;
-	}
-
-	/**
-	 * set method to modify the last name of the customer
-	 * @param customerLastName
-	 */
-	public void setCustomerLastName(String customerLastName)
-	{
-		this.customerLastName = customerLastName;
-	}
-
-	/**
-	 * set method to modify the ID of the customer
-	 * @param customerID
-	 */
-	public void setCustomerID(int customerID)
-	{
-		this.customerID = customerID;
-	}
+	
 	
 	public void addAccount(Account aca){
 		accountList.add(aca);
@@ -105,6 +65,12 @@ public class Customer extends Person
 		return isRemoved;
 	}
 	
+	/**
+	 * Removes the selected account from the ownership of the client. For this assessment 
+	 * an account is removed from the customer if the account is closed.
+	 * @param aca the account to be removed
+	 * @return true if the account is removed false if this account does not exist.
+	 */
 	public boolean removeAccount(Account aca){
 		return accountList.remove(aca);
 	}
