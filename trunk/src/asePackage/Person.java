@@ -4,53 +4,30 @@ package asePackage;
  */
 public class Person
 {
+	String firstName;
+	String lastName;
 	/**
-	 * instance variables
+	 * @param firstName
+	 * @param lastName
 	 */
-	private String personFirstName;
-	private String personLastName;
-
-	/**
-	 * constructor to create a person object with a first and last name
-	 * @param personFirstName
-	 * @param personLastName
-	 */
-	public Person (String personFirstName, String personLastName)
-	{        
-		this.personFirstName = personFirstName;
-		this.personLastName = personLastName;
+	public Person(String firstName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
-
-	/**
-	 * get method to get the first name of the person
-	 * @return
-	 */
-	public String getPersonFirstName() 
-	{
-		return personFirstName;
+	public String getFirstName() {
+		return firstName;
 	}
-
-	/**
-	 * get method to get the last name of the person
-	 * @return
-	 */
-	public String getPersonLastName() 
-	{
-		return personLastName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	/**
-	 * set method to modify the first name of the person
-	 */
-	public void setPersonFirstName(String personFirstName) 
-	{
-		this.personFirstName = personFirstName;
+	public String getLastName() {
+		return lastName;
 	}
-
-	/**
-	 * set method to modify the last name of the person
-	 */
-	public void setPersonLastName(String personLastName) 
-	{
-		this.personLastName = personLastName;
-	}	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	
+	
 }
