@@ -86,4 +86,13 @@ public class Customer extends Person
 	{
 		return accountList.remove(aca);
 	}
+	
+	/**
+	 * Checks if the customer is owner of the given account
+	 * @param aca the account to be checked
+	 * @return true if the account is owned by the customer false otherwise
+	 */
+	public boolean hasAccount(Account aca){
+		return accountList.contains(aca);
+	}
 }
