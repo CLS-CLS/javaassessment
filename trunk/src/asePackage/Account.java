@@ -2,24 +2,45 @@ package asePackage;
 
 import java.util.ArrayList;
 
+/**
+ * @author Ioan
+ *
+ */
+
 public class Account {
 	private int accountID;
 	private ArrayList <Customer> ownerList;
-	private long balance;                       //<----maybe it should be double? e.g. 256.70 pounds?
+	private double balance;                       //<----maybe it should be double? e.g. 256.70 pounds?
 	                                            //and long? haha how RICH this person can be...i wish it was me :)
 
+	public Account () {
+		this.accountID = 0;
+		this.ownerList = new ArrayList<Customer> ();
+		this.balance = 0;	
+	}	
 	public Account (int accountID) {        
 		this.accountID = accountID;
 		this.ownerList = new ArrayList<Customer> ();
 		this.balance = 0;
 	}
+	public Account (int accountID, Customer owner) {        
+		this.accountID = accountID;
+		this.ownerList.add(owner);
+		this.balance = 0;
+	}
+	public Account (int accountID, ArrayList<Customer> ownerList) {        
+		this.accountID = accountID;
+		this.ownerList = ownerList;
+		this.balance = 0;
+	}
+
 	public int getId() {
 		return accountID;
 	}
 	public ArrayList<Customer> getOwnerList() {
 		return ownerList;
 	}
-	public long getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 	/*
@@ -27,6 +48,12 @@ public class Account {
 	 * TODO
 	 * }
 	 */
+	public void addOwner(Customer owner) {
+		this.ownerList.add(owner);
+	}
+	public void removeOwner(Customer owner) {
+		this.ownerList.remove(owner);
+	}
 	public void withdrawMoney(long sum) {
 		this.balance-=sum;
 	}
