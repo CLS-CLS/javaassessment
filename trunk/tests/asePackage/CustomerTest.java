@@ -21,9 +21,16 @@ public class CustomerTest {
 		assertEquals("Uknown", c1.getLastName());
 		
 		assertEquals(2, c1.getId());
-		
-		
-		
+	}
+	
+	@Test
+	public void equals(){
+		Customer c1 = new Customer("Chris", "Lytsikas", 2);
+		Customer c2 = new Customer("Alex","Lytsikas",1);
+		Customer c3 = new Customer("Chris", "Lytsikas", 2);
+		assertTrue(c1.equals(c1));
+		assertFalse(c1.equals(c2));
+		assertTrue(c1.equals(c3));
 	}
 }
 
