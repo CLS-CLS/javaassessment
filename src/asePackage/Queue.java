@@ -13,7 +13,7 @@ public class Queue {
 	
 	public Queue() {
 		//this.queueCustomer=new Customer();
-		//please create the posibility to insert an empty customer
+		//please create the posibility to insert an empty customer   <----What do you mean??
 		this.transactionList=new ArrayList<Transaction>();
 	}
 	public Queue(Customer queueCustomer, Transaction newTransaction, int queueNumber) {

@@ -10,8 +10,7 @@ import java.util.ArrayList;
 public class Account {
 	private int accountID;
 	private ArrayList <Customer> ownerList;
-	private double balance;                       //<----maybe it should be double? e.g. 256.70 pounds?
-	                                            //and long? haha how RICH this person can be...i wish it was me :)
+	private double balance;                      
 
 	public Account () {
 		this.accountID = 0;
