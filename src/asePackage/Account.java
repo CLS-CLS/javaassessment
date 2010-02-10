@@ -53,10 +53,10 @@ public class Account {
 	public void removeOwner(Customer owner) {
 		this.ownerList.remove(owner);
 	}
-	public void withdrawMoney(long sum) {
+	public void withdrawMoney(double sum) {
 		this.balance-=sum;
 	}
-	public void depositMoney(long sum) {
+	public void depositMoney(double sum) {
 		this.balance+=sum;
 	}
 	

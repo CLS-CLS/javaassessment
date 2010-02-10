@@ -15,9 +15,9 @@ public class Transaction {
 	public static final String CLOSE = TRANSACTIONTYPE[1];
 	public static final String WITHDRAWAL = TRANSACTIONTYPE[2];
 	public static final String DEPOSIT = TRANSACTIONTYPE[3];
-	String transactionType;
-	Account account;
-	double ammount;
+	private String transactionType;
+	private Account account;
+	private double ammount;
 	/**
 	 * @param transactionType 
 	 * @param account The account which the transactions will take place.
@@ -47,10 +47,10 @@ public class Transaction {
 	
 	
 	/// GETTERS AND SETTERS
-	public String getTransactionType() {
+	public String getType() {
 		return transactionType;
 	}
-	public void setTransactionType(String transactionType) {
+	public void setType(String transactionType) {
 		this.transactionType = transactionType;
 	}
 	public Account getAccount() {
