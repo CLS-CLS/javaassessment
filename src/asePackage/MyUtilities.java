@@ -20,7 +20,7 @@ public class MyUtilities<E> {
 	 * @param data the string to be saved
 	 * @param fileName the file where the string will be saved in
 	 */
-	private static void saveStringToFile(String data, String fileName) {
+	public static void saveStringToFile(String data, String fileName) {
 		File f = new File(fileName);
 		
 		try {

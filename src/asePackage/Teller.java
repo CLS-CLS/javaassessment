@@ -42,7 +42,7 @@ public class Teller {
 	private boolean isValidTransaction(Transaction transaction){
 
 		boolean isValid = true;
-		//check if the account belongs to the customer and has engough money
+		//check if the account belongs to the customer and has enough money
 		if (!currentCustomer.hasAccount(transaction.getAccount())||
 				transaction.getAccount().getBalance()< transaction.getAmmount())
 			isValid = false;

@@ -1,6 +1,9 @@
 package asePackage;
 import java.util.ArrayList;
 
+import org.omg.CORBA.portable.CustomValue;
+
+
 /**
  * Customer class that holds details about a customer (first name, last name,
  * allowed number of accounts, his/her identification number, and his/her account(s))
@@ -93,6 +96,20 @@ public class Customer extends Person
 	 * @return true if the account is owned by the customer false otherwise
 	 */
 	public boolean hasAccount(Account aca){
+		
 		return accountList.contains(aca);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Customer ))return false;
+		else {
+			Customer c = (Customer)obj;
+			if(c.getFirstName().equals(this.getFirstName())&&
+					c.getLastName().equals(this.getLastName())&&
+					c.getId()==this.getId())return true;
+		}
+		return false;
+	}
+				
 }
