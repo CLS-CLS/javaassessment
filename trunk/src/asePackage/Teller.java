@@ -8,6 +8,10 @@ public class Teller {
 	Customer currentCustomer;
 	ArrayList<Transaction> transactions;
 	String report;
+	/*
+	 * Ioan: A field like tellerID will be very useful for the log file
+	 */
+	
 	
 	public Teller(QueueManager qm) {
 		this.qm = qm;
