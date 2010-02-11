@@ -11,27 +11,32 @@ import java.util.ArrayList;
 public class Account {
 	private int accountID;
 	private ArrayList <Customer> ownerList;
-	private double balance;                      
+	private double balance;      
+	private boolean isClosed;
 
 	public Account () {
 		this.accountID = 0;
 		this.ownerList = new ArrayList<Customer> ();
-		this.balance = 0;	
+		this.balance = 0;
+		this.isClosed=false;
 	}	
 	public Account (int accountID) {        
 		this.accountID = accountID;
 		this.ownerList = new ArrayList<Customer> ();
 		this.balance = 0;
+		this.isClosed=false;
 	}
 	public Account (int accountID, Customer owner) {        
 		this.accountID = accountID;
 		this.ownerList.add(owner);
 		this.balance = 0;
+		this.isClosed=false;
 	}
 	public Account (int accountID, ArrayList<Customer> ownerList) {        
 		this.accountID = accountID;
 		this.ownerList = ownerList;
 		this.balance = 0;
+		this.isClosed=false;
 	}
 
 	public int getId() {
@@ -59,6 +64,12 @@ public class Account {
 	}
 	public void depositMoney(double sum) {
 		this.balance+=sum;
+	}
+	public void closeAccount() {
+		this.isClosed=true;
+	}
+	public boolean accountIsClosed() {
+		return this.isClosed;
 	}
 	
 	@Override

@@ -17,6 +17,15 @@ public class AccountManager {
 		this.accountList=new ArrayList<Account>();
 		this.nextAccountId=FIRSTACCOUNTID;
 	}
+	/*
+	 * now, when we create the object we can give a list of accounts as input and it will
+	 * search automatically which is the last account value from the list and will create
+	 * the next possible value by adding one
+	 */	
+	public AccountManager(ArrayList<Account> accountList) {
+		this.accountList=new ArrayList<Account>(accountList);
+		this.nextAccountId=this.accountList.get(this.accountList.size()-1).getId()+1;
+	}
 	public void addAccount(Customer owner) {
 		this.accountList.add(new Account(nextAccountId, owner));
 		this.nextAccountId++;
@@ -50,7 +59,9 @@ public class AccountManager {
 	 * with an already existing aca . So you must search which id values are avaible. 
 	 */
 	
-	// public int getAvaibleAccountId()   ??
+	public int getAvaibleAccountId() {
+		return nextAccountId;
+	}
 	
 
 }
