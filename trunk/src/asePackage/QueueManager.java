@@ -26,4 +26,7 @@ public class QueueManager {
 	public boolean isQueueEmpty(){
 		return this.customerQueue.isEmpty();
 	}
+	public int getNextNumber(){
+		return this.nextQueueNumber;
+	}
 }
