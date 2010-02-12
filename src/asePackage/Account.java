@@ -28,6 +28,7 @@ public class Account {
 	}
 	public Account (int accountID, Customer owner) {        
 		this.accountID = accountID;
+		this.ownerList = new ArrayList<Customer> ();
 		this.ownerList.add(owner);
 		this.balance = 0;
 		this.isClosed=false;
