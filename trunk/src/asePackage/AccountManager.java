@@ -63,5 +63,9 @@ public class AccountManager {
 		return nextAccountId;
 	}
 	
+	public ArrayList<Account> getAccountList() {
+		return accountList;
+	}
+	
 
 }
