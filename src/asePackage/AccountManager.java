@@ -48,6 +48,10 @@ public class AccountManager {
 	public ArrayList<Account> getAccountList() {
 		return accountList;
 	}
+	public void addAcounts(ArrayList<Account> accounts) {
+		accountList = accounts;
+		
+	}
 	
 
 }

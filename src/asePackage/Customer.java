@@ -19,6 +19,12 @@ public class Customer extends Person
 	private int id;
 	private ArrayList <Account> accountList;
 	
+public ArrayList<Account> getAccountList() {
+		return accountList;
+	}
+	public void setAccountList(ArrayList<Account> accountList) {
+		this.accountList = accountList;
+	}
 /**
  * Creates a customer with first name, last name, id, and his/her account(s)
  * @param firstName the first name of the customer
