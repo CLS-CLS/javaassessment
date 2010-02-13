@@ -1,6 +1,8 @@
 
 package asePackage;
 
+import java.util.Random;
+
 /**
  * @author Chris
  * Contains the type of transactions that is to be made and information about the
@@ -21,7 +23,7 @@ public class Transaction {
 	/**
 	 * @param transactionType 
 	 * @param account The account which the transactions will take place.
-	 * @param ammount The amount of money is going to be transated.
+	 * @param ammount The amount of money is going to be transacted.
 	 * @throws exception if the transactionType is not a valid string.
 	 */
 	public Transaction(String transactionType, Account account, double ammount)throws Exception{
@@ -64,6 +66,38 @@ public class Transaction {
 	}
 	public void setAmmount(double ammount) {
 		this.ammount = ammount;
+	}
+	
+	public Transaction generateRandomTransaction(Account account,Random rnd){
+		int randomInt = rnd.nextInt(10);
+		String transactionType =new String();
+		double amount = 0;
+		if(randomInt==0){
+			transactionType = Transaction.OPEN;
+			amount = rnd.nextInt(1000);
+		}
+		if(randomInt==1){
+			transactionType = Transaction.CLOSE;
+		}
+		if(randomInt >= 2 && randomInt < 6){
+			transactionType = Transaction.DEPOSIT;
+			amount = rnd.nextInt(1000);
+		}
+		if(randomInt >= 6){
+			transactionType = Transaction.WITHDRAWAL;
+			amount = rnd.nextInt(1000);
+		}
+		
+		Transaction trans = null;
+		try {
+			trans = new Transaction(transactionType, account, amount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return trans;
+		
+		
 	}
 	
 	

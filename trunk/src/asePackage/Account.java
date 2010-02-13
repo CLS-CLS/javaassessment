@@ -39,6 +39,14 @@ public class Account {
 		this.balance = 0;
 		this.isClosed=false;
 	}
+	
+	public Account (int accountID, double balance, ArrayList<Customer> ownerList) {        
+		this.accountID = accountID;
+		this.balance = balance;
+		this.ownerList = ownerList;
+		this.balance = 0;
+		this.isClosed=false;
+	}
 
 	public int getId() {
 		return accountID;
@@ -69,7 +77,7 @@ public class Account {
 	public void closeAccount() {
 		this.isClosed=true;
 	}
-	public boolean accountIsClosed() {
+	public boolean isClosed() {
 		return this.isClosed;
 	}
 	

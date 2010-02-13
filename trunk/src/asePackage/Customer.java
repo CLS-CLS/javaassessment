@@ -111,5 +111,8 @@ public class Customer extends Person
 		}
 		return false;
 	}
+	public int getNumberOfAccounts() {
+		return accountList.size();
+	}
 				
 }
