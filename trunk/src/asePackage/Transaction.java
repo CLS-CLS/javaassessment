@@ -68,7 +68,7 @@ public class Transaction {
 		this.ammount = ammount;
 	}
 	
-	public Transaction generateRandomTransaction(Account account,Random rnd){
+	public static Transaction generateRandomTransaction(Account account,Random rnd){
 		int randomInt = rnd.nextInt(10);
 		String transactionType =new String();
 		double amount = 0;

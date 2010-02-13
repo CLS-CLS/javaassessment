@@ -8,7 +8,7 @@ public class Bank {
 	private QueueManager qm;
 	private Teller teller;
 	private ArrayList<Customer> customers;
-	private ArrayList<Account> accounts;
+	
 	private AccountManager am;
 	
 	
@@ -16,39 +16,70 @@ public class Bank {
 		qm = new QueueManager();
 		teller = new Teller(qm);
 		customers = new ArrayList<Customer>();
-		accounts = new ArrayList<Account>();
+		ArrayList<Account> accounts = new ArrayList<Account>();
 		am = new AccountManager();
 		try{
 			customers = MyUtilities.loadCustomers("");//TODO file with customers
 			accounts = MyUtilities.loadAccounts("",customers);//TODO file with accounts
-			
+			am.addAcounts(accounts);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			System.exit(1);
-			
 		}
-		ArrayList<Customer> selectedCustomers = pickRandomCustomers(); 
 		
-		for (Customer customer:selectedCustomers){
-			int numberOfTransactions = rndGen.nextInt(2)+1;
-			for (int i = 0;i < numberOfTransactions;i++){
-				Account aca = selectRandomAca();
-				//TODO generate transactions
+		//Add the accounts to the customer
+		for (Account aca: am.getAccountList()){
+			for(Customer customer: aca.getOwnerList()){
+				customer.addAccount(aca);
 			}
 		}
 		
+		//pick some random customers
+		ArrayList<Customer> selectedCustomers = pickRandomCustomers(); 
+		for (Customer customer:selectedCustomers){
+			qm.addQueueElement(customer,generateTransactions(customer));
+		}
+		
+		
 	}
-	private Account selectRandomAca() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void runBank(){
+		while(!qm.isQueueEmpty()){
+			teller.getNextCustomer();
+			teller.doTransaction();
+		}
+		
 	}
+		
+	private ArrayList<Transaction> generateTransactions(Customer customer) {
+		int numberOfTransactions = rndGen.nextInt(2)+1;
+		ArrayList<Transaction> trans = new ArrayList<Transaction>();
+		for (int i = 0;i < numberOfTransactions;i++){
+			Account aca = selectRandomAca(customer);
+			trans.add(Transaction.generateRandomTransaction(aca, rndGen));
+		}
+		return trans;
+	}
+
+	
+	private Account selectRandomAca(Customer customer) {
+		return customer.getAccountList().get(
+				rndGen.nextInt(customer.getNumberOfAccounts()));
+	}
+	
 	private ArrayList<Customer> pickRandomCustomers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
+	
 	public static void main(String[] args) {
 		Bank bank = new Bank();
+		bank.initializer();
+		bank.runBank();
 		
 		
 		
