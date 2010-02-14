@@ -28,6 +28,15 @@ public class Teller {
 	 * Makes all the transactions that the customers wants to do if they are valid
 	 */
 	public void doTransaction(){
+		/** 
+		 * 
+		 * 
+		 * somewhere here (in the if statements or maybe after there must be a report generations
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 		for (Transaction transaction : transactions){
 			if (transaction.getType().equals(Transaction.DEPOSIT)){
 				Account account = transaction.getAccount();
