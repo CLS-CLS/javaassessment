@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class LogTest {
 	private Log log;
 	private Log log2;
