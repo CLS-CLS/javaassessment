@@ -70,8 +70,8 @@ public class Teller {
 	 * checks if the current transaction is valid (e.g. can be made). Valid trascations are
 	 * Deposit / Close : only if the customer owns the account he want to deposit money
 	 * Withdrawal : only if the customer own the account he wants to withdraw money from
-	 * and also the money to be withdrawn doesn not exceed the money in the account
-	 * Open : An account can be opened only if the customer doesn not have more that the maximum 
+	 * and also the money to be withdrawn does not exceed the money in the account
+	 * Open : An account can be opened only if the customer does not have more that the maximum 
 	 * account allowance
 	 * @param transaction the transaction to be validated
 	 * @return true if the transaction is valid, false otherwise

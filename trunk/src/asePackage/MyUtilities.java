@@ -87,17 +87,24 @@ public class MyUtilities<E> {
 		ArrayList<String[]> data = loadFile(fileName);
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		for(String[] str :data){
-			if (str.length!=4)throw new NotValidFileTypeException("Acccount");
+			if (str.length <=2 || str.length > 4)throw new NotValidFileTypeException("Acccount");
 			try{
 				int accountID = Integer.parseInt(str[0]);
+				
 				double balance = Double.parseDouble(str[1]);
+				
 				int customer1ID = Integer.parseInt(str[2]);
-				int customer2ID = Integer.parseInt(str[3]);
+				int customer2ID;
+				Customer customer2 = null;
+				if(str.length > 3){
+					customer2ID = Integer.parseInt(str[3]);
+					customer2 = findCustomerFromID(customer2ID,customers);
+				}
 				Customer customer1 = findCustomerFromID(customer1ID,customers);
-				Customer customer2 = findCustomerFromID(customer2ID,customers);
+				
 				ArrayList<Customer> ownerList = new ArrayList<Customer>();
 				ownerList.add(customer1); 
-				ownerList.add(customer2);
+				if(str.length>3)ownerList.add(customer2);
 				Account account = new Account(accountID, balance, ownerList);
 				accounts.add(account);
 			}

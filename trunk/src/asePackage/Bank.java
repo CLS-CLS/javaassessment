@@ -13,14 +13,15 @@ public class Bank {
 	
 	
 	public void initializer(){
+		rndGen = new Random();
 		qm = new QueueManager();
 		teller = new Teller(qm);
 		customers = new ArrayList<Customer>();
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		am = new AccountManager();
 		try{
-			customers = MyUtilities.loadCustomers("");//TODO file with customers
-			accounts = MyUtilities.loadAccounts("",customers);//TODO file with accounts
+			customers = MyUtilities.loadCustomers("customers.txt");
+			accounts = MyUtilities.loadAccounts("accounts.txt",customers);
 			am.addAcounts(accounts);
 		}
 		catch(Exception e){
@@ -31,7 +32,8 @@ public class Bank {
 		//Add the accounts to the customer
 		for (Account aca: am.getAccountList()){
 			for(Customer customer: aca.getOwnerList()){
-				customer.addAccount(aca);
+				customer.
+				addAccount(aca);
 			}
 		}
 		
@@ -69,8 +71,12 @@ public class Bank {
 	}
 	
 	private ArrayList<Customer> pickRandomCustomers() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Customer> subList = new ArrayList<Customer>();
+		for (int i = 0 ; i <10 ; i++){
+			subList.add(customers.get(i));
+		}
+		return subList;
+		
 	}
 	
 	
@@ -80,11 +86,7 @@ public class Bank {
 		Bank bank = new Bank();
 		bank.initializer();
 		bank.runBank();
-		
-		
-		
-		
-
+	
 	}
 
 }
