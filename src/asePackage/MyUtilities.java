@@ -42,8 +42,9 @@ public class MyUtilities<E> {
 		File f = new File(fileName);
 		String stringToAppend = new String();
 		for (String str: data){
-			stringToAppend +=","+str;
+			stringToAppend +=str+",";
 		}
+		
 		
 		try {
 			BufferedWriter bw;
@@ -77,6 +78,7 @@ public class MyUtilities<E> {
 			String[] elements = currentLine.split(",");
 			returnList.add(elements);
 		}
+		sc.close();
 	    return returnList;
 	}
 	
