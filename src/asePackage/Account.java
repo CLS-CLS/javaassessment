@@ -44,7 +44,6 @@ public class Account {
 		this.accountID = accountID;
 		this.balance = balance;
 		this.ownerList = ownerList;
-		this.balance = 0;
 		this.isClosed=false;
 	}
 
