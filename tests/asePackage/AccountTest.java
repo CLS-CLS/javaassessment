@@ -175,7 +175,7 @@ public class AccountTest {
 	public void testCloseAccount() {
 		String result="true";
 		account4.closeAccount();
-		String currentValue=""+account4.accountIsClosed();
+		String currentValue=""+account4.isClosed();
 		assertTrue("Wrong account status (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -185,7 +185,7 @@ public class AccountTest {
 	@Test
 	public void testAccountIsClosed() {
 		String result="false";
-		String currentValue=""+account4.accountIsClosed();
+		String currentValue=""+account4.isClosed();
 		assertTrue("Wrong account status (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
