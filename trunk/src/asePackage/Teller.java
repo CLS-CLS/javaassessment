@@ -5,23 +5,18 @@ import java.util.ArrayList;
 public class Teller {
 	
 	private QueueManager qm;
-	private Customer currentCustomer;
 	private ArrayList<Transaction> transactions;
 	private AccountManager accountManager;
+	private Queue customerInQueue;
 	
-	/*
-	 * Ioan: A field like tellerID will be very useful for the log file
-	 */
-	
-	
+		
 	public Teller(QueueManager qm,AccountManager accountManager) {
 		this.qm = qm;
 		this.accountManager = accountManager;
 	}
 	
 	public void getNextCustomer(){
-		Queue customerInQueue = qm.removeQueueElement();
-		currentCustomer = customerInQueue.getCustomer();
+		customerInQueue = qm.removeQueueElement();
 		transactions = customerInQueue.getTransactionList();
 	}
 	
@@ -29,45 +24,48 @@ public class Teller {
 	 * Makes all the transactions that the customers wants to do if they are valid
 	 */
 	public void doTransaction(){
-		/** 
-		 * 
-		 * 
-		 * somewhere here (in the if statements or maybe after there must be a report generations
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
+		Customer currentCustomer = customerInQueue.getCustomer();
+		boolean isValidTransaction;
+		
 		for (Transaction transaction : transactions){
+			isValidTransaction = false;
 			if (transaction.getType().equals(Transaction.DEPOSIT)){
 				Account account = transaction.getAccount();
 				account.depositMoney(transaction.getAmmount());
 				System.out.println("deposit done");
+				isValidTransaction = true;
+				
 			}
 			if (transaction.getType().equals(Transaction.WITHDRAWAL)){
-				if (isValidTransaction(transaction)){
+				if (isValidTransaction(transaction,currentCustomer)){
 					transaction.getAccount().withdrawMoney(transaction.getAmmount());
 					System.out.println("withdrawal succeeded");
+					isValidTransaction = true;
 				}else System.out.println("withdrawal failed");
 			}
 			if(transaction.getType().equals(Transaction.OPEN)){
-				if(isValidTransaction(transaction)){
+				if(isValidTransaction(transaction,currentCustomer)){
 					Account account = accountManager.addAccount(currentCustomer);
 					account.depositMoney(transaction.getAmmount());
 					System.out.println("open succeded");
+					isValidTransaction = true;
 				}else System.out.println("opened failed");
 			}
 			if(transaction.getType().equals(Transaction.CLOSE)){
-				if(isValidTransaction(transaction)){
+				if(isValidTransaction(transaction,currentCustomer)){
 					Account account = transaction.getAccount();
 					account.withdrawMoney(account.getBalance());
 					accountManager.deleteAccount(account);
 					System.out.println("close succeded");
+					isValidTransaction = true;
 				}else System.out.println("close failed");
 			}
+			
+			generateReport(isValidTransaction,transaction);
+		
 		}
 		
-		//TODO call the generate report?
+		
 	}
 	
 	/**
@@ -80,7 +78,7 @@ public class Teller {
 	 * @param transaction the transaction to be validated
 	 * @return true if the transaction is valid, false otherwise
 	 */
-	private boolean isValidTransaction(Transaction transaction){
+	private boolean isValidTransaction(Transaction transaction,Customer currentCustomer){
 		boolean isValid = true;
 		
 		//in case the transaction is withdrawal
@@ -106,8 +104,15 @@ public class Teller {
 		return isValid;
 	}
 
-	private void generateReport() {
-		// TODO Auto-generated method stub
+	private void generateReport(boolean isValidTransaction, Transaction transaction) {
+		if(isValidTransaction){
+			//TODO *****FOR IOAN****   call constructor of LOG class for succeeded transaction
+			//available fields are customerinQueue
+			//available local fields isValidTransaction, transaction
+		}
+		else{
+			//TODO call constructor of LOG class for failed transaction
+		}
 		
 	}
 	
