@@ -14,8 +14,9 @@ public class Teller {
 	 */
 	
 	
-	public Teller(QueueManager qm) {
+	public Teller(QueueManager qm,AccountManager accountManager) {
 		this.qm = qm;
+		this.accountManager = accountManager;
 	}
 	
 	public void getNextCustomer(){
@@ -46,20 +47,23 @@ public class Teller {
 			if (transaction.getType().equals(Transaction.WITHDRAWAL)){
 				if (isValidTransaction(transaction)){
 					transaction.getAccount().withdrawMoney(transaction.getAmmount());
+					System.out.println("withdrawal succeeded");
 				}else System.out.println("withdrawal failed");
 			}
 			if(transaction.getType().equals(Transaction.OPEN)){
 				if(isValidTransaction(transaction)){
 					Account account = accountManager.addAccount(currentCustomer);
 					account.depositMoney(transaction.getAmmount());
-				}
+					System.out.println("open succeded");
+				}else System.out.println("opened failed");
 			}
 			if(transaction.getType().equals(Transaction.CLOSE)){
 				if(isValidTransaction(transaction)){
 					Account account = transaction.getAccount();
 					account.withdrawMoney(account.getBalance());
 					accountManager.deleteAccount(account);
-				}
+					System.out.println("close succeded");
+				}else System.out.println("close failed");
 			}
 		}
 		
