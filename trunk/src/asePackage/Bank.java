@@ -15,7 +15,6 @@ public class Bank {
 	public void initializer(){
 		rndGen = new Random();
 		qm = new QueueManager();
-		teller = new Teller(qm);
 		customers = new ArrayList<Customer>();
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		am = new AccountManager();
@@ -42,6 +41,9 @@ public class Bank {
 		for (Customer customer:selectedCustomers){
 			qm.addQueueElement(customer,generateTransactions(customer));
 		}
+		
+		teller = new Teller(qm,am);
+		
 		
 		
 	}
