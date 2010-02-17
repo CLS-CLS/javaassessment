@@ -17,6 +17,12 @@ public class Log {
 		this.logEventList = logEventList;
 	}
 	
+	public void addLogEvent(int queueNumber, Customer customer, Transaction transaction, String status) {
+		logEventList.add(new LogEvent(queueNumber, customer, transaction, status));
+	}
+	public void addLogEvent(int queueNumber, Customer customer, String status) {
+		logEventList.add(new LogEvent(queueNumber, customer, status));
+	}
 	public int getProcessedCustomersNumber() {
 		int i;
 		ArrayList<Integer> queueNumber=new ArrayList<Integer>();
