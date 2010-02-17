@@ -24,7 +24,7 @@ public class GUI extends JFrame implements ActionListener{
 		super("Simple GUI Stage 1");
 		panel = new JPanel();
 		panel.setBackground(Color.PINK);
-		textArea = new JTextArea(25, 25);
+		textArea = new JTextArea(50, 45);
 		scrollPane = new JScrollPane(textArea);
 		button.addActionListener(this);
 				
@@ -41,7 +41,10 @@ public class GUI extends JFrame implements ActionListener{
 
 
 	public void actionPerformed(ActionEvent arg0) {
-		textArea.append("clicked\n");
+		asePackage.Bank bank = new asePackage.Bank();
+		bank.main(null);
+		textArea.setText(bank.getLog());
+		//textArea.append("clicked\n");
 		
 	}
 	
