@@ -8,13 +8,14 @@ public class Bank {
 	private QueueManager qm;
 	private Teller teller;
 	private ArrayList<Customer> customers;
-	
+	private static Log log;
 	private AccountManager am;
 	
 	
 	public void initializer(){
 		rndGen = new Random();
-		qm = new QueueManager();
+		log = new Log();
+		qm = new QueueManager(log);
 		customers = new ArrayList<Customer>();
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		am = new AccountManager();
@@ -42,7 +43,7 @@ public class Bank {
 			qm.addQueueElement(customer,generateTransactions(customer));
 		}
 		
-		teller = new Teller(qm,am);
+		teller = new Teller(qm,am,log);
 		
 		
 		
@@ -82,13 +83,17 @@ public class Bank {
 	}
 	
 	
-	
+	public String getLog() {
+		return log.toString();
+	}
 	
 	public static void main(String[] args) {
 		Bank bank = new Bank();
 		bank.initializer();
 		bank.runBank();
-	
+		
+		System.out.println(log);
+		MyUtilities.saveStringToFile(log.toString(), "log.txt");
 	}
 
 }

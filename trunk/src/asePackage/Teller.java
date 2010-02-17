@@ -8,11 +8,13 @@ public class Teller {
 	private ArrayList<Transaction> transactions;
 	private AccountManager accountManager;
 	private Queue customerInQueue;
+	private Log log;
 	
 		
-	public Teller(QueueManager qm,AccountManager accountManager) {
+	public Teller(QueueManager qm, AccountManager accountManager, Log log) {
 		this.qm = qm;
 		this.accountManager = accountManager;
+		this.log = log;
 	}
 	
 	public void getNextCustomer(){
@@ -32,33 +34,33 @@ public class Teller {
 			if (transaction.getType().equals(Transaction.DEPOSIT)){
 				Account account = transaction.getAccount();
 				account.depositMoney(transaction.getAmmount());
-				System.out.println("deposit done");
+				//System.out.println("deposit done");
 				isValidTransaction = true;
 				
 			}
 			if (transaction.getType().equals(Transaction.WITHDRAWAL)){
 				if (isValidTransaction(transaction,currentCustomer)){
 					transaction.getAccount().withdrawMoney(transaction.getAmmount());
-					System.out.println("withdrawal succeeded");
+					//System.out.println("withdrawal succeeded");
 					isValidTransaction = true;
-				}else System.out.println("withdrawal failed");
+				}//else System.out.println("withdrawal failed");
 			}
 			if(transaction.getType().equals(Transaction.OPEN)){
 				if(isValidTransaction(transaction,currentCustomer)){
 					Account account = accountManager.addAccount(currentCustomer);
 					account.depositMoney(transaction.getAmmount());
-					System.out.println("open succeded");
+					//System.out.println("open succeded");
 					isValidTransaction = true;
-				}else System.out.println("opened failed");
+				}//else System.out.println("opened failed");
 			}
 			if(transaction.getType().equals(Transaction.CLOSE)){
 				if(isValidTransaction(transaction,currentCustomer)){
 					Account account = transaction.getAccount();
 					account.withdrawMoney(account.getBalance());
 					accountManager.deleteAccount(account);
-					System.out.println("close succeded");
+					//System.out.println("close succeded");
 					isValidTransaction = true;
-				}else System.out.println("close failed");
+				}//else System.out.println("close failed");
 			}
 			
 			generateReport(isValidTransaction,transaction);
@@ -106,12 +108,10 @@ public class Teller {
 
 	private void generateReport(boolean isValidTransaction, Transaction transaction) {
 		if(isValidTransaction){
-			//TODO *****FOR IOAN****   call constructor of LOG class for succeeded transaction
-			//available fields are customerinQueue
-			//available local fields isValidTransaction, transaction
+			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS);
 		}
 		else{
-			//TODO call constructor of LOG class for failed transaction
+			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL);
 		}
 		
 	}
