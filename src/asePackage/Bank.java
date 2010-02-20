@@ -12,10 +12,10 @@ public class Bank {
 	private AccountManager am;
 	
 	
-	public void initializer(){
+	public Bank(){
 		rndGen = new Random();
 		log = new Log();
-		qm = new QueueManager(log);
+		qm = new QueueManager();
 		customers = new ArrayList<Customer>();
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		am = new AccountManager();
@@ -41,6 +41,7 @@ public class Bank {
 		ArrayList<Customer> selectedCustomers = pickRandomCustomers(); 
 		for (Customer customer:selectedCustomers){
 			qm.addQueueElement(customer,generateTransactions(customer));
+			log.addLogEvent(qm.getNextNumber()-1, customer, LogEvent.ENTERQUEUE);
 		}
 		
 		teller = new Teller(qm,am,log);
@@ -49,14 +50,6 @@ public class Bank {
 		
 	}
 	
-	public void runBank(){
-		while(!qm.isQueueEmpty()){
-			teller.getNextCustomer();
-			teller.doTransaction();
-		}
-		
-	}
-		
 	private ArrayList<Transaction> generateTransactions(Customer customer) {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
@@ -87,13 +80,14 @@ public class Bank {
 		return log.toString();
 	}
 	
-	public static void main(String[] args) {
-		Bank bank = new Bank();
-		bank.initializer();
-		bank.runBank();
-		
+	public void runBank(){
+		while(!qm.isQueueEmpty()){
+			teller.getNextCustomer();
+			teller.doTransaction();
+		}
 		System.out.println(log);
 		MyUtilities.saveStringToFile(log.toString(), "log.txt");
+		MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
+		MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
 	}
-
 }

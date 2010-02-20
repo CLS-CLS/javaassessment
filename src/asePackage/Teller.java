@@ -56,7 +56,16 @@ public class Teller {
 			if(transaction.getType().equals(Transaction.CLOSE)){
 				if(isValidTransaction(transaction,currentCustomer)){
 					Account account = transaction.getAccount();
-					account.withdrawMoney(account.getBalance());
+					if(account.getBalance()>0) {
+						Transaction trans = null;
+						try {
+							trans = new Transaction(Transaction.WITHDRAWAL, account, account.getBalance());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						account.withdrawMoney(account.getBalance());
+						generateReport(true, trans);
+					}
 					accountManager.deleteAccount(account);
 					//System.out.println("close succeded");
 					isValidTransaction = true;

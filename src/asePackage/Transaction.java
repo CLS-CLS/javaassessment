@@ -1,11 +1,11 @@
 
 package asePackage;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Random;
 
-import org.junit.Before;
-import org.junit.Test;
+//import org.junit.Before;
+//import org.junit.Test;
 
 /**
  * @author Chris
@@ -103,7 +103,7 @@ public class Transaction {
 		
 		
 	}
-	
+/*	
 	public static void main(String[] args) {
 		//TOTO delete this main in TRansaction List
 		Customer cust1;
@@ -124,7 +124,7 @@ public class Transaction {
 			
 		
 	}
-	
+*/	
 	
 
 }
