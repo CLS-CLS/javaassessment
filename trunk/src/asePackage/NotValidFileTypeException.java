@@ -1,7 +1,8 @@
 package asePackage;
 
 public class NotValidFileTypeException extends Exception {
-    String typeOfObject;
+    private static final long serialVersionUID = 1L;
+	String typeOfObject;
 	
     public NotValidFileTypeException(){
     	super();

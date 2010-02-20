@@ -82,7 +82,13 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return "Account [ID=" + accountID + ", Balance=" + balance + "]";
+		String result;
+		result=accountID + "," + balance;
+		for(int i=0;i<ownerList.size();i++) {
+			result+=","+ownerList.get(i).getId();
+		}
+
+		return result;
 	}
 
 	@Override

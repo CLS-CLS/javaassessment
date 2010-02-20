@@ -143,6 +143,19 @@ public class MyUtilities<E> {
 		return customers;
 	}
 	
-	
+	public static void saveCustomersToFile(ArrayList<Customer> customers, String fileName) {
+		String result="";
+		for(int i=0; i<customers.size(); i++) {
+			result+=customers.get(i)+"\n";
+		}
+		saveStringToFile(result, fileName);
+	}	
+	public static void saveAccountsToFile(AccountManager am, String fileName) {
+		String result="";
+		for(int i=0; i<am.getAccountList().size(); i++) {
+			result+=am.getAccountList().get(i)+"\n";
+		}
+		saveStringToFile(result, fileName);
+	}
 
 }

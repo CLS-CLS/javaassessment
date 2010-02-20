@@ -11,18 +11,12 @@ public class QueueManager {
 	private final static int FIRSTQUEUENUMBER=1;
 	private ArrayList<Queue> customerQueue;
 	private int nextQueueNumber;
-	private Log log;
 	
-	public QueueManager(Log log) {
+	public QueueManager() {
 		this.customerQueue=new ArrayList<Queue>();
 		this.nextQueueNumber=FIRSTQUEUENUMBER;
-		this.log=log;
 	}
 	public void addQueueElement(Customer element, ArrayList<Transaction> transactions) {
-		
-		log.addLogEvent(this.nextQueueNumber, element, LogEvent.ENTERQUEUE);
-		
-		
 		this.customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
 		this.nextQueueNumber++;
 	}

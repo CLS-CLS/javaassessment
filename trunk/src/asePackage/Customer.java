@@ -1,7 +1,7 @@
 package asePackage;
 import java.util.ArrayList;
 
-import org.omg.CORBA.portable.CustomValue;
+//import org.omg.CORBA.portable.CustomValue;
 
 
 /**
@@ -120,5 +120,13 @@ public ArrayList<Account> getAccountList() {
 	public int getNumberOfAccounts() {
 		return accountList.size();
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return super.getFirstName() + "," + super.getLastName() + "," + id;
+	}
+	
 				
 }
