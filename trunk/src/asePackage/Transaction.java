@@ -89,7 +89,7 @@ public class Transaction {
 		}
 		if(randomInt >= 6){
 			transactionType = Transaction.WITHDRAWAL;
-			amount = rnd.nextInt(1000);
+			amount = rnd.nextInt(201);
 		}
 		
 		Transaction trans = null;

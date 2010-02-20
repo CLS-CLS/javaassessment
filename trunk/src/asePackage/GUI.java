@@ -26,7 +26,7 @@ public class GUI extends JFrame implements ActionListener{
 		super("Simple GUI Stage 1");
 		panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
-		textArea = new JTextArea(50, 45);
+		textArea = new JTextArea(35, 45);
 		scrollPane = new JScrollPane(textArea);
 		button.addActionListener(this);
 				
