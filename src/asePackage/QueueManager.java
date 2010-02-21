@@ -16,6 +16,13 @@ public class QueueManager {
 		this.customerQueue=new ArrayList<Queue>();
 		this.nextQueueNumber=FIRSTQUEUENUMBER;
 	}
+	
+	public QueueManager(ArrayList<Queue> customerQueue, int nextQueueNumber){
+		this.customerQueue = customerQueue;
+		this.nextQueueNumber = nextQueueNumber;
+	}
+	
+	
 	public void addQueueElement(Customer element, ArrayList<Transaction> transactions) {
 		this.customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
 		this.nextQueueNumber++;

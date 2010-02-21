@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		LogTest.class,
 		MyUtilitiesTest.class,
 		QueueManagerTest.class,
-		QueueTest.class
+		QueueTest.class,
+		TellerTest.class
 })
 	
 public class AllTests{
