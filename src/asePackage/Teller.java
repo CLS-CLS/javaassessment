@@ -1,11 +1,14 @@
 package asePackage;
-
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Chris
+ *
+ */
 public class Teller {
 	
 	private QueueManager qm;
-	private ArrayList<Transaction> transactions;
 	private AccountManager accountManager;
 	private Queue customerInQueue;
 	private Log log;
@@ -17,16 +20,19 @@ public class Teller {
 		this.log = log;
 	}
 	
+	/**
+	 * gets the next customer from the queue.
+	 */
 	public void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
-		transactions = customerInQueue.getTransactionList();
-	}
+    }
 	
 	/**
 	 * Makes all the transactions that the customers wants to do if they are valid
 	 */
 	public void doTransaction(){
 		Customer currentCustomer = customerInQueue.getCustomer();
+		ArrayList<Transaction> transactions = customerInQueue.getTransactionList();
 		boolean isValidTransaction;
 		
 		for (Transaction transaction : transactions){
@@ -67,16 +73,12 @@ public class Teller {
 						generateReport(true, trans);
 					}
 					accountManager.deleteAccount(account);
-					//System.out.println("close succeded");
+					
 					isValidTransaction = true;
-				}//else System.out.println("close failed");
+				}
 			}
-			
 			generateReport(isValidTransaction,transaction);
-		
 		}
-		
-		
 	}
 	
 	/**
@@ -107,6 +109,9 @@ public class Teller {
 				isValid = false;
 		}
 		
+		//in case the transaction is to deposit money or close the account
+		//it checks if the customer owns 
+		
 		if(transaction.getType().equals(Transaction.DEPOSIT) || 
 				transaction.getType().equals(Transaction.CLOSE)){
 			if(!currentCustomer.hasAccount(transaction.getAccount()))isValid = false;
@@ -114,7 +119,13 @@ public class Teller {
 	
 		return isValid;
 	}
-
+	
+	
+	/**
+	 * generates the log of the current transaction
+	 * @param isValidTransaction 
+	 * @param transaction
+	 */
 	private void generateReport(boolean isValidTransaction, Transaction transaction) {
 		if(isValidTransaction){
 			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS);
