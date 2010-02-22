@@ -12,6 +12,7 @@ public class Teller {
 	private AccountManager accountManager;
 	private Queue customerInQueue;
 	private Log log;
+	private String errorMessage;
 	
 		
 	public Teller(QueueManager qm, AccountManager accountManager, Log log) {
@@ -38,11 +39,12 @@ public class Teller {
 		for (Transaction transaction : transactions){
 			isValidTransaction = false;
 			if (transaction.getType().equals(Transaction.DEPOSIT)){
-				Account account = transaction.getAccount();
-				account.depositMoney(transaction.getAmmount());
-				//System.out.println("deposit done");
-				isValidTransaction = true;
-				
+				if (isValidTransaction(transaction,currentCustomer)){
+					Account account = transaction.getAccount();
+					account.depositMoney(transaction.getAmmount());
+					//System.out.println("deposit done");
+					isValidTransaction = true;
+				}
 			}
 			if (transaction.getType().equals(Transaction.WITHDRAWAL)){
 				if (isValidTransaction(transaction,currentCustomer)){
@@ -63,17 +65,9 @@ public class Teller {
 				if(isValidTransaction(transaction,currentCustomer)){
 					Account account = transaction.getAccount();
 					if(account.getBalance()>0) {
-						Transaction trans = null;
-						try {
-							trans = new Transaction(Transaction.WITHDRAWAL, account, account.getBalance());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
 						account.withdrawMoney(account.getBalance());
-						generateReport(true, trans);
 					}
 					accountManager.deleteAccount(account);
-					
 					isValidTransaction = true;
 				}
 			}
@@ -97,24 +91,35 @@ public class Teller {
 		//in case the transaction is withdrawal
 		//checks if the account belongs to the customer and has enough money
 		if (transaction.getType().equals(Transaction.WITHDRAWAL)){
-				if(!currentCustomer.hasAccount(transaction.getAccount())||
-				transaction.getAccount().getBalance()< transaction.getAmmount())
-			isValid = false;
+				if(!currentCustomer.hasAccount(transaction.getAccount())){
+					errorMessage = "Not owner of the account";
+					isValid = false;
+				}
+				else if(transaction.getAccount().getBalance()< transaction.getAmmount()){
+					errorMessage = "There are not so many money";
+					isValid = false;
+					
+				}
 		}
 		
 		//in case the transaction is to open an account checks if the customer has less than 2 
 		//accounts.
 		if (transaction.getType().equals(Transaction.OPEN)){
-			if(currentCustomer.getNumberOfAccounts()== Customer.MAXACCOUNTS)
+			if(currentCustomer.getNumberOfAccounts()== Customer.MAXACCOUNTS){
 				isValid = false;
+				errorMessage = "Customer has already "+ Customer.MAXACCOUNTS + " accounts";
+			}
 		}
 		
 		//in case the transaction is to deposit money or close the account
-		//it checks if the customer owns 
+		//it checks if the customer owns the account
 		
 		if(transaction.getType().equals(Transaction.DEPOSIT) || 
 				transaction.getType().equals(Transaction.CLOSE)){
-			if(!currentCustomer.hasAccount(transaction.getAccount()))isValid = false;
+			if(!currentCustomer.hasAccount(transaction.getAccount())){
+				errorMessage = "Not owner of the account";
+				isValid = false;
+			}
 		}
 	
 		return isValid;
