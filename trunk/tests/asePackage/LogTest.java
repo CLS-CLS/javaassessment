@@ -20,13 +20,13 @@ public class LogTest {
 	@Before
 	public void setUp() throws Exception {
 		ArrayList<LogEvent> logEvent=new ArrayList<LogEvent>();
-		logEvent.add(new LogEvent(1, "open", 1, 1, 1, 0, 0));
-		logEvent.add(new LogEvent(1, "deposit", 1, 1, 1, 0, 200));
-		logEvent.add(new LogEvent(2, "deposit", 4, 1, 1, 200, 300));
-		logEvent.add(new LogEvent(3, "open", 2, 2, 1, 0, 0));
-		logEvent.add(new LogEvent(3, "deposit", 2, 2, 1, 0, 50));
-		logEvent.add(new LogEvent(4, "withdrawal", 3, 2, 1, 50, 0));
-		logEvent.add(new LogEvent(4, "close", 3, 2, 1, 0, 0));
+//		logEvent.add(new LogEvent(1, "open", 1, 1, 1, 0, 0));
+//		logEvent.add(new LogEvent(1, "deposit", 1, 1, 1, 0, 200));
+//		logEvent.add(new LogEvent(2, "deposit", 4, 1, 1, 200, 300));
+//		logEvent.add(new LogEvent(3, "open", 2, 2, 1, 0, 0));
+//		logEvent.add(new LogEvent(3, "deposit", 2, 2, 1, 0, 50));
+//		logEvent.add(new LogEvent(4, "withdrawal", 3, 2, 1, 50, 0));
+//		logEvent.add(new LogEvent(4, "close", 3, 2, 1, 0, 0));
 		log=new Log(logEvent);
 		log2=new Log();
 	}
