@@ -37,7 +37,9 @@ public class Log {
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
-			if(logEventList.get(i).getTransactionType().equals(Transaction.DEPOSIT) || logEventList.get(i).getTransactionType().equals(Transaction.OPEN))
+			if((logEventList.get(i).getTransactionType().equals(Transaction.DEPOSIT) ||
+					logEventList.get(i).getTransactionType().equals(Transaction.OPEN)) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
 		}
 		return total;
@@ -46,7 +48,9 @@ public class Log {
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
-			if(logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) || logEventList.get(i).getTransactionType().equals(Transaction.CLOSE))
+			if((logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) ||
+					logEventList.get(i).getTransactionType().equals(Transaction.CLOSE)) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
 		}
 		return total;

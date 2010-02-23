@@ -90,6 +90,10 @@ public class LogEvent {
 		return this.ammount;
 	}
 
+	public String getStatus() {
+		return this.status;
+	}
+	
 	@Override
 	public String toString() {
 		String result="";

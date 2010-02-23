@@ -23,8 +23,14 @@ public class AccountManager {
 	 * the next possible value by adding one
 	 */	
 	public AccountManager(ArrayList<Account> accountList) {
+		int lastID=0;
 		this.accountList=new ArrayList<Account>(accountList);
-		this.nextAccountId=this.accountList.get(this.accountList.size()-1).getId()+1;
+		for(int i=0; i<accountList.size(); i++) {
+			if(accountList.get(i).getId()>lastID) {
+				lastID=accountList.get(i).getId();
+			}
+		}
+		this.nextAccountId=lastID+1;
 	}
 	public Account addAccount(Customer owner) {
 		Account newAccount = new Account(nextAccountId, owner);
@@ -32,14 +38,12 @@ public class AccountManager {
 		this.accountList.add(newAccount);
 		this.nextAccountId++;
 		return newAccount;
-	}
-	
+	}	
 	
 	public void deleteAccount(Account accountToDelete){
 		ArrayList<Customer> customers = accountToDelete.getOwnerList();
 		for(Customer customer: customers) customer.removeAccount(accountToDelete);
 		this.accountList.remove(accountToDelete);
-		
 	}
 	
 	public int getAvaibleAccountId() {
@@ -50,9 +54,14 @@ public class AccountManager {
 		return accountList;
 	}
 	public void addAcounts(ArrayList<Account> accounts) {
-		accountList = accounts;
-		
+		int lastID=0;
+		this.accountList = accounts;
+		for(int i=0; i<accountList.size(); i++) {
+			if(accountList.get(i).getId()>lastID) {
+				lastID=accountList.get(i).getId();
+			}
+		}
+		if(lastID!=0 && nextAccountId==FIRSTACCOUNTID)
+			this.nextAccountId=lastID+1;
 	}
-	
-
 }
