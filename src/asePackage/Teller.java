@@ -147,7 +147,7 @@ public class Teller {
 					isValid = false;
 				}
 				else if(transaction.getAccount().getBalance()< transaction.getAmmount()){
-					errorMessage = "There are not so many money";
+					errorMessage = "There is not enough money";
 					isValid = false;
 					
 				}
@@ -187,13 +187,13 @@ public class Teller {
 	 */
 	private void generateReport(boolean isValidTransaction, Transaction transaction) {
 		if(isValidTransaction){
-			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS);
+			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
 		}
 		else{
 			//TODO here you have to change the signature of the medthod (add the parameter errorMessage so you get the reason 
 			//which prevented the transaction
-			//log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
-			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL);
+			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
+			//log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL);
 		}
 		
 	}
