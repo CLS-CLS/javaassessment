@@ -38,10 +38,12 @@ public class Bank {
 		}
 		
 		//pick some random customers
-		ArrayList<Customer> selectedCustomers = pickRandomCustomers(); 
+		ArrayList<Customer> selectedCustomers = pickRandomCustomers();
+		int currentQueueNumber=0;
 		for (Customer customer:selectedCustomers){
 			qm.addQueueElement(customer,generateTransactions(customer));
-			log.addLogEvent(qm.getNextNumber()-1, customer, LogEvent.ENTERQUEUE);
+			currentQueueNumber=qm.getNextNumber()+1;
+			log.addLogEvent(currentQueueNumber, customer, LogEvent.ENTERQUEUE);
 		}
 		
 		teller = new Teller(qm,am,log);
@@ -73,11 +75,12 @@ public class Bank {
 	
 	private ArrayList<Customer> pickRandomCustomers() {
 		ArrayList<Customer> subList = new ArrayList<Customer>();
-		while(subList.size()<10){
-			int rnd = rndGen.nextInt(customers.size());
-			Customer customer = customers.get(rnd);
-			if (!subList.contains(customer))subList.add(customer);
-		}
+//		while(subList.size()<10){
+//			int rnd = rndGen.nextInt(customers.size());
+//			Customer customer = customers.get(rnd);
+//			if (!subList.contains(customer))subList.add(customer);
+//		}
+		subList.add(new Customer("no", "acaca", 1000));
 		return subList;
 		
 	}
@@ -92,7 +95,7 @@ public class Bank {
 			teller.getNextCustomer();
 			teller.doTransaction();
 		}
-		System.out.println(log);
+		//System.out.println(log);
 		MyUtilities.saveStringToFile(log.toString(), "log.txt");
 		MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
 		MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
