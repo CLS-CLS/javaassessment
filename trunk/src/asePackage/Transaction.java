@@ -73,18 +73,18 @@ public class Transaction {
 		int randomInt = rnd.nextInt(10);
 		String transactionType =new String();
 		double amount = 0;
-		if(randomInt==0){
+		if(randomInt==0 || account==null){
 			transactionType = Transaction.OPEN;
 			amount = rnd.nextInt(1000);
 		}
-		if(randomInt==1){
+		else if(randomInt==1){
 			transactionType = Transaction.CLOSE;
 		}
-		if(randomInt >= 2 && randomInt < 6){
+		else if(randomInt >= 2 && randomInt < 6){
 			transactionType = Transaction.DEPOSIT;
 			amount = rnd.nextInt(1000);
 		}
-		if(randomInt >= 6){
+		else if(randomInt >= 6){
 			transactionType = Transaction.WITHDRAWAL;
 			amount = rnd.nextInt(201);
 		}

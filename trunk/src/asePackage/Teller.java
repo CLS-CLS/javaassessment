@@ -77,6 +77,7 @@ public class Teller {
 		boolean isValidTransaction = false;
 		if(isValidTransaction(transaction,currentCustomer)){
 			Account account = accountManager.addAccount(currentCustomer);
+			transaction.setAccount(account);
 			account.depositMoney(transaction.getAmmount());
 		    isValidTransaction = true;
 		}
