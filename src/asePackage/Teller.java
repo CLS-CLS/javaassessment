@@ -56,39 +56,46 @@ public class Teller {
 				isValidTransaction = closeAccount(transaction, currentCustomer);
 			}
 			
+			if(transaction.getType().endsWith(Transaction.VIEWBALANCE)){
+				isValidTransaction = viewBalance(transaction,currentCustomer);
+			}
+			
 			generateReport(isValidTransaction,transaction);
 		}
 	}
 	
+	private boolean viewBalance(Transaction transaction,
+			Customer currentCustomer) {
+		return isValidTransaction(transaction, currentCustomer);
+		
+	}
+
 	private boolean closeAccount(Transaction transaction, Customer currentCustomer) {
-		boolean isValidTransaction = false;
-		if(isValidTransaction(transaction,currentCustomer)){
+		boolean isValidTransaction = isValidTransaction(transaction, currentCustomer);
+		if(isValidTransaction){
 			Account account = transaction.getAccount();
 			if(account.getBalance()>0) 
 				account.withdrawMoney(account.getBalance());
-			
 			accountManager.deleteAccount(account);
-			isValidTransaction = true;
 		}
 		return isValidTransaction;
 	}
 
 	private boolean openAccount(Transaction transaction, Customer currentCustomer) {
-		boolean isValidTransaction = false;
-		if(isValidTransaction(transaction,currentCustomer)){
+		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
+		if(isValidTransaction){
 			Account account = accountManager.addAccount(currentCustomer);
 			transaction.setAccount(account);
 			account.depositMoney(transaction.getAmmount());
-		    isValidTransaction = true;
+		    
 		}
 		return isValidTransaction;
 	}
 
 	private boolean doWithdrawal(Transaction transaction, Customer currentCustomer) {
-		boolean isValidTransaction = false;
-		if (isValidTransaction(transaction,currentCustomer)){
+		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
+		if (isValidTransaction){
 			transaction.getAccount().withdrawMoney(transaction.getAmmount());
-			isValidTransaction = true;
 		}
 		return isValidTransaction;
 	}
@@ -101,15 +108,18 @@ public class Teller {
 	 * 
 	 * @param transaction The transaction to be made
 	 * @param currentCustomer the customer that wants to make the transaction
-	 * @return true if the transaction is made, false if the transactions is not valid.
+	 * @return true if the transaction is done, false if the transactions is not valid.
 	 */
 	private boolean doDeposit(Transaction transaction, Customer currentCustomer) {
-		boolean isValidTransaction = false;
-		if (isValidTransaction(transaction,currentCustomer)){
+		boolean isValidTransaction = 
+			isValidTransaction(transaction,currentCustomer);
+		
+		if (isValidTransaction){
 			Account account = transaction.getAccount();
-			account.depositMoney(transaction.getAmmount());
-		    isValidTransaction = true;
+			double money = transaction.getAmmount();
+			account.depositMoney(money);
 		}
+		
 		return isValidTransaction;
 	}
 
@@ -152,16 +162,19 @@ public class Teller {
 			}
 		}
 		
-		//in case the transaction is to deposit money or close the account
-		//it checks if the customer owns the account
+		//in case the transaction is to deposit money or close the account or 
+		// view balance, it checks if the customer owns the account
 		
 		if(transaction.getType().equals(Transaction.DEPOSIT) || 
-				transaction.getType().equals(Transaction.CLOSE)){
+				transaction.getType().equals(Transaction.CLOSE) ||
+				transaction.getType().equals(Transaction.VIEWBALANCE)){
 			if(!currentCustomer.hasAccount(transaction.getAccount())){
 				errorMessage = "Not owner of the account";
 				isValid = false;
 			}
 		}
+		
+		
 	
 		return isValid;
 	}

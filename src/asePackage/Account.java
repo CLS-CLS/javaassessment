@@ -56,11 +56,7 @@ public class Account {
 	public double getBalance() {
 		return balance;
 	}
-	/*
-	 * public boolean testOwnership(Customer owner) {
-	 * TODO
-	 * }
-	 */
+	
 	public void addOwner(Customer owner) {
 		this.ownerList.add(owner);
 	}

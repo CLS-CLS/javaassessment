@@ -13,11 +13,12 @@ import java.util.Random;
  */
 public class Transaction {
 	private static final String[] TRANSACTIONTYPE = {"open", "close",
-		"withdrawal","deposit"};
+		"withdrawal","deposit","viewBalance"};
 	public static final String OPEN = TRANSACTIONTYPE[0];
 	public static final String CLOSE = TRANSACTIONTYPE[1];
 	public static final String WITHDRAWAL = TRANSACTIONTYPE[2];
 	public static final String DEPOSIT = TRANSACTIONTYPE[3];
+	public static final String VIEWBALANCE = TRANSACTIONTYPE[4];
 	private String transactionType;
 	private Account account;
 	private double ammount;
@@ -70,7 +71,7 @@ public class Transaction {
 	}
 	
 	public static Transaction generateRandomTransaction(Account account,Random rnd){
-		int randomInt = rnd.nextInt(10);
+		int randomInt = rnd.nextInt(12);
 		String transactionType =new String();
 		double amount = 0;
 		if(randomInt==0 || account==null){
@@ -84,9 +85,12 @@ public class Transaction {
 			transactionType = Transaction.DEPOSIT;
 			amount = rnd.nextInt(1000);
 		}
-		else if(randomInt >= 6){
+		else if(randomInt >= 6 && randomInt <10){
 			transactionType = Transaction.WITHDRAWAL;
 			amount = rnd.nextInt(201);
+		}
+		else if (randomInt >=10){
+			transactionType = Transaction.VIEWBALANCE;
 		}
 		
 		Transaction trans = null;

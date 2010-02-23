@@ -27,9 +27,6 @@ public class AccountManager {
 		this.nextAccountId=this.accountList.get(this.accountList.size()-1).getId()+1;
 	}
 	public Account addAccount(Customer owner) {
-		//TODO here was the mistake.. you forgot to add the account
-		//to the customer too. I added the missing code
-		
 		Account newAccount = new Account(nextAccountId, owner);
 		owner.addAccount(newAccount);
 		this.accountList.add(newAccount);
