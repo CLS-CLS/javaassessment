@@ -2,8 +2,9 @@ package asePackage;
 
 import java.util.ArrayList;
 /**
+ * AccountManager class retains a list of accounts and what will be the next available id.
+ * It also provides the methods necessary for managing a list of accounts.
  * @author Ioan 
- * Provides the methods necessary for managing a list of accounts.
  */
 
 public class AccountManager {
@@ -35,7 +36,7 @@ public class AccountManager {
 	}
 	/**
 	 * Add a new list of accounts to the already existent one
-	 * @param account the new additional list of accounts
+	 * @param accounts the new additional list of accounts
 	 */
 	public void addAcounts(ArrayList<Account> accounts) {
 		int lastID=0;
