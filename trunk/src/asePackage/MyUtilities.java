@@ -112,6 +112,7 @@ public class MyUtilities<E> {
 				throw new NotValidFileTypeException("Customer");
 			}
 		}
+		if (accounts.size()==0) throw new NotValidFileTypeException("Accounts");
 		return accounts;
 	}
 	
@@ -140,6 +141,7 @@ public class MyUtilities<E> {
 				throw new NotValidFileTypeException("Customer");
 			}
 		}
+		if (customers.size()==0) throw new NotValidFileTypeException("Customer");
 		return customers;
 	}
 	
