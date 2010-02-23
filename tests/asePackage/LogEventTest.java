@@ -19,7 +19,7 @@ public class LogEventTest {
 	@Before
 	public void setUp() throws Exception {
 		event1=new LogEvent();
-		event2=new LogEvent(2, "deposit", 4, 1, 1, 200, 300);
+	//	event2=new LogEvent(2, "deposit", 4, 1, 1, 200, 300);
 	}
 
 	/**
