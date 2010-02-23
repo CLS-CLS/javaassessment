@@ -17,22 +17,21 @@ public class Log {
 		this.logEventList = logEventList;
 	}
 	
-	public void addLogEvent(int queueNumber, Customer customer, Transaction transaction, String status) {
-		logEventList.add(new LogEvent(queueNumber, customer, transaction, status));
+	public void addLogEvent(int queueNumber, Customer customer, Transaction transaction, String status, String errorMessage) {
+		logEventList.add(new LogEvent(queueNumber, customer, transaction, status, errorMessage));
 	}
 	public void addLogEvent(int queueNumber, Customer customer, String status) {
 		logEventList.add(new LogEvent(queueNumber, customer, status));
 	}
 	public int getProcessedCustomersNumber() {
-		int i;
-		ArrayList<Integer> queueNumber=new ArrayList<Integer>();
+		int queueNumber=0;
 		
-		for(i=0;i<logEventList.size();i++) {
-			
-			if(queueNumber.contains(logEventList.get(i).getQueueNumber())==false)
-				queueNumber.add(logEventList.get(i).getQueueNumber());
+		for(int i=0;i<logEventList.size();i++) {		
+			if(logEventList.get(i).getQueueNumber()>queueNumber) {
+				queueNumber=logEventList.get(i).getQueueNumber();
+			}
 		}
-		return queueNumber.size();
+		return queueNumber;
 	}
 	public double getDepositTotal(){
 		int i;
@@ -63,7 +62,16 @@ public class Log {
 		for(i=0;i<logEventList.size();i++) {
 			result+=logEventList.get(i)+"\n";
 		}
+		result+=getStatistics();
 		return result;
 	}
-	
+	private String getStatistics() {
+		String result;
+		result="\nStatistics\n";
+		result+="-------------\n";
+		result+="Processed Customers Number : " + getProcessedCustomersNumber() + "\n";
+		result+="Total Deposited Money : " + getDepositTotal() + "\n";
+		result+="Total Withdrawn Money : " + getWithdrawalTotal() + "\n";
+		return result;
+	}
 }

@@ -43,6 +43,6 @@ public class GUI extends JFrame implements ActionListener{
 		Bank bank = new Bank();
 		bank.runBank();
 		textArea.append(bank.getLog());
-		textArea.append("-------------------------------------------");
+		textArea.append("\n---------------------------------------------------------------------------------------------------------\n");
 	}
 }
