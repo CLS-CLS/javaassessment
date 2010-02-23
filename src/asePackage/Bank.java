@@ -42,7 +42,7 @@ public class Bank {
 		int currentQueueNumber=0;
 		for (Customer customer:selectedCustomers){
 			qm.addQueueElement(customer,generateTransactions(customer));
-			currentQueueNumber=qm.getNextNumber()+1;
+			currentQueueNumber=qm.getNextNumber()-1;
 			log.addLogEvent(currentQueueNumber, customer, LogEvent.ENTERQUEUE);
 		}
 		
@@ -75,11 +75,11 @@ public class Bank {
 	
 	private ArrayList<Customer> pickRandomCustomers() {
 		ArrayList<Customer> subList = new ArrayList<Customer>();
-//		while(subList.size()<10){
-//			int rnd = rndGen.nextInt(customers.size());
-//			Customer customer = customers.get(rnd);
-//			if (!subList.contains(customer))subList.add(customer);
-//		}
+		while(subList.size()<10){
+			int rnd = rndGen.nextInt(customers.size());
+			Customer customer = customers.get(rnd);
+			if (!subList.contains(customer))subList.add(customer);
+		}
 		subList.add(new Customer("no", "acaca", 1000));
 		return subList;
 		
