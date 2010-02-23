@@ -74,6 +74,8 @@ public class Teller {
 		boolean isValidTransaction = isValidTransaction(transaction, currentCustomer);
 		if(isValidTransaction){
 			Account account = transaction.getAccount();
+			//IOAN: I added the next field to add the info for the log regarding the sum which is withdrawed
+			transaction.setAmmount(account.getBalance());
 			if(account.getBalance()>0) 
 				account.withdrawMoney(account.getBalance());
 			accountManager.deleteAccount(account);
