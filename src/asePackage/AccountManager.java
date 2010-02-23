@@ -66,7 +66,9 @@ public class AccountManager {
 	 */
 	public void deleteAccount(Account accountToDelete){
 		ArrayList<Customer> customers = accountToDelete.getOwnerList();
+		accountToDelete.closeAccount();
 		for(Customer customer: customers) customer.removeAccount(accountToDelete);
+		
 		this.accountList.remove(accountToDelete);
 	}
 	/**
