@@ -12,7 +12,11 @@ public class Teller {
 	private AccountManager accountManager;
 	private Queue customerInQueue;
 	private Log log;
-	private String errorMessage;
+	
+	/*
+	 *  holds a message about what went wrong if the transaction is not valid
+	 */
+	private String errorMessage;  
 	
 		
 	public Teller(QueueManager qm, AccountManager accountManager, Log log) {
@@ -35,53 +39,89 @@ public class Teller {
 		Customer currentCustomer = customerInQueue.getCustomer();
 		ArrayList<Transaction> transactions = customerInQueue.getTransactionList();
 		boolean isValidTransaction;
-		
 		for (Transaction transaction : transactions){
 			isValidTransaction = false;
-			if (transaction.getType().equals(Transaction.DEPOSIT)){
-				if (isValidTransaction(transaction,currentCustomer)){
-					Account account = transaction.getAccount();
-					account.depositMoney(transaction.getAmmount());
-					//System.out.println("deposit done");
-					isValidTransaction = true;
-				}
-			}
-			if (transaction.getType().equals(Transaction.WITHDRAWAL)){
-				if (isValidTransaction(transaction,currentCustomer)){
-					transaction.getAccount().withdrawMoney(transaction.getAmmount());
-					//System.out.println("withdrawal succeeded");
-					isValidTransaction = true;
-				}//else System.out.println("withdrawal failed");
-			}
-			if(transaction.getType().equals(Transaction.OPEN)){
-				if(isValidTransaction(transaction,currentCustomer)){
-					Account account = accountManager.addAccount(currentCustomer);
-					account.depositMoney(transaction.getAmmount());
-					//System.out.println("open succeded");
-					isValidTransaction = true;
-				}//else System.out.println("opened failed");
-			}
+			
+			if (transaction.getType().equals(Transaction.DEPOSIT)) 
+				isValidTransaction = doDeposit(transaction,currentCustomer);
+			
+			if (transaction.getType().equals(Transaction.WITHDRAWAL))
+				isValidTransaction = doWithdrawal(transaction,currentCustomer);
+				
+		
+			if(transaction.getType().equals(Transaction.OPEN))
+				isValidTransaction = openAccount(transaction, currentCustomer);
+				
 			if(transaction.getType().equals(Transaction.CLOSE)){
-				if(isValidTransaction(transaction,currentCustomer)){
-					Account account = transaction.getAccount();
-					if(account.getBalance()>0) {
-						account.withdrawMoney(account.getBalance());
-					}
-					accountManager.deleteAccount(account);
-					isValidTransaction = true;
-				}
+				isValidTransaction = closeAccount(transaction, currentCustomer);
 			}
+			
 			generateReport(isValidTransaction,transaction);
 		}
 	}
 	
+	private boolean closeAccount(Transaction transaction, Customer currentCustomer) {
+		boolean isValidTransaction = false;
+		if(isValidTransaction(transaction,currentCustomer)){
+			Account account = transaction.getAccount();
+			if(account.getBalance()>0) 
+				account.withdrawMoney(account.getBalance());
+			
+			accountManager.deleteAccount(account);
+			isValidTransaction = true;
+		}
+		return isValidTransaction;
+	}
+
+	private boolean openAccount(Transaction transaction, Customer currentCustomer) {
+		boolean isValidTransaction = false;
+		if(isValidTransaction(transaction,currentCustomer)){
+			Account account = accountManager.addAccount(currentCustomer);
+			account.depositMoney(transaction.getAmmount());
+		    isValidTransaction = true;
+		}
+		return isValidTransaction;
+	}
+
+	private boolean doWithdrawal(Transaction transaction, Customer currentCustomer) {
+		boolean isValidTransaction = false;
+		if (isValidTransaction(transaction,currentCustomer)){
+			transaction.getAccount().withdrawMoney(transaction.getAmmount());
+			isValidTransaction = true;
+		}
+		return isValidTransaction;
+	}
+    
+	
 	/**
-	 * checks if the current transaction is valid (e.g. can be made). Valid trascations are
+	 * deposits money in the an account. In order to the deposit to be complete 
+	 * the transaction must be a valid one (check the comments on the isValidTransaction 
+	 * for more information about valid transactions)
+	 * 
+	 * @param transaction The transaction to be made
+	 * @param currentCustomer the customer that wants to make the transaction
+	 * @return true if the transaction is made, false if the transactions is not valid.
+	 */
+	private boolean doDeposit(Transaction transaction, Customer currentCustomer) {
+		boolean isValidTransaction = false;
+		if (isValidTransaction(transaction,currentCustomer)){
+			Account account = transaction.getAccount();
+			account.depositMoney(transaction.getAmmount());
+		    isValidTransaction = true;
+		}
+		return isValidTransaction;
+	}
+
+	
+
+	/**
+	 * checks if the current transaction is valid (e.g. can be made). Valid transcations are
 	 * Deposit / Close : only if the customer owns the account he want to deposit money
 	 * Withdrawal : only if the customer own the account he wants to withdraw money from
 	 * and also the money to be withdrawn does not exceed the money in the account
 	 * Open : An account can be opened only if the customer does not have more that the maximum 
-	 * account allowance
+	 * account allowance.
+	 * It also generates an error message in case the transaction is not valid
 	 * @param transaction the transaction to be validated
 	 * @return true if the transaction is valid, false otherwise
 	 */
@@ -136,6 +176,9 @@ public class Teller {
 			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS);
 		}
 		else{
+			//TODO here you have to change the signature of the medthod (add the parameter errorMessage so you get the reason 
+			//which prevented the transaction
+			//log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
 			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL);
 		}
 		

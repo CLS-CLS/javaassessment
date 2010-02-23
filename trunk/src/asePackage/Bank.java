@@ -62,8 +62,13 @@ public class Bank {
 
 	
 	private Account selectRandomAca(Customer customer) {
-		return customer.getAccountList().get(
-				rndGen.nextInt(customer.getNumberOfAccounts()));
+		Account account = null;
+		ArrayList<Account> accounts = customer.getAccountList();
+		if(accounts.size()>0){
+			account =  accounts.get(
+					rndGen.nextInt(customer.getNumberOfAccounts()));
+		}
+		return account;
 	}
 	
 	private ArrayList<Customer> pickRandomCustomers() {
