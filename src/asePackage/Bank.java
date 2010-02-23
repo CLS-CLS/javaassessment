@@ -75,12 +75,16 @@ public class Bank {
 	
 	private ArrayList<Customer> pickRandomCustomers() {
 		ArrayList<Customer> subList = new ArrayList<Customer>();
-		while(subList.size()<10){
+		//IOAN: an additional condition just for a better testing.
+		//if we don't use it when we have more then our customer number
+		//the program will enter into an infinite loop (for 20 for example)
+		//if is staying is up to you chris
+		while(subList.size()<10 && subList.size()<customers.size()){
 			int rnd = rndGen.nextInt(customers.size());
 			Customer customer = customers.get(rnd);
 			if (!subList.contains(customer))subList.add(customer);
 		}
-		subList.add(new Customer("no", "acaca", 1000));
+		//subList.add(new Customer("no", "acaca", 1000));
 		return subList;
 		
 	}
