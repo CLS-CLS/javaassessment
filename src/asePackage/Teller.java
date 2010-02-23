@@ -144,7 +144,15 @@ public class Teller {
 		//in case the transaction is withdrawal
 		//checks if the account belongs to the customer and has enough money
 		if (transaction.getType().equals(Transaction.WITHDRAWAL)){
-				if(!currentCustomer.hasAccount(transaction.getAccount())){
+			//IOAN: from testing I seen that for the case in which in the first transaction an account was deleted
+			//and the customer has an another transaction it will appear the not owner of the account error
+			//I believe is better to have an another message for this.
+			//if is ok with you and you didn't think it different
+			if(transaction.getAccount().isClosed()==true){
+				errorMessage = "No account found";
+				isValid = false;
+			}
+			else if(!currentCustomer.hasAccount(transaction.getAccount())){
 					errorMessage = "Not owner of the account";
 					isValid = false;
 				}
@@ -170,10 +178,18 @@ public class Teller {
 		if(transaction.getType().equals(Transaction.DEPOSIT) || 
 				transaction.getType().equals(Transaction.CLOSE) ||
 				transaction.getType().equals(Transaction.VIEWBALANCE)){
-			if(!currentCustomer.hasAccount(transaction.getAccount())){
-				errorMessage = "Not owner of the account";
+			//IOAN: from testing I seen that for the case in which in the first transaction an account was deleted
+			//and the customer has an another transaction it will appear the not owner of the account error
+			//I believe is better to have an another message for this.
+			//if is ok with you and you didn't think it different
+			if(transaction.getAccount().isClosed()==true){
+				errorMessage = "No account found";
 				isValid = false;
 			}
+			else if(!currentCustomer.hasAccount(transaction.getAccount())){
+					errorMessage = "Not owner of the account";
+					isValid = false;
+				}
 		}
 		
 		
