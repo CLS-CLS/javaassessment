@@ -41,6 +41,8 @@ public class LogEvent {
 			else
 				this.oldBalance=this.newBalance+transaction.getAmmount();
 		}
+		if(transactionType.equals(Transaction.CLOSE))
+			System.out.println(oldBalance+"-"+newBalance+"-"+ammount+"\n");
 	}
 	public LogEvent(int queueNumber, Customer customer, String status){
 		this.queueNumber=queueNumber;
@@ -118,7 +120,7 @@ public class LogEvent {
 		String result;
 		result="\n  - Transaction: ";
 		if(transactionType.equals(Transaction.OPEN))
-			result+= transactionType + " account number " + accountID + " with initial amount: $" + ammount;
+			result+= transactionType + " account with initial amount: $" + ammount;
 		else
 			if(transactionType.equals(Transaction.CLOSE))
 				result+= transactionType + " account number " + accountID;
@@ -126,8 +128,10 @@ public class LogEvent {
 				if(transactionType.equals(Transaction.DEPOSIT))
 					result+= transactionType + " to account " + accountID + " $" + ammount;
 				else
-					result+= transactionType + " from account " + accountID + " $" + ammount;
-		
+					if(transactionType.equals(Transaction.VIEWBALANCE))
+						result+= transactionType + " for account " + accountID;
+					else
+						result+= transactionType + " from account " + accountID + " $" + ammount;
 		return result;
 	}
 	private String getCustomerDetails() {
@@ -141,10 +145,16 @@ public class LogEvent {
 	private String getAccountDetails() {
 		String result="";
 		if(transactionType.equals(Transaction.DEPOSIT) 
-				|| transactionType.equals(Transaction.WITHDRAWAL) 
-				|| transactionType.equals(Transaction.CLOSE)) {
+				|| transactionType.equals(Transaction.WITHDRAWAL))
 			result=" (New Balance: $" + newBalance + " from Old Balance: $" + oldBalance + ")";
-		}
+		else
+			if(transactionType.equals(Transaction.CLOSE))
+				result=" (Old Balance: $" + oldBalance + " with Final Withdrawed Sum: $" + ammount + ")";
+			else
+				if(transactionType.equals(Transaction.VIEWBALANCE))
+					result=" (Balance: $" + newBalance + ")";
+				else
+					result=" (New Account ID: " + accountID + " Balance: $" + newBalance + ")";
 		
 		return result;
 	}	
