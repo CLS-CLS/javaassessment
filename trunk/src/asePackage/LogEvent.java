@@ -31,9 +31,9 @@ public class LogEvent {
 	 * The constructor for the case in which we have receive
 	 * a complete set of information from the teller. It will be used for entering
 	 * details about the transaction and about it's status (Success/Fail).
-	 * @param queueNumber the queue number of the customer
-	 * @param customer the instance of the customer who will do the transaction
-	 * @param transaction all the data of the transaction (contains the account and money amount for the transaction)
+	 * @param queueNumber queue number of the customer
+	 * @param customer instance of the customer who will do the transaction
+	 * @param transaction all the data about the transaction (contains the account and money amount for the transaction)
 	 * @param status indicates if the transaction was successful of failed
 	 * @param errorMessage stores the message for the case of error
 	 */
