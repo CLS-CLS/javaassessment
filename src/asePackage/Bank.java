@@ -9,35 +9,36 @@ import java.util.Random;
  *
  */
 public class Bank {
+	/*
+	 * used to generate random numbers needed for creating random transactions
+	 * and pick random customers
+	 */
     private Random rndGen;
+    
+    /*
+	 * holds information about the customers in the queue
+	 */
 	private QueueManager qm;
 	private Teller teller;
 	private ArrayList<Customer> customers;
+	
+	/*
+	 * holds the log of the bank
+	 */
 	private static Log log;
+	
+	/*
+	 * manipulates the accounts
+	 */
 	private AccountManager am;
 	
 	
 	public Bank(){
-		/*
-		 * used to generate random numbers needed for creating random transactions
-		 * and pick random customers
-		 */
 		rndGen = new Random();
-		/*
-		 * holds the log of the bank
-		 */
 		log = new Log();
-		
-		/*
-		 * holds information about the customers in the queue
-		 */
 		qm = new QueueManager();
 		customers = new ArrayList<Customer>();
 		ArrayList<Account> accounts = new ArrayList<Account>();
-		
-		/*
-		 * manipulates the accounts
-		 */
 		am = new AccountManager();
 		
 		//loads customers and accounts and creates connects the accounts
