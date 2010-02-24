@@ -163,10 +163,14 @@ public class Teller {
 					errorMessage = "Not owner of the account";
 					isValid = false;
 				}
-				else if(transaction.getAccount().getBalance()< transaction.getAmmount()){
+				else if(transaction.getAccount().getBalance()< transaction.getAmmount() ){
 					errorMessage = "There is not enough money";
 					isValid = false;
 					
+				}
+				else if (log.getCustomerWithdrawalTotal(currentCustomer)+ transaction.getAmmount()> 200){
+					errorMessage = "Reached total withdrawal limit ";
+					isValid = false;
 				}
 		}
 		
