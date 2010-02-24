@@ -4,7 +4,7 @@
 package asePackage;
 
 /**
- * @author CrYeo™
+ * @author Ali
  *
  */
 public class BankSimulator {
