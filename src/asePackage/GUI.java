@@ -14,10 +14,9 @@ import javax.swing.JTextArea;
 
 public class GUI extends JFrame implements ActionListener{
 
-	private static final long serialVersionUID = 1L;
-	private JPanel panel;
+	private JPanel panel; //the panel containing the button and the textArea
 	private JTextArea textArea;
-	private JScrollPane	scrollPane;
+	private JScrollPane	scrollPane;   //it is used to put scroll bars in the textArea
 	private JButton button = new JButton("Run Bank");
 	
 	
@@ -33,13 +32,14 @@ public class GUI extends JFrame implements ActionListener{
 		panel.add(button);
 		
 		this.getContentPane().add(panel);
-		this.pack();
+		this.pack();  //used to put all the items in the correct position
 		this.setVisible(true);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
+														//the close button(x) is pressed
 	}
 
 
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent evnt) {
 		Bank bank = new Bank();
 		bank.runBank();
 		textArea.append(bank.getLog());

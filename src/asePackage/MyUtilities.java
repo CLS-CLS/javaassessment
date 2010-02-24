@@ -37,7 +37,11 @@ public class MyUtilities<E> {
 			ioe.printStackTrace();
 		}
 	}
-	
+	/**
+	 * @deprecated 
+	 * @param data
+	 * @param fileName
+	 */
 	public static void saveStringToFile(String[] data,String fileName){
 		File f = new File(fileName);
 		String stringToAppend = new String();
@@ -82,29 +86,40 @@ public class MyUtilities<E> {
 	    return returnList;
 	}
 	
+	/**
+	 * 
+	 * @param fileName the filename that contains the account data
+	 * @param customers the arraylist of all the customers
+	 * @return an arraylist of all the accounts objects 
+	 * @throws FileNotFoundException if the file does not exist
+	 * @throws NotValidFileTypeException if the data is not accounts
+	 */
 	public static ArrayList<Account> loadAccounts(String fileName,ArrayList<Customer> customers) throws FileNotFoundException,
 	NotValidFileTypeException{
+		
 		ArrayList<String[]> data = loadFile(fileName);
 		ArrayList<Account> accounts = new ArrayList<Account>();
+		ArrayList<Customer> ownerList = new ArrayList<Customer>();
+		
 		for(String[] str :data){
 			if (str.length <=2 || str.length > 4)throw new NotValidFileTypeException("Acccount");
+			
 			try{
 				int accountID = Integer.parseInt(str[0]);
-				
 				double balance = Double.parseDouble(str[1]);
-				
 				int customer1ID = Integer.parseInt(str[2]);
 				int customer2ID;
+				
+				Customer customer1 = findCustomerFromID(customer1ID,customers);
 				Customer customer2 = null;
+				ownerList.add(customer1); 
+				//if the string array is more than 3 this means that the account is owned
+				//by 2 customers
 				if(str.length > 3){
 					customer2ID = Integer.parseInt(str[3]);
 					customer2 = findCustomerFromID(customer2ID,customers);
+					ownerList.add(customer2);
 				}
-				Customer customer1 = findCustomerFromID(customer1ID,customers);
-				
-				ArrayList<Customer> ownerList = new ArrayList<Customer>();
-				ownerList.add(customer1); 
-				if(str.length>3)ownerList.add(customer2);
 				Account account = new Account(accountID, balance, ownerList);
 				accounts.add(account);
 			}
@@ -112,12 +127,19 @@ public class MyUtilities<E> {
 				throw new NotValidFileTypeException("Customer");
 			}
 		}
+		//if the there are not loaded accounts then the file is empty so it throws not
+		//validFileTypeException
 		if (accounts.size()==0) throw new NotValidFileTypeException("Accounts");
 		return accounts;
 	}
 	
 	
-	
+	/**
+	 * finds the customer with the given customerID
+	 * @param customerId 
+	 * @param customers the list of the customers will search into
+	 * @return the customer with specific customerID ,null if there is not one.
+	 */
 
 	private static Customer findCustomerFromID(int customerId,
 			ArrayList<Customer> customers) {
@@ -126,7 +148,9 @@ public class MyUtilities<E> {
 		}
 		return null;
 	}
-
+     
+	
+	
 	public static ArrayList<Customer> loadCustomers(String fileName) throws FileNotFoundException,
 	NotValidFileTypeException{
 		ArrayList<String[]> data = loadFile(fileName);
@@ -145,13 +169,16 @@ public class MyUtilities<E> {
 		return customers;
 	}
 	
+	
 	public static void saveCustomersToFile(ArrayList<Customer> customers, String fileName) {
 		String result="";
 		for(int i=0; i<customers.size(); i++) {
 			result+=customers.get(i)+"\n";
 		}
 		saveStringToFile(result, fileName);
-	}	
+	}
+	
+	
 	public static void saveAccountsToFile(AccountManager am, String fileName) {
 		String result="";
 		for(int i=0; i<am.getAccountList().size(); i++) {
