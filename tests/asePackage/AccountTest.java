@@ -50,7 +50,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testAccount() {
-		String result="Account [ID=0, Balance=0.0]";
+		String result="0,0.0";
 		String currentValue=""+account1;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
@@ -60,7 +60,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testAccount2() {
-		String result="Account [ID=1, Balance=0.0]";
+		String result="1,0.0,1";
 		String currentValue=""+account2;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
@@ -70,7 +70,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testAccount3() {
-		String result="Account [ID=2, Balance=100.0]";
+		String result="2,100.0,1";
 		String currentValue=""+account3;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
@@ -80,7 +80,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testAccount4() {
-		String result="Account [ID=3, Balance=100.0]";
+		String result="3,100.0,1,2";
 		String currentValue=""+account4;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
@@ -151,7 +151,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testWithdrawMoney() {
-		String result="Account [ID=3, Balance=0.0]";
+		String result="3,0.0,1,2";
 		account4.withdrawMoney(100);
 		String currentValue=""+account4;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
@@ -162,7 +162,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testDepositMoney() {
-		String result="Account [ID=3, Balance=200.0]";
+		String result="3,200.0,1,2";
 		account4.depositMoney(100);
 		String currentValue=""+account4;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
@@ -194,7 +194,7 @@ public class AccountTest {
 	 */
 	@Test
 	public void testToString() {
-		String result="Account [ID=3, Balance=100.0]";
+		String result="3,100.0,1,2";
 		String currentValue=""+account4;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}

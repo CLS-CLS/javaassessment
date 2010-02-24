@@ -14,17 +14,23 @@ import org.junit.Test;
 public class AccountManagerTest {
 	private AccountManager manager1;
 	private AccountManager manager2;
+	private ArrayList<Account> accountTest;
+	private ArrayList<Customer> cust;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		ArrayList<Account> accountTest=new ArrayList<Account>();
+		accountTest=new ArrayList<Account>();
 		accountTest.add(new Account(1));
 		accountTest.add(new Account(2));
 		
 		manager1=new AccountManager();
 		manager2=new AccountManager(accountTest);
+		
+		cust= new ArrayList<Customer>();
+		cust.add(new Customer("Ioan", "Covalcic",1));
+		cust.add(new Customer("Ioan2", "Covalcic2",2));
 		
 	}
 
@@ -59,13 +65,22 @@ public class AccountManagerTest {
 		assertTrue("Wrong account id (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
+	@Test
+	public void testAddAcounts() {
+		Integer result=2;
+		manager1.addAcounts(accountTest);
+		Integer currentValue=manager1.getAccountList().size();
+		assertTrue("Wrong account id (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
+	}
+
 	/**
 	 * Test method for {@link asePackage.AccountManager#deleteAccount(asePackage.Account)}.
 	 */
 	@Test
 	public void testDeleteAccount() {
-		Integer result=1;
+		Integer result=0;
 		manager2.deleteAccount(new Account(1));
+		manager2.deleteAccount(new Account(2,cust));
 		Integer currentValue=manager2.getAccountList().size();
 		assertTrue("Wrong account id (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}

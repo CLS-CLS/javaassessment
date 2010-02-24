@@ -23,9 +23,11 @@ public class LogEvent {
 	private String errorMessage;
 	
 	/**
-	 * The constructor for the case we don't have information about the event
+	 * The constructor for the case we don't have any information about the event
 	 */
 	public LogEvent() {
+		status="";
+		errorMessage="";
 	}
 	/**
 	 * The constructor for the case in which we have receive
