@@ -99,9 +99,10 @@ public class MyUtilities<E> {
 		
 		ArrayList<String[]> data = loadFile(fileName);
 		ArrayList<Account> accounts = new ArrayList<Account>();
-		ArrayList<Customer> ownerList = new ArrayList<Customer>();
+		
 		
 		for(String[] str :data){
+			ArrayList<Customer> ownerList = new ArrayList<Customer>();
 			if (str.length <=2 || str.length > 4)throw new NotValidFileTypeException("Acccount");
 			
 			try{

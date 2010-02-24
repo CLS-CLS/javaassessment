@@ -89,10 +89,10 @@ public class MyUtilitiesTest {
 		
 		assertEquals(2, accounts.size());
 		assertEquals("The owners of this aca should be 2",
-				accounts.get(0).getOwnerList().size(),2);
+				2,accounts.get(0).getOwnerList().size());
 		
 		assertEquals("The owner of the second aca is Padels",
-				accounts.get(1).getOwnerList().get(1).getFirstName(),"Padelis");
+			"Padelis",accounts.get(1).getOwnerList().get(1).getFirstName());
 		
 		acaFile.delete();
 		custFile.delete();
