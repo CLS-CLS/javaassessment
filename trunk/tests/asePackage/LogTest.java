@@ -16,21 +16,30 @@ import org.junit.Test;
 public class LogTest {
 	private Log log;
 	private Log log2;
-
+	Customer cust1;
 	@Before
 	public void setUp() throws Exception {
 		ArrayList<LogEvent> logEvent=new ArrayList<LogEvent>();
-		Customer cust1=new Customer("Ioan","Covalcic",1);
+		cust1=new Customer("Ioan","Covalcic",1);
 		Account acc1=new Account(1,cust1);
 		logEvent.add(new LogEvent(1,cust1,LogEvent.ENTERQUEUE));
 		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.OPEN,acc1,100),LogEvent.SUCCESS,"OK"));
 		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.DEPOSIT,acc1,100),LogEvent.SUCCESS,"OK"));
 		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.WITHDRAWAL,acc1,100),LogEvent.SUCCESS,"OK"));
 		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.CLOSE,acc1,0),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.VIEWBALANCE,acc1,0),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.CLOSE,acc1,0),LogEvent.FAIL,"Account not found"));
 		log=new Log(logEvent);
 		log2=new Log();
 	}
 
+	@Test
+	public void testAddLogEvent(){
+		log.addLogEvent(2, cust1, LogEvent.ENTERQUEUE); 
+		Integer result=2;
+		Integer currentValue=log.getProcessedCustomersNumber();
+		assertTrue("Wrong Total Customer Number (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
+	}
 	@Test
 	public void testGetProcessedCustomersNumber() {
 		Integer result=1;
@@ -61,7 +70,7 @@ public class LogTest {
 
 	@Test
 	public void testToString2() {
-		int result=868;
+		int result=1145;
 		String currentValue=""+log;
 		assertTrue("Wrong output log (Is: "+currentValue.length()+"; Should be "+result+")",result==currentValue.length());
 	}
