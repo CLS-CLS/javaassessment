@@ -64,25 +64,33 @@ public class Teller {
 		}
 	}
 	
+	/**
+	 * doesn't do anything special.
+	 * @param transaction 
+	 * @param currentCustomer
+	 * @return true if this transaction is valid
+	 */
 	private boolean viewBalance(Transaction transaction,
 			Customer currentCustomer) {
 		return isValidTransaction(transaction, currentCustomer);
 		
 	}
-
+   
 	private boolean closeAccount(Transaction transaction, Customer currentCustomer) {
 		boolean isValidTransaction = isValidTransaction(transaction, currentCustomer);
 		if(isValidTransaction){
 			Account account = transaction.getAccount();
-			//IOAN: I added the next field to add the info for the log regarding the sum which is withdrawed
+			//sets the ammount to be withdrawed in the transaction so it can be used as
+			//info for the log 
 			transaction.setAmmount(account.getBalance());
+			//first withdraws all the money from the account
 			if(account.getBalance()>0) 
 				account.withdrawMoney(account.getBalance());
 			accountManager.deleteAccount(account);
 		}
 		return isValidTransaction;
 	}
-
+   
 	private boolean openAccount(Transaction transaction, Customer currentCustomer) {
 		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
 		if(isValidTransaction){
@@ -144,12 +152,11 @@ public class Teller {
 		//in case the transaction is withdrawal
 		//checks if the account belongs to the customer and has enough money
 		if (transaction.getType().equals(Transaction.WITHDRAWAL)){
-			//IOAN: from testing I seen that for the case in which in the first transaction an account was deleted
-			//and the customer has an another transaction it will appear the not owner of the account error
-			//I believe is better to have an another message for this.
-			//if is ok with you and you didn't think it different
+			
+			//in case the account was closed during the bank session we give a 
+			//different message
 			if(transaction.getAccount().isClosed()==true){
-				errorMessage = "No account found";
+				errorMessage = "Account is closed";
 				isValid = false;
 			}
 			else if(!currentCustomer.hasAccount(transaction.getAccount())){
@@ -178,12 +185,11 @@ public class Teller {
 		if(transaction.getType().equals(Transaction.DEPOSIT) || 
 				transaction.getType().equals(Transaction.CLOSE) ||
 				transaction.getType().equals(Transaction.VIEWBALANCE)){
-			//IOAN: from testing I seen that for the case in which in the first transaction an account was deleted
-			//and the customer has an another transaction it will appear the not owner of the account error
-			//I believe is better to have an another message for this.
-			//if is ok with you and you didn't think it different
+			
+			//in case the account was closed during the bank session we give a 
+			//different message
 			if(transaction.getAccount().isClosed()==true){
-				errorMessage = "No account found";
+				errorMessage = "Account is closed";
 				isValid = false;
 			}
 			else if(!currentCustomer.hasAccount(transaction.getAccount())){
@@ -208,10 +214,7 @@ public class Teller {
 			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
 		}
 		else{
-			//TODO here you have to change the signature of the medthod (add the parameter errorMessage so you get the reason 
-			//which prevented the transaction
 			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
-			//log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL);
 		}
 		
 	}
