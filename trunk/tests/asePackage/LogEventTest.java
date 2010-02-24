@@ -12,14 +12,15 @@ import org.junit.Test;
 public class LogEventTest {
 
 	private LogEvent event1;
-	private LogEvent event2;
+	private LogEvent event3;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		event1=new LogEvent();
-	//	event2=new LogEvent(2, "deposit", 4, 1, 1, 200, 300);
+		event3=new LogEvent(3,new Customer("Chris", "Lytsikas", 1), new Transaction(Transaction.OPEN, new Account(), 100), "Fail", "errormessage");
 	}
 
 	/**
@@ -27,7 +28,7 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testLogEventConstructor() {
-		String result="[QueueNo.: 0][Customer: 0, Account: 0, Transaction: null, Sum: 0.0][tellerID=0]";
+		String result="";
 		String currentValue=""+event1;
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
@@ -37,8 +38,8 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testGetQueueNumber() {
-		Integer result=2;
-		Integer currentValue=event2.getQueueNumber();
+		Integer result=3;
+		Integer currentValue=event3.getQueueNumber();
 		assertTrue("Wrong queue number (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -47,8 +48,8 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testGetTransactionType() {
-		String result="deposit";
-		String currentValue=event2.getTransactionType();
+		String result="open";
+		String currentValue=event3.getTransactionType();
 		assertTrue("Wrong transaction type (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -57,8 +58,8 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testGetCustomerID() {
-		Integer result=4;
-		Integer currentValue=event2.getCustomerID();
+		Integer result=1;
+		Integer currentValue=event3.getCustomerID();
 		assertTrue("Wrong customer id (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -67,8 +68,8 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testGetAccountID() {
-		Integer result=1;
-		Integer currentValue=event2.getAccountID();
+		Integer result=0;
+		Integer currentValue=event3.getAccountID();
 		assertTrue("Wrong account id (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -78,7 +79,7 @@ public class LogEventTest {
 	@Test
 	public void testGetTellerID() {
 		Integer result=1;
-		Integer currentValue=event2.getTellerID();
+		Integer currentValue=event3.getTellerID();
 		assertTrue("Wrong teller id (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -87,8 +88,8 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testGetOldBalance() {
-		Double result=200.0;
-		Double currentValue=event2.getOldBalance();
+		Double result=0.0;
+		Double currentValue=event3.getOldBalance();
 		assertTrue("Wrong old balance (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -97,8 +98,8 @@ public class LogEventTest {
 	 */
 	@Test
 	public void testGetNewBalance() {
-		Double result=300.0;
-		Double currentValue=event2.getNewBalance();
+		Double result=0.0;
+		Double currentValue=event3.getNewBalance();
 		assertTrue("Wrong new balance (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
@@ -108,18 +109,7 @@ public class LogEventTest {
 	@Test
 	public void testGetTransactionSum() {
 		Double result=100.0;
-		Double currentValue=event2.getTransactionSum();
+		Double currentValue=event3.getTransactionSum();
 		assertTrue("Wrong sum (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
-
-	/**
-	 * Test method for {@link asePackage.LogEvent#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		String result="[QueueNo.: 2][Customer: 4, Account: 1, Transaction: deposit, Sum: 100.0][tellerID=1]";
-		String currentValue=""+event2;
-		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
-	}
-
 }
