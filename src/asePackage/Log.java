@@ -97,6 +97,23 @@ public class Log {
 		return total;
 	}
 	/**
+	 * compute the total amount of money withdrawn in the time of program execution and which 
+	 * was done from a successful transaction by a single customer.
+	 * @param customer the customer that needs his total
+	 * @return total withdrawn money
+	 */
+	public double getCustomerWithdrawalTotal(Customer customer){
+		int i;
+		double total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if(logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) && 
+					logEventList.get(i).getAccountID()==customer.getId() && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
+				total+=logEventList.get(i).getTransactionSum();
+		}
+		return total;
+	}
+	/**
 	 * Creates a report that contains a list of all events that happened in program execution time.
 	 * @return a report string
 	 */
