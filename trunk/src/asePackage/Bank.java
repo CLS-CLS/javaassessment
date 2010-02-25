@@ -41,11 +41,60 @@ public class Bank {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		am = new AccountManager();
 		
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+		//proofOfAccurateTransactions should be set as true for full testing of//
+		//transactions                                                         //
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+		boolean proofOfAccurateTransactions=true;
+		
+		if(proofOfAccurateTransactions==true) {
+			proofOfAccurateTransactions();
+		}
+		else {
+			//loads customers and accounts and creates connects the accounts
+			//with the customers
+			try{
+				customers = MyUtilities.loadCustomers("customers.txt");
+				accounts = MyUtilities.loadAccounts("accounts.txt",customers);
+				am.addAcounts(accounts);   //adds the account to the account manager
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				System.exit(1);
+			}
+			
+			//Add the accounts to the customer (connects the customer to the accounts)
+			for (Account aca: am.getAccountList()){
+				for(Customer customer: aca.getOwnerList()){
+					customer.
+					addAccount(aca);
+				}
+			}
+			
+			//pick some random customers
+			ArrayList<Customer> selectedCustomers = pickRandomCustomers();
+			int currentQueueNumber=0;
+			//add customers to the queue with a transaction
+			for (Customer customer:selectedCustomers){
+				qm.addQueueElement(customer,generateTransactions(customer));
+				//add a log event to the log about the customer that has been added
+				currentQueueNumber=qm.getNextNumber()-1;
+				log.addLogEvent(currentQueueNumber, customer, LogEvent.ENTERQUEUE);
+			}
+			
+			teller = new Teller(qm,am,log);
+		}
+	}
+	
+	//generates a predefined set of transactions for 
+	//proof of Accurate Transactions
+	private void proofOfAccurateTransactions(){
+		ArrayList<Account> accounts;
 		//loads customers and accounts and creates connects the accounts
 		//with the customers
 		try{
-			customers = MyUtilities.loadCustomers("customers.txt");
-			accounts = MyUtilities.loadAccounts("accounts.txt",customers);
+			customers = MyUtilities.loadCustomers("customers_proof.txt");
+			accounts = MyUtilities.loadAccounts("accounts_proof.txt",customers);
 			am.addAcounts(accounts);   //adds the account to the account manager
 		}
 		catch(Exception e){
@@ -60,20 +109,122 @@ public class Bank {
 				addAccount(aca);
 			}
 		}
+
 		
-		//pick some random customers
-		ArrayList<Customer> selectedCustomers = pickRandomCustomers();
-		int currentQueueNumber=0;
-		//add customers to the queue with a transaction
-		for (Customer customer:selectedCustomers){
-			qm.addQueueElement(customer,generateTransactions(customer));
-			//add a log event to the log about the customer that has been added
-			currentQueueNumber=qm.getNextNumber()-1;
-			log.addLogEvent(currentQueueNumber, customer, LogEvent.ENTERQUEUE);
+		ArrayList<Transaction> trans = new ArrayList<Transaction>();
+		log.addLogEvent(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
+		log.addLogEvent(qm.getNextNumber()+1, customers.get(2), LogEvent.ENTERQUEUE);
+		log.addLogEvent(qm.getNextNumber()+2,customers.get(3),LogEvent.ENTERQUEUE);
+		log.addLogEvent(qm.getNextNumber()+3, customers.get(1), LogEvent.ENTERQUEUE);
+		
+		try {
+			trans.add(new Transaction(Transaction.OPEN, new Account(), 200));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		try {
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(0),100));
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(1),150));
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		qm.addQueueElement(customers.get(0), trans);
 		
-		teller = new Teller(qm,am,log);
+		trans=new ArrayList<Transaction>();
+		try {
+			trans.add(new Transaction(Transaction.OPEN, new Account(),500));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		qm.addQueueElement(customers.get(2), trans);
 		
+		trans=new ArrayList<Transaction>();
+		try {
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),100));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),50));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.DEPOSIT, customers.get(3).getAccountList().get(0),250));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.VIEWBALANCE, customers.get(3).getAccountList().get(0),0));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),160));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.OPEN, new Account(),600));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),10));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.DEPOSIT, customers.get(3).getAccountList().get(0),900));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.VIEWBALANCE, customers.get(3).getAccountList().get(0),0));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		qm.addQueueElement(customers.get(3), trans);
+		trans=new ArrayList<Transaction>();
+		try {
+			trans.add(new Transaction(Transaction.DEPOSIT, am.getAccountList().get(1),50));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		qm.addQueueElement(customers.get(1), trans);
+		
+		teller = new Teller(qm,am,log);	
 	}
 	
 	/**
