@@ -13,38 +13,38 @@ import java.util.ArrayList;
  */
 public class Customer extends Person
 {	
-/**
- * Instance variables
- */
+	/**
+	 * Instance variables
+	 */
 	public static final int MAXACCOUNTS = 2;
 	private int id;
 	private ArrayList <Account> accountList;
-	
-	
-/**
- * Creates a customer with first name, last name, id, and his/her account(s)
- * @param firstName the first name of the customer
- * @param lastName the last name of the customer
- * @param id the identification number of the customer
- */
+
+
+	/**
+	 * Creates a customer with first name, last name, id, and his/her account(s)
+	 * @param firstName the first name of the customer
+	 * @param lastName the last name of the customer
+	 * @param id the identification number of the customer
+	 */
 	public Customer(String firstName, String lastName, int id)
 	{        
 		super(firstName,lastName);
 		this.id = id;
 		accountList = new ArrayList<Account>();
 	}
-/**
- * Gets the identification number of the customer
- * @return the identification number of the customer
- */
+	/**
+	 * Gets the identification number of the customer
+	 * @return the identification number of the customer
+	 */
 	public int getId()
 	{
 		return id;
 	}
-/**
- * Modifies the identification number of the customer 
- * @param customerId the identification number of the customer that has to be modified
- */
+	/**
+	 * Modifies the identification number of the customer 
+	 * @param customerId the identification number of the customer that has to be modified
+	 */
 	public void setId(int customerId)
 	{
 		this.id = customerId;
@@ -91,19 +91,20 @@ public class Customer extends Person
 	{
 		return accountList.remove(aca);
 	}
-	
+
 	/**
 	 * Checks if the customer is owner of the given account
 	 * @param aca the account to be checked
 	 * @return true if the account is owned by the customer false otherwise
 	 */
 	public boolean hasAccount(Account aca){
-		
+
 		return accountList.contains(aca);
 	}
-	
+
 	/**
-	 * 
+	 * Tests the equality between two customers objects
+	 * based on their first names, last names, and IDs.
 	 */
 	@Override
 	public boolean equals(Object obj) 
@@ -113,32 +114,32 @@ public class Customer extends Person
 			Customer c = (Customer)obj;
 			if(c.getFirstName().equals(this.getFirstName())&&
 					c.getLastName().equals(this.getLastName())&&
-					c.getId()==this.getId())return true;
+					c.getId()== this.getId())return true;
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
-	 * @return
+	 * Gets the number of accounts
+	 * @return accountList.size the number of accounts 
 	 */
 	public int getNumberOfAccounts() 
 	{
 		return accountList.size();
 	}
-	
+
 	/**
-	 * 
-	 * @return
+	 * gets the account list
+	 * @return accountList the account list
 	 */
 	public ArrayList<Account> getAccountList() 
 	{
 		return accountList;
 	}
-	
+
 	/**
-	 * 
-	 * @param accountList
+	 * Modifies the account list
+	 * @param accountList the account list
 	 */
 	public void setAccountList(ArrayList<Account> accountList)
 	{
@@ -147,15 +148,14 @@ public class Customer extends Person
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	
+
 	/**
-	 * 
+	 * Returns all the information regarding the class into a string
 	 */
 	@Override
 	public String toString() 
 	{
 		return super.getFirstName() + "," + super.getLastName() + "," + id;
 	}
-	
-				
+
 }

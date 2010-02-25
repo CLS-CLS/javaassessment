@@ -134,8 +134,8 @@ public class Log {
 		result="\nStatistics\n";
 		result+="-------------\n";
 		result+="Number of Processed Customers : " + getProcessedCustomersNumber() + "\n";
-		result+="Total Deposited Money : " + getDepositTotal() + "\n";
-		result+="Total Withdrawn Money : " + getWithdrawalTotal() + "\n";
+		result+="Total Deposited Money : £" + getDepositTotal() + "\n";
+		result+="Total Withdrawn Money : £" + getWithdrawalTotal() + "\n";
 		return result;
 	}
 }
