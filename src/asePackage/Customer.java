@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 /**
+ * @author Ali
  * Customer class that holds details about a customer (first name, last name,
  * allowed number of accounts, his/her identification number, and his/her account(s))
  * and methods to get and set the identification number, methods to add an account to
@@ -101,8 +102,12 @@ public class Customer extends Person
 		return accountList.contains(aca);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) 
+	{
 		if(!(obj instanceof Customer ))return false;
 		else {
 			Customer c = (Customer)obj;
@@ -112,21 +117,43 @@ public class Customer extends Person
 		}
 		return false;
 	}
-	public int getNumberOfAccounts() {
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNumberOfAccounts() 
+	{
 		return accountList.size();
 	}
 	
-	public ArrayList<Account> getAccountList() {
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Account> getAccountList() 
+	{
 		return accountList;
 	}
-	public void setAccountList(ArrayList<Account> accountList) {
+	
+	/**
+	 * 
+	 * @param accountList
+	 */
+	public void setAccountList(ArrayList<Account> accountList)
+	{
 		this.accountList = accountList;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	
+	/**
+	 * 
+	 */
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return super.getFirstName() + "," + super.getLastName() + "," + id;
 	}
 	
