@@ -107,7 +107,7 @@ public class Log {
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
 			if(logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) && 
-					logEventList.get(i).getAccountID()==customer.getId() && 
+					logEventList.get(i).getCustomerID()==customer.getId() && 
 					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
 		}
