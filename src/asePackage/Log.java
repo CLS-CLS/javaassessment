@@ -110,7 +110,7 @@ public class Log {
 					logEventList.get(i).getCustomerID()==customer.getId() && 
 					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
-		}
+		} 
 		return total;
 	}
 	/**
