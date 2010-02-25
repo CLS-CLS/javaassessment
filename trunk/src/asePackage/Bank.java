@@ -45,7 +45,7 @@ public class Bank {
 		//proofOfAccurateTransactions should be set as true for full testing of//
 		//transactions                                                         //
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-		boolean proofOfAccurateTransactions=true;
+		boolean proofOfAccurateTransactions = false;
 		
 		if(proofOfAccurateTransactions==true) {
 			proofOfAccurateTransactions();
@@ -259,19 +259,23 @@ public class Bank {
 	}
 	
 	/**
-	 * picks 10 distinct random customers from the list of the customers
-	 * @return an array list of 10 random customers
+	 * picks distinct random customers from the list of the customers.
+	 * It gets the customers ,clones it and removes a random number of customers
+	 * from the list. The remaining ones are returned
+	 * @return an array list of random number of customers in random order
 	 */
 	private ArrayList<Customer> pickRandomCustomers() {
-		ArrayList<Customer> subList = new ArrayList<Customer>();
-		while(subList.size()<10 && subList.size()<customers.size()){
-			int rnd = rndGen.nextInt(customers.size());
-			Customer customer = customers.get(rnd);
-			if (!subList.contains(customer))subList.add(customer);
+		//the number of customers to pick. Minimus is 3. 
+		int numberOfCustomers = Math.max(3,
+				rndGen.nextInt(customers.size()));
+		
+		int customersToRemove = customers.size() - numberOfCustomers;
+		ArrayList<Customer> subList = (ArrayList<Customer>) customers.clone();
+		for (int i = 0; i < customersToRemove ;i++){
+			int removeIndex = rndGen.nextInt(subList.size());
+			subList.remove(removeIndex);
 		}
-		
-		return subList;
-		
+    	return subList;
 	}
 	
 	
