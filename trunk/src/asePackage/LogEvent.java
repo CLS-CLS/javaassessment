@@ -173,18 +173,18 @@ public class LogEvent {
 		String result;
 		result="\n  - Transaction: ";
 		if(transactionType.equals(Transaction.OPEN))
-			result+= transactionType + " account with initial amount: $" + ammount;
+			result+= transactionType + " account with initial amount: £" + ammount;
 		else
 			if(transactionType.equals(Transaction.CLOSE))
 				result+= transactionType + " account number " + accountID;
 			else
 				if(transactionType.equals(Transaction.DEPOSIT))
-					result+= transactionType + " to account " + accountID + " $" + ammount;
+					result+= transactionType + " to account " + accountID + " £" + ammount;
 				else
 					if(transactionType.equals(Transaction.VIEWBALANCE))
 						result+= transactionType + " for account " + accountID;
 					else
-						result+= transactionType + " from account " + accountID + " $" + ammount;
+						result+= transactionType + " from account " + accountID + " £" + ammount;
 		return result;
 	}
 	private String getCustomerDetails() {
@@ -199,15 +199,15 @@ public class LogEvent {
 		String result="";
 		if(transactionType.equals(Transaction.DEPOSIT) 
 				|| transactionType.equals(Transaction.WITHDRAWAL))
-			result=" (New Balance: $" + newBalance + " from Old Balance: $" + oldBalance + ")";
+			result=" (New Balance: £" + newBalance + " from Old Balance: £" + oldBalance + ")";
 		else
 			if(transactionType.equals(Transaction.CLOSE))
-				result=" (Old Balance: $" + oldBalance + " with Final Withdrawed Sum: $" + ammount + ")";
+				result=" (Old Balance: £" + oldBalance + " with Final Withdrawed Sum: £" + ammount + ")";
 			else
 				if(transactionType.equals(Transaction.VIEWBALANCE))
-					result=" (Balance: $" + newBalance + ")";
+					result=" (Balance: £" + newBalance + ")";
 				else
-					result=" (New Account ID: " + accountID + " Balance: $" + newBalance + ")";
+					result=" (New Account ID: " + accountID + " Balance: £" + newBalance + ")";
 		
 		return result;
 	}	

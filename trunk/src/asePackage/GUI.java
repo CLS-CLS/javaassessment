@@ -10,17 +10,28 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * Graphical User Interface (GUI) that shows the results of the bank session 
+ * @author Ali
+ *
+ */
 
-
-public class GUI extends JFrame implements ActionListener{
-
-	private JPanel panel; //the panel containing the button and the textArea
-	private JTextArea textArea;
-	private JScrollPane	scrollPane;   //it is used to put scroll bars in the textArea
+public class GUI extends JFrame implements ActionListener
+{
+/**
+ * The panel containing the button and the textArea
+ */
+	private JPanel panel; 
+		private JTextArea textArea;
+	/**
+	 * it is used to put scroll bars in the textArea
+	 */
+	private JScrollPane	scrollPane;   
 	private JButton button = new JButton("Run Bank");
 	
 	
-	public GUI() {
+	public GUI()
+	{
 		super("Simple GUI Stage 1");
 		panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
@@ -40,7 +51,8 @@ public class GUI extends JFrame implements ActionListener{
 	}
 
 
-	public void actionPerformed(ActionEvent evnt) {
+	public void actionPerformed(ActionEvent evnt) 
+	{
 		Bank bank = new Bank();
 		bank.runBank();
 		textArea.append(bank.getLog());

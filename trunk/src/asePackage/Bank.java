@@ -47,7 +47,7 @@ public class Bank {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 		boolean proofOfAccurateTransactions = false;
 		
-		if(proofOfAccurateTransactions==true) {
+		if(proofOfAccurateTransactions == true) {
 			proofOfAccurateTransactions();
 		}
 		else {
