@@ -146,7 +146,7 @@ public class Bank {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		teller = new Teller(qm,am,log);	
+		
 	}
 	
 	/**
