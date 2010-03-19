@@ -55,7 +55,15 @@ public class GUI extends JFrame implements ActionListener
 	{
 		Bank bank = new Bank();
 		bank.runBank();
-		textArea.append(bank.getFinalReport());
-		textArea.append("\n---------------------------------------------------------------------------------------------------------\n");
+		textArea.append(bank.getLog());
+		
+	}
+
+
+	public void setText(String report) {
+		textArea.append(report);
+		textArea.append("\n---------------------------------------------------" +
+				"------------------------------------------------------\n");
+		
 	}
 }
