@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
  *
  */
 
-public class GUI extends JFrame implements ActionListener
+public class GUI extends JFrame implements GuiWrapper
 {
 /**
  * The panel containing the button and the textArea
@@ -38,8 +38,7 @@ public class GUI extends JFrame implements ActionListener
 		textArea = new JTextArea(35, 45);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
-		button.addActionListener(this);
-				
+						
 		panel.add(scrollPane);
 		panel.add(button);
 		
@@ -51,19 +50,15 @@ public class GUI extends JFrame implements ActionListener
 	}
 
 
-	public void actionPerformed(ActionEvent evnt) 
-	{
-		Bank bank = new Bank();
-		bank.runBank();
-		textArea.append(bank.getLog());
-		
-	}
-
-
 	public void setText(String report) {
 		textArea.append(report);
 		textArea.append("\n---------------------------------------------------" +
 				"------------------------------------------------------\n");
 		
+	}
+
+
+	public void addRunButtonListener(ActionListener al) {
+		button.addActionListener(al);
 	}
 }
