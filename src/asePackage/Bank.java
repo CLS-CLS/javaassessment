@@ -201,7 +201,7 @@ public class Bank {
         }
         
         
-        public String getLog() {
+        public String getFinalReport() {
                 return log.toString();
         }
         
