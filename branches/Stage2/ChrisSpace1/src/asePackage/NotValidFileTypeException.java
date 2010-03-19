@@ -8,6 +8,7 @@ package asePackage;
  * does not contain the correct data
  * 
  */
+@SuppressWarnings("serial")
 public class NotValidFileTypeException extends Exception {
     /**
      *  the message given from the method that throws the
