@@ -27,15 +27,15 @@ public class LogTest {
 		Account acc1=new Account(1,cust1);
 		Account acc2=new Account(2,cust2);
 		logEvent.add(new LogEvent(1,cust1,LogEvent.ENTERQUEUE));
-		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.OPEN,acc1,100),LogEvent.SUCCESS,"OK"));
-		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.DEPOSIT,acc1,100),LogEvent.SUCCESS,"OK"));
-		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.WITHDRAWAL,acc1,100),LogEvent.SUCCESS,"OK"));
-		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.CLOSE,acc1,0),LogEvent.SUCCESS,"OK"));
-		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.VIEWBALANCE,acc1,0),LogEvent.SUCCESS,"OK"));
-		logEvent.add(new LogEvent(1,cust1,new Transaction(Transaction.CLOSE,acc1,0),LogEvent.FAIL,"Account not found"));
+		logEvent.add(new LogEvent(1,1,cust1,new Transaction(Transaction.OPEN,acc1,100),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,1,cust1,new Transaction(Transaction.DEPOSIT,acc1,100),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,1,cust1,new Transaction(Transaction.WITHDRAWAL,acc1,100),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,1,cust1,new Transaction(Transaction.CLOSE,acc1,0),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,1,cust1,new Transaction(Transaction.VIEWBALANCE,acc1,0),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(1,1,cust1,new Transaction(Transaction.CLOSE,acc1,0),LogEvent.FAIL,"Account not found"));
 		logEvent.add(new LogEvent(2,cust2,LogEvent.ENTERQUEUE));
-		logEvent.add(new LogEvent(2,cust2,new Transaction(Transaction.OPEN,acc2,300),LogEvent.SUCCESS,"OK"));
-		logEvent.add(new LogEvent(2,cust2,new Transaction(Transaction.WITHDRAWAL,acc2,190),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(2,1,cust2,new Transaction(Transaction.OPEN,acc2,300),LogEvent.SUCCESS,"OK"));
+		logEvent.add(new LogEvent(2,1,cust2,new Transaction(Transaction.WITHDRAWAL,acc2,190),LogEvent.SUCCESS,"OK"));
 
 		log=new Log(logEvent);
 		log2=new Log();

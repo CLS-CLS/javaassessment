@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  */
 public class Teller {
-	
+	private int tellerID;
 	private QueueManager qm;
 	private AccountManager accountManager;
 	private Queue customerInQueue;
@@ -19,16 +19,17 @@ public class Teller {
 	private String errorMessage;  
 	
 		
-	public Teller(QueueManager qm, AccountManager accountManager, Log log) {
+	public Teller(QueueManager qm, AccountManager accountManager, Log log, int tellerID) {
 		this.qm = qm;
 		this.accountManager = accountManager;
 		this.log = log;
+		this.tellerID = tellerID;
 	}
 	
 	/**
 	 * gets the next customer from the queue.
 	 */
-	public void getNextCustomer(){
+	public synchronized void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
     }
 	
@@ -215,10 +216,10 @@ public class Teller {
 	 */
 	private void generateReport(boolean isValidTransaction, Transaction transaction) {
 		if(isValidTransaction){
-			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
+			log.addLogEvent(customerInQueue.getQueueNumber(), tellerID, customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
 		}
 		else{
-			log.addLogEvent(customerInQueue.getQueueNumber(), customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
+			log.addLogEvent(customerInQueue.getQueueNumber(), tellerID, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
 		}
 		
 	}

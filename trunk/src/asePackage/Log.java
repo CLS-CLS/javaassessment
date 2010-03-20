@@ -36,8 +36,8 @@ public class Log extends Observable {
 	 * @param status indicates if the transaction was successful of failed
 	 * @param errorMessage stores the message for the case of error
 	 */
-	public void addLogEvent(int queueNumber, Customer customer, Transaction transaction, String status, String errorMessage) {
-		LogEvent le = new LogEvent(queueNumber, customer, transaction, status, errorMessage);
+	public void addLogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status, String errorMessage) {
+		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status, errorMessage);
 		logEventList.add(le);
 		setChanged();
 		notifyObservers(le.toString());
@@ -51,6 +51,15 @@ public class Log extends Observable {
 	 */
 	public void addLogEvent(int queueNumber, Customer customer, String status) {
 		LogEvent le = new LogEvent(queueNumber, customer, status);
+		logEventList.add(le);
+		setChanged();
+		notifyObservers(le.toString());
+	}
+	/*
+	 * NEW
+	 */
+	public void addLogEvent(String status, String message) {
+		LogEvent le = new LogEvent(status, message);
 		logEventList.add(le);
 		setChanged();
 		notifyObservers(le.toString());
@@ -134,6 +143,7 @@ public class Log extends Observable {
 			result+=logEventList.get(i)+"\n";
 		}
 		result+=getStatistics();
+		addLogEvent(LogEvent.MESSAGE,this.getStatistics());
 		return result;
 	}
 	
