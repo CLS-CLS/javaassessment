@@ -56,7 +56,7 @@ public class TellerTest {
 	public void doTransaction() throws Exception{
 		
 		//test the OPEN transaction
-		teller = new Teller(qm, am, new Log());
+		teller = new Teller(qm, am, new Log(),1);
 		assertEquals(customer.getFirstName(), "Chris");
 		assertEquals(1,customer.getNumberOfAccounts());
 		teller.getNextCustomer();
@@ -66,7 +66,7 @@ public class TellerTest {
 		
 		//test CLOSE transaction;
 		setUp2();
-		teller = new Teller(qm, am, new Log());
+		teller = new Teller(qm, am, new Log(),1);
 		assertEquals(customer.getFirstName(), "Chris");
 		assertEquals(1,customer.getNumberOfAccounts());
 		teller.getNextCustomer();

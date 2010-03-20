@@ -22,6 +22,7 @@ public class Bank {
         private QueueManager qm;
         private Teller teller;
         private ArrayList<Customer> customers;
+        private boolean proofOfAccurateTransactions = false;
         
         /*
          * holds the log of the bank
@@ -44,7 +45,7 @@ public class Bank {
                 //proofOfAccurateTransactions should be set as true for full testing of//
                 //transactions                                                         //
                 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-                boolean proofOfAccurateTransactions = false;
+               
                 loadData(proofOfAccurateTransactions);
                                 
         }
@@ -72,21 +73,26 @@ public class Bank {
                                         customer.
                                         addAccount(aca);
                                 }
-                        }
-                        
-                        //pick some random customers
-                        ArrayList<Customer> selectedCustomers = pickRandomCustomers();
-                        int currentQueueNumber=0;
-                        //add customers to the queue with a transaction
-                        for (Customer customer:selectedCustomers){
-                                qm.addQueueElement(customer,generateTransactions(customer));
-                                //add a log event to the log about the customer that has been added
-                                currentQueueNumber=qm.getNextNumber()-1;
-                                log.addLogEvent(currentQueueNumber, customer, LogEvent.ENTERQUEUE);
-                        }
-                        
-                        teller = new Teller(qm,am,log);
+                        }                    
                 }
+        }
+        
+        /*
+         * NEW
+         */
+        private void generateQueue() {
+            //pick some random customers
+            ArrayList<Customer> selectedCustomers = pickRandomCustomers();
+            int currentQueueNumber=0;
+            //add customers to the queue with a transaction
+            for (Customer customer:selectedCustomers){
+                    qm.addQueueElement(customer,generateTransactions(customer));
+                    //add a log event to the log about the customer that has been added
+                    currentQueueNumber=qm.getNextNumber()-1;
+                    log.addLogEvent(currentQueueNumber, customer, LogEvent.ENTERQUEUE);
+            }
+            
+            teller = new Teller(qm,am,log,1);
         }
 
         //generates a predefined set of transactions for 
@@ -208,6 +214,9 @@ public class Bank {
         
         
         public void runBank(){
+        	if(proofOfAccurateTransactions == false)
+        		generateQueue();
+        	
                 while(!qm.isQueueEmpty()){
                         teller.getNextCustomer();
                         teller.doTransaction();

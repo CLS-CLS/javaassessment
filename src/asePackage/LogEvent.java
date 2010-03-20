@@ -11,6 +11,8 @@ public class LogEvent {
 	public static final String SUCCESS = "Success";
 	public static final String FAIL = "Fail";
 	public static final String ENTERQUEUE = "joins queue";
+	public static final String MESSAGE = "Message";
+
 	private int queueNumber;
 	private String transactionType;
 	private Customer customer;
@@ -20,14 +22,14 @@ public class LogEvent {
 	private double newBalance;
 	private double ammount;
 	private String status;
-	private String errorMessage;
+	private String message;
 	
 	/**
 	 * The constructor for the case we don't have any information about the event
 	 */
 	public LogEvent() {
 		status="";
-		errorMessage="";
+		message="";
 	}
 	/**
 	 * The constructor for the case in which we have receive
@@ -39,16 +41,16 @@ public class LogEvent {
 	 * @param status indicates if the transaction was successful of failed
 	 * @param errorMessage stores the message for the case of error
 	 */
-	public LogEvent(int queueNumber, Customer customer, Transaction transaction, String status, String errorMessage){
+	public LogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status, String message){
 		this.queueNumber=queueNumber;
 		this.customer=customer;
 		this.accountID=transaction.getAccount().getId();
 		this.transactionType=transaction.getType();
-		this.tellerID=1;
+		this.tellerID=tellerID;
 		this.status=status;
 		this.ammount=transaction.getAmmount();
 		this.newBalance=transaction.getAccount().getBalance();
-		this.errorMessage=errorMessage;
+		this.message=message;
 		
 		if(this.status.equals(FAIL)) {
 			this.oldBalance=this.newBalance;
@@ -77,7 +79,14 @@ public class LogEvent {
 		this.ammount=0;
 		this.newBalance=-1;
 		this.oldBalance=-1;
-		this.errorMessage="";
+		this.message="";
+	}
+	/*
+	 * NEW
+	 */
+	public LogEvent(String status, String message){
+		this.status=status;
+		this.message=message;
 	}
 	
 	/**
@@ -152,21 +161,33 @@ public class LogEvent {
 	@Override
 	public String toString() {
 		String result="";
-		if(status.equals(ENTERQUEUE)) {
-			result=getEnterQueue();
+		if(status.equals(MESSAGE)) {
+			result=getMessage();
 		}
 		else {
-			if(status.equals(SUCCESS) || status.equals(FAIL)) {
-				result=getCustomerDetails();
-				result+=getTransactionDetails();
-				result+="\n  - Status: " + status;
-				if(status.equals(SUCCESS))
-					result+=getAccountDetails();
-				if(status.equals(FAIL))
-					result+=getErrorMessage();
+			if(status.equals(ENTERQUEUE)) {
+				result=getEnterQueue();
+			}
+			else {
+				if(status.equals(SUCCESS) || status.equals(FAIL)) {
+					result=getCustomerDetails();
+					result+=getTransactionDetails();
+					result+="\n  - Status: " + status;
+					if(status.equals(SUCCESS))
+						result+=getAccountDetails();
+					if(status.equals(FAIL))
+						result+= " (" + getMessage() + ")";
+				}
 			}
 		}
 		return result;
+	}
+	
+	/*
+	 * NEW
+	 */
+	public String getMessage() {
+		return message;
 	}
 	
 	private String getTransactionDetails() {
@@ -217,11 +238,6 @@ public class LogEvent {
 		result="Customer " + customer.getId() + " (" + customer.getFirstName() +
 				", " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
 		
-		return result;
-	}
-	private String getErrorMessage() {
-		String result="";
-		result="(" + errorMessage + ")";
 		return result;
 	}
 }
