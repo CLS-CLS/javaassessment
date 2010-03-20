@@ -2,6 +2,7 @@ package asePackage;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
 
 
 import javax.swing.JButton;
@@ -60,5 +61,10 @@ public class GUI extends JFrame implements GuiWrapper
 
 	public void addRunButtonListener(ActionListener al) {
 		button.addActionListener(al);
+	}
+
+
+	public void update(Observable o, Object arg) {
+		textArea.append((String)arg + "\n");
 	}
 }
