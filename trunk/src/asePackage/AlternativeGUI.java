@@ -2,6 +2,7 @@ package asePackage;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Observable;
 
 import javax.swing.*;
 
@@ -99,6 +100,11 @@ class AlternativeGUI extends JFrame implements GuiWrapper
 		System.err.println(report.substring(index, endIndex));
 		return Double.parseDouble(
 				report.substring(index, endIndex));
+	}
+
+	public void update(Observable o, Object arg) {
+		// TODO Updatge with the final report at the end
+		
 	}
 
 }

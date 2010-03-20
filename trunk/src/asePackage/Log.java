@@ -1,6 +1,7 @@
 package asePackage;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Log class is the event manager for the log. It will control the list of events 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * @author Ioan
  */
 
-public class Log {
+public class Log extends Observable {
 	private ArrayList<LogEvent> logEventList;
 	
 	/**
@@ -36,7 +37,10 @@ public class Log {
 	 * @param errorMessage stores the message for the case of error
 	 */
 	public void addLogEvent(int queueNumber, Customer customer, Transaction transaction, String status, String errorMessage) {
-		logEventList.add(new LogEvent(queueNumber, customer, transaction, status, errorMessage));
+		LogEvent le = new LogEvent(queueNumber, customer, transaction, status, errorMessage);
+		logEventList.add(le);
+		setChanged();
+		notifyObservers(le.toString());
 	}
 	/**
 	 * Add a new log event to the event list for the case we don't know or we don't know all the normal transaction information.
@@ -46,8 +50,12 @@ public class Log {
 	 * was successful or not
 	 */
 	public void addLogEvent(int queueNumber, Customer customer, String status) {
-		logEventList.add(new LogEvent(queueNumber, customer, status));
+		LogEvent le = new LogEvent(queueNumber, customer, status);
+		logEventList.add(le);
+		setChanged();
+		notifyObservers(le.toString());
 	}
+	
 	/**
 	 * The purpose of this method is to return the total number of unique customers 
 	 * served in the program execution time. A customer can be served for just a queue number,

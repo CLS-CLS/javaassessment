@@ -1,6 +1,7 @@
 package asePackage;
 
 import java.util.ArrayList;
+import java.util.Observer;
 import java.util.Random;
 
 /**
@@ -215,5 +216,9 @@ public class Bank {
                 MyUtilities.saveStringToFile(log.toString(), "log.txt");
                 MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
                 MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
+        }
+        
+        public void setObserver(Observer o){
+        	log.addObserver(o);
         }
 }

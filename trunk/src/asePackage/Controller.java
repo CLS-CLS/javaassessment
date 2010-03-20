@@ -16,14 +16,13 @@ public class Controller {
 		this.gui = gui;
 		this.bank = bank;
 		gui.addRunButtonListener(new RunBankListener());
+		bank.setObserver(gui);
 	}
 	
 	
 	class RunBankListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			bank.runBank();
-			String finalReport = bank.getFinalReport();
-			gui.setText(finalReport);
 		}
 	}
 
