@@ -19,7 +19,9 @@ public class Bank extends Thread{
     /*
          * holds information about the customers in the queue
          */
+    	static final int INITIALDELAY = 50; 
     	private boolean isOpen = false;
+    	private int customerGenerationDelay;
         private QueueManager qm;
         private Teller teller;
         private ArrayList<Customer> customers;
@@ -37,6 +39,7 @@ public class Bank extends Thread{
         
         
         public Bank(){
+        		customerGenerationDelay=INITIALDELAY;
                 rndGen = new Random();
                 log = new Log();
                 qm = new QueueManager();
@@ -221,9 +224,13 @@ public class Bank extends Thread{
 			return result;
         }
         
-        private void generateQueueElemet(Customer cust){
+        private void generateQueueElement(Customer cust){
+        	int currentQueueNumber=0;
         	ArrayList<Transaction> trans = generateTransactions(cust);
         	qm.addQueueElement(cust, trans);
+            currentQueueNumber=qm.getNextNumber()-1;
+            log.addLogEvent(currentQueueNumber, cust, LogEvent.ENTERQUEUE);
+
         }
         
         
@@ -236,7 +243,7 @@ public class Bank extends Thread{
         public void run(){
         		while(isOpen){
         			Customer customer = pickRandomCustomer();
-        			generateQueueElemet(customer);
+        			generateQueueElement(customer);
         			if (!qm.isQueueEmpty()){
 	        			teller.getNextCustomer();
 	                    teller.doTransaction();
@@ -256,7 +263,15 @@ public class Bank extends Thread{
         	
         }
         
-        public void setObserver(Observer o){
+        public void setCustomerGenerationDelay(int customerGenerationDelay) {
+			this.customerGenerationDelay = customerGenerationDelay;
+		}
+
+		public int getCustomerGenerationDelay() {
+			return customerGenerationDelay;
+		}
+
+		public void setObserver(Observer o){
         	log.addObserver(o);
         }
 }
