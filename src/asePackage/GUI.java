@@ -99,4 +99,9 @@ public class GUI extends JFrame implements GuiWrapper
 	public void update(Observable o, Object arg) {
 		textArea.append((String)arg + "\n");
 	}
+
+
+	public JButton getRunButton() {
+		return button;
+	}
 }

@@ -107,4 +107,9 @@ class AlternativeGUI extends JFrame implements GuiWrapper
 		
 	}
 
+	public JButton getRunButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
