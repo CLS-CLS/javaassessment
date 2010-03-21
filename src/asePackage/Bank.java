@@ -208,6 +208,7 @@ public class Bank extends Thread{
 
 
 	public void run(){
+		teller.start();
 		while(isOpen || !qm.isQueueEmpty()){
 			if(isOpen) {
 				Customer customer = pickRandomCustomer();
@@ -247,5 +248,8 @@ public class Bank extends Thread{
 
 	public int getTellerGenerationDelay() {
 		return teller.getTellerGenerationDelay();
+	}
+	public void setTellerGenerationDelay(int tellerGenerationDelay) {
+		teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
 }
