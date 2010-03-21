@@ -45,6 +45,8 @@ public class Bank extends Thread{
                 qm = new QueueManager();
                 customers = new ArrayList<Customer>();
                 am = new AccountManager();
+                
+                teller = new Teller(qm,am,log,1);
                 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
                 //proofOfAccurateTransactions should be set as true for full testing of//
                 //transactions                                                         //
