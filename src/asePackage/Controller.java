@@ -20,6 +20,8 @@ public class Controller {
 		this.gui = gui;
 		this.bank = bank;
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
+		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
+
 		gui.addRunButtonListener(new RunBankListener());
 		gui.addCustomerSliderListener(new CustomerSlideListener());
 		gui.addTellerSliderListener(new TellerSlideListener());

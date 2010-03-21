@@ -128,4 +128,9 @@ class AlternativeGUI extends JFrame implements GuiWrapper
 		
 	}
 
+	public void setTellerGenerationDelay(int tellerGenerationDelay) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

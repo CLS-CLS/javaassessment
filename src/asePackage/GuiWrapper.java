@@ -13,4 +13,5 @@ public interface GuiWrapper extends Observer{
 	public void addCustomerSliderListener(ChangeListener cl);
 	public void addTellerSliderListener(ChangeListener cl);
 	public void setCustomerGenerationDelay(int customerGenerationDelay);
+	public void setTellerGenerationDelay(int tellerGenerationDelay);
 }

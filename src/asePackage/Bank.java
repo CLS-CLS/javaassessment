@@ -244,4 +244,8 @@ public class Bank extends Thread{
 	public void setObserver(Observer o){
 		log.addObserver(o);
 	}
+
+	public int getTellerGenerationDelay() {
+		return teller.getTellerGenerationDelay();
+	}
 }
