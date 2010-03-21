@@ -92,7 +92,7 @@ public class GUI extends JFrame implements GuiWrapper
 		
 	}
 
-
+ 
 	public void addRunButtonListener(ActionListener al) {
 		button.addActionListener(al);
 	}
