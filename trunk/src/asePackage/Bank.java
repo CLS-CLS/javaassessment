@@ -247,6 +247,15 @@ public class Bank extends Thread{
                 MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
         }
         
+        public boolean isOpen(){
+        	return isOpen;
+        }
+        
+        public void setOpen(boolean bool){
+        	isOpen = bool;
+        	
+        }
+        
         public void setObserver(Observer o){
         	log.addObserver(o);
         }
