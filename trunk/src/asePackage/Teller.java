@@ -6,12 +6,14 @@ import java.util.ArrayList;
  * @author Chris
  *
  */
-public class Teller {
+public class Teller extends Thread{
 	private int id;
 	private QueueManager qm;
 	private AccountManager accountManager;
 	private Queue customerInQueue;
 	private Log log;
+	private int tellerGenerationDelay;
+	private boolean bankIsClosed = false;
 	
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
@@ -24,6 +26,7 @@ public class Teller {
 		this.accountManager = accountManager;
 		this.log = log;
 		this.id = tellerID;
+		this.tellerGenerationDelay=600;
 	}
 	
 	/**
@@ -221,6 +224,31 @@ public class Teller {
 			log.addLogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
 		}
 		
+	}
+	public void run(){
+		while(!qm.isQueueEmpty() || !bankIsClosed) {
+			if (!qm.isQueueEmpty()){
+				getNextCustomer();
+				doTransaction();
+			}
+			try {
+				Thread.sleep(tellerGenerationDelay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void setBankIsClosed(boolean bankIsClosed) {
+		this.bankIsClosed = bankIsClosed;
+	}
+
+	public void setTellerGenerationDelay(int tellerGenerationDelay) {
+		this.tellerGenerationDelay = tellerGenerationDelay;
+	}
+
+	public int getTellerGenerationDelay() {
+		return tellerGenerationDelay;
 	}
 	
 }

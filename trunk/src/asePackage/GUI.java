@@ -120,4 +120,8 @@ public class GUI extends JFrame implements GuiWrapper
 		this.customerGenerationDelay = customerGenerationDelay;
 		this.sliderCustomer.setValue(customerGenerationDelay);
 	}
+	public void setTellerGenerationDelay(int tellerGenerationDelay) {
+		this.tellerGenerationDelay = tellerGenerationDelay;
+		this.sliderTeller.setValue(tellerGenerationDelay);
+	}
 }
