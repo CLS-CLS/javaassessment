@@ -11,8 +11,8 @@ import java.util.ArrayList;
  *
  */
 
-public class QueueManager {
-	private final static int FIRSTQUEUENUMBER=1;
+public class QueueManager{
+	private final static int FIRSTQUEUENUMBER = 1;
 	private ArrayList<Queue> customerQueue;
 	private int nextQueueNumber;
 	
@@ -68,4 +68,12 @@ public class QueueManager {
 	public int getNextNumber(){
 		return this.nextQueueNumber;
 	}
+	
+	public boolean containsCustomer(Customer cust){
+		for(Queue q:customerQueue){
+			if(q.getCustomer().equals(cust))return true;
+		}
+		return false;
+	}
+	
 }
