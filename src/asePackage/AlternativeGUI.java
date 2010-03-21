@@ -7,7 +7,7 @@ import java.util.Observable;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 
-class AlternativeGUI extends JFrame implements GuiWrapper
+class AlternativeGUI extends JFrame implements GuiControl
 {
 	JTextField custs, out, in;
 	JButton button;
