@@ -38,7 +38,7 @@ public class GUI extends JFrame implements GuiWrapper
 	static final int INIT_DELAY = 50;
 	private JSlider sliderCustomer;
 	private JSlider sliderTeller;
-	private Hashtable labelTable;
+	private Hashtable<Integer, JLabel> labelTable;
 	
 	public GUI()
 	{
@@ -64,12 +64,13 @@ public class GUI extends JFrame implements GuiWrapper
 		sliderTeller.setPaintTicks(true);
 
 		//Create the label table
-		labelTable = new Hashtable();
+		labelTable = new Hashtable<Integer, JLabel>();
 		labelTable.put(new Integer( 0 ), new JLabel("Slow"));
 		labelTable.put(new Integer( MAX_DELAY ), new JLabel("Fast"));
 		
 		sliderCustomer.setLabelTable(labelTable);
 		sliderTeller.setLabelTable(labelTable);
+		
 
 		sliderCustomer.setPaintLabels(true);
 		sliderTeller.setPaintLabels(true);
