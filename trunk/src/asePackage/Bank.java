@@ -207,6 +207,19 @@ public class Bank {
         return subList;
         }
         
+        private Customer pickRandomCustomer() {
+        	Customer result;
+        	boolean success=false;
+        	while(!success){
+        		int index = rndGen.nextInt(customers.size());
+       			if (containsCustomer(customers.get(index))==false) {
+       				result=customers.get(index);
+       				success=true;
+       			}
+        	}
+			return result;
+        }
+        
         
         public String getFinalReport() {
                 return log.toString();
