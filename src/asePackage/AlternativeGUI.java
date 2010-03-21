@@ -133,4 +133,14 @@ class AlternativeGUI extends JFrame implements GuiWrapper
 		
 	}
 
+	public void addCloseButtonListener(ActionListener al) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public JComponent getCloseButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
