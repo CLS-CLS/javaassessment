@@ -19,8 +19,10 @@ public class Controller {
 		super();
 		this.gui = gui;
 		this.bank = bank;
+		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.addRunButtonListener(new RunBankListener());
 		gui.addCustomerSliderListener(new CustomerSlideListener());
+		gui.addTellerSliderListener(new TellerSlideListener());
 		bank.setObserver(gui);
 	}
 	
@@ -40,9 +42,16 @@ public class Controller {
 			 JSlider source = (JSlider)e.getSource();
 		     int delay = (int)source.getValue();
 		     bank.setCustomerGenerationDelay(delay);
-		}
-		
+		}		
 	}
+	
+	class TellerSlideListener implements ChangeListener{
 
+		public void stateChanged(ChangeEvent e) {
+			 JSlider source = (JSlider)e.getSource();
+		     int delay = (int)source.getValue();
+		     //bank.setCustomerGenerationDelay(delay);
+		}		
+	}
 }
 
