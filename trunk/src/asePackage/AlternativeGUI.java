@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 
 class AlternativeGUI extends JFrame implements GuiWrapper
 {
@@ -110,6 +111,11 @@ class AlternativeGUI extends JFrame implements GuiWrapper
 	public JButton getRunButton() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void addCustomerSliderListener(ChangeListener cl) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
