@@ -210,7 +210,7 @@ public class LogEvent {
 	}
 	private String getCustomerDetails() {
 		String result;
-		result="Teller serves customer " + customer.getId() +
+		result="Teller " +tellerID + " serves customer " + customer.getId() +
 				" (" + customer.getFirstName() + ", " + customer.getLastName() + ")" +
 				"with queue number " + queueNumber;
 		

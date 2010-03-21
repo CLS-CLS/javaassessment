@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 400;
+	private static final int NUMBEROFTELLERS = 3;
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -23,7 +24,7 @@ public class Bank extends Thread{
 	private boolean isOpen = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
-	private Teller teller;
+	private Teller[] teller = new Teller[NUMBEROFTELLERS];
 	private ArrayList<Customer> customers;
 	private boolean proofOfAccurateTransactions = false;
 
@@ -45,8 +46,10 @@ public class Bank extends Thread{
 		qm = new QueueManager();
 		customers = new ArrayList<Customer>();
 		am = new AccountManager();
-
-		teller = new Teller(qm,am,log,1);
+		
+		for (int i = 0; i < NUMBEROFTELLERS; i++){
+			teller[i] = new Teller(qm,am,log,i+1);
+		}
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 		//proofOfAccurateTransactions should be set as true for full testing of//
 		//transactions                                                         //
@@ -217,7 +220,8 @@ public class Bank extends Thread{
 
 
 	public void run(){
-		teller.start();
+		for (int i = 0; i < NUMBEROFTELLERS ; i++)
+			teller[i].start();
 		while(isOpen || !qm.isQueueEmpty()){
 			if(isOpen) {
 				Customer customer = pickRandomCustomer();
@@ -257,10 +261,12 @@ public class Bank extends Thread{
 	}
 
 	public int getTellerGenerationDelay() {
-		return teller.getTellerGenerationDelay();
+		return teller[0].getTellerGenerationDelay();
 	}
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
-		teller.setTellerGenerationDelay(tellerGenerationDelay);
+		for (int i = 0; i <NUMBEROFTELLERS; i++){
+			teller[i].setTellerGenerationDelay(tellerGenerationDelay);
+		}
 	}
 
 	
