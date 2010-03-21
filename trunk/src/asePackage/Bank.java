@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Chris
  *
  */
-public class Bank {
+public class Bank extends Thread{
         /*
          * used to generate random numbers needed for creating random transactions
          * and pick random customers
@@ -19,6 +19,7 @@ public class Bank {
     /*
          * holds information about the customers in the queue
          */
+    	private boolean isOpen = false;
         private QueueManager qm;
         private Teller teller;
         private ArrayList<Customer> customers;
@@ -220,22 +221,28 @@ public class Bank {
 			return result;
         }
         
+        private void generateQueueElemet(Customer cust){
+        	ArrayList<Transaction> trans = generateTransactions(cust);
+        	qm.addQueueElement(cust, trans);
+        }
+        
+        
         
         public String getFinalReport() {
                 return log.toString();
         }
         
         
-        public void runBank(){
-        	if(proofOfAccurateTransactions == false)
-        		generateQueue();
-        	
-                while(!qm.isQueueEmpty()){
-                        teller.getNextCustomer();
-                        teller.doTransaction();
-                }
-        
-                MyUtilities.saveStringToFile(log.toString(), "log.txt");
+        public void run(){
+        		while(isOpen){
+        			Customer customer = pickRandomCustomer();
+        			generateQueueElemet(customer);
+        			if (!qm.isQueueEmpty()){
+	        			teller.getNextCustomer();
+	                    teller.doTransaction();
+        			}
+        		}
+        	    MyUtilities.saveStringToFile(log.toString(), "log.txt");
                 MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
                 MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
         }
