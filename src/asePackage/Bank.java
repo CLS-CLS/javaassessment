@@ -208,12 +208,10 @@ public class Bank extends Thread{
 
 
 	public void run(){
-		while(isOpen){
-			Customer customer = pickRandomCustomer();
-			generateQueueElement(customer);
-			if (!qm.isQueueEmpty()){
-				teller.getNextCustomer();
-				teller.doTransaction();
+		while(isOpen || !qm.isQueueEmpty()){
+			if(isOpen) {
+				Customer customer = pickRandomCustomer();
+				generateQueueElement(customer);
 			}
 			try {
 				Thread.sleep(customerGenerationDelay);
