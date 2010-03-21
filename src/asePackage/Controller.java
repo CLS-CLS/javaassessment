@@ -52,7 +52,7 @@ public class Controller {
 		public void stateChanged(ChangeEvent e) {
 			 JSlider source = (JSlider)e.getSource();
 		     int delay = (int)source.getValue();
-		     //bank.setCustomerGenerationDelay(delay);
+		     bank.setTellerGenerationDelay(delay);
 		}		
 	}
 }

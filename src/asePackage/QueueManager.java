@@ -43,8 +43,11 @@ public class QueueManager{
 	 * @param transactions customer's list of transactions
 	 */
 	public void addQueueElement(Customer element, ArrayList<Transaction> transactions) {
+		synchronized(this) {
+
 		this.customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
 		this.nextQueueNumber++;
+		}
 	}
 	/**
 	 * Will remove the first inserted element from the queue. It returns an queue element containing
@@ -52,7 +55,9 @@ public class QueueManager{
 	 * @return a queue object
 	 */
 	public Queue removeQueueElement() {
-		return this.customerQueue.remove(0);
+		synchronized(this) {
+			return this.customerQueue.remove(0);
+		}
 	}
 	/**
 	 * Tests if the queue is empty or not.
@@ -70,10 +75,12 @@ public class QueueManager{
 	}
 	
 	public boolean containsCustomer(Customer cust){
+		synchronized(this) {
 		for(Queue q:customerQueue){
 			if(q.getCustomer().equals(cust))return true;
 		}
 		return false;
+		}
 	}
 	
 }

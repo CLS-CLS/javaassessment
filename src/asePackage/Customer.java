@@ -19,6 +19,7 @@ public class Customer extends Person
 	public static final int MAXACCOUNTS = 2;
 	private int id;
 	private ArrayList <Account> accountList;
+	private boolean insideBank;
 
 
 	/**
@@ -32,6 +33,7 @@ public class Customer extends Person
 		super(firstName,lastName);
 		this.id = id;
 		accountList = new ArrayList<Account>();
+		setInsideBank(false);
 	}
 	/**
 	 * Gets the identification number of the customer
@@ -149,6 +151,12 @@ public class Customer extends Person
 	 * @see java.lang.Object#toString()
 	 */
 
+	public void setInsideBank(boolean insideBank) {
+		this.insideBank = insideBank;
+	}
+	public boolean isInsideBank() {
+		return insideBank;
+	}
 	/**
 	 * Returns all the information regarding the class into a string
 	 */
