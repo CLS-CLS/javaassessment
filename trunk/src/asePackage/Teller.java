@@ -239,6 +239,10 @@ public class Teller extends Thread{
 			}
 		}
 	}
+	
+	
+		
+	
 
 	public void setBankIsClosed(boolean bankIsClosed) {
 		this.bankIsClosed = bankIsClosed;

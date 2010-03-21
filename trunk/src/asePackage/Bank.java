@@ -229,6 +229,7 @@ public class Bank extends Thread{
 				e.printStackTrace();
 			}
 		}
+		
 		MyUtilities.saveStringToFile(log.toString(), "log.txt");
 		MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
 		MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
