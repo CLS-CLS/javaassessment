@@ -118,4 +118,14 @@ class AlternativeGUI extends JFrame implements GuiWrapper
 		
 	}
 
+	public void addTellerSliderListener(ChangeListener cl) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setCustomerGenerationDelay(int customerGenerationDelay) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

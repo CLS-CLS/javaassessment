@@ -35,8 +35,9 @@ public class GUI extends JFrame implements GuiWrapper
 	private JButton button = new JButton("Run Bank");
 	
 	static final int MIN_DELAY = 0;
-	static final int MAX_DELAY = 100;
-	static final int INIT_DELAY = 50;
+	static final int MAX_DELAY = 2000;
+	private int customerGenerationDelay;
+	private int tellerGenerationDelay;
 	private JSlider sliderCustomer;
 	private JSlider sliderTeller;
 	private Hashtable<Integer, JLabel> labelTable;
@@ -50,24 +51,24 @@ public class GUI extends JFrame implements GuiWrapper
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		
-		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, INIT_DELAY);
-		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, INIT_DELAY);
+		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
+		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
 		
 		panel.add(scrollPane);
 		panel.add(button);
 		panel.add(sliderCustomer);
 		panel.add(sliderTeller);
 		
-		sliderCustomer.setMajorTickSpacing(10);
+		sliderCustomer.setMajorTickSpacing(50);
 		sliderCustomer.setPaintTicks(true);
 		
-		sliderTeller.setMajorTickSpacing(10);
+		sliderTeller.setMajorTickSpacing(50);
 		sliderTeller.setPaintTicks(true);
 
 		//Create the label table
 		labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer( 0 ), new JLabel("Slow"));
-		labelTable.put(new Integer( MAX_DELAY ), new JLabel("Fast"));
+		labelTable.put(new Integer( 0 ), new JLabel("Fast"));
+		labelTable.put(new Integer( MAX_DELAY ), new JLabel("Slow"));
 		
 		sliderCustomer.setLabelTable(labelTable);
 		sliderTeller.setLabelTable(labelTable);
@@ -100,6 +101,9 @@ public class GUI extends JFrame implements GuiWrapper
 	public void addCustomerSliderListener(ChangeListener cl){
 		sliderCustomer.addChangeListener(cl);
 	}
+	public void addTellerSliderListener(ChangeListener cl){
+		sliderTeller.addChangeListener(cl);
+	}
 
 	public void update(Observable o, Object arg) {
 		textArea.append((String)arg + "\n");
@@ -109,5 +113,11 @@ public class GUI extends JFrame implements GuiWrapper
 
 	public JButton getRunButton() {
 		return button;
+	}
+
+
+	public void setCustomerGenerationDelay(int customerGenerationDelay) {
+		this.customerGenerationDelay = customerGenerationDelay;
+		this.sliderCustomer.setValue(customerGenerationDelay);
 	}
 }

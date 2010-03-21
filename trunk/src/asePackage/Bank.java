@@ -19,7 +19,6 @@ public class Bank extends Thread{
 	/*
 	 * holds information about the customers in the queue
 	 */
-	static final int INITIALDELAY = 200; 
 	private boolean isOpen = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
@@ -39,7 +38,7 @@ public class Bank extends Thread{
 
 
 	public Bank(){
-		customerGenerationDelay=INITIALDELAY;
+		customerGenerationDelay=400;
 		rndGen = new Random();
 		log = new Log();
 		qm = new QueueManager();
