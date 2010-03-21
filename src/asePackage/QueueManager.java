@@ -13,6 +13,7 @@ import java.util.Observable;
  */
 
 public class QueueManager extends Observable{
+	private final static int MAXIMUMNUMBEROFELEMENTS = 10;
 	private final static int FIRSTQUEUENUMBER = 1;
 	private ArrayList<Queue> customerQueue;
 	private int nextQueueNumber;
@@ -39,15 +40,26 @@ public class QueueManager extends Observable{
 	/**
 	 * Will add a new element in the queue. The new queue element it created starting from
 	 * the customer information and his transaction list. The method will allocate automatically
-	 * the next available queue number to the new element.
+	 * the next available queue number to the new element. If the queue size is equal to the 
+	 * MAXIMUMNUMNEROFELEMENTS then the element will not be added immediately. Instead it will be
+	 * added when the queue size falls less than the MAXIMUMNUMNEROFELEMENTS.
 	 * @param element customer details
 	 * @param transactions customer's list of transactions
 	 */
 	public synchronized void addQueueElement(Customer element, ArrayList<Transaction> transactions) {
+		if (customerQueue.size()==MAXIMUMNUMBEROFELEMENTS){
+			try{
+				wait();
+			}catch (InterruptedException e){
+				System.out.println("Oops");
+				e.printStackTrace();
+			}
+		}
 		customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
 		nextQueueNumber++;
 		setChanged();
 		notifyObservers(queueCustomersToString());
+		notifyAll();
 	}
 	/**
 	 * Will remove the first inserted element from the queue. It returns an queue element containing
@@ -55,9 +67,18 @@ public class QueueManager extends Observable{
 	 * @return a queue object
 	 */
 	public synchronized Queue removeQueueElement() {
+		if(customerQueue.isEmpty()){
+			try{
+				wait();
+			}catch (InterruptedException e) {
+				System.out.println("Oops ");
+				e.printStackTrace();
+			}
+		}
 		Queue returnQueu = customerQueue.remove(0);
 		setChanged();
 		notifyObservers(queueCustomersToString());
+		notifyAll();
 		return returnQueu;
 	}
 	/**
