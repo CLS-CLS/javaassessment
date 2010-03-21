@@ -36,9 +36,6 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JPanel buttonPanel; 
 	private JPanel displayPanel;
 	private JTextArea textArea;
-	/**
-	 * it is used to put scroll bars in the textArea
-	 */
 	private JScrollPane	scrollPane;   
 	private JButton startButton = new JButton("Run Bank");
 	private JButton closeButton = new JButton("Close Bank");
@@ -55,23 +52,38 @@ public class GUI extends JFrame implements GuiControl,Observer
 	public GUI()
 	{
 		super("Simple GUI Stage 1");
+		
+		createButtonPanel();
+		createDisplayPanel();
+		
+		this.getContentPane().add(buttonPanel);
+		this.getContentPane().add(displayPanel);
+		this.pack();  //used to put all the items in the correct position
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
+														//the close button(x) is pressed
+	}
+
+
+	private void createDisplayPanel() {
+		displayPanel = new JPanel();
+		textArea = new JTextArea(35, 45);
+		textArea.setEditable(false);
+		scrollPane = new JScrollPane(textArea);
+		displayPanel.add(scrollPane);
+	}
+
+
+	private void createButtonPanel() {
 		JPanel helperPanel = new JPanel();
 		helperPanel.setLayout(new GridLayout(0,1,0,3));
 		helperPanel.setBackground(Color.LIGHT_GRAY);
 		setLayout(new FlowLayout());
-		
-		displayPanel = new JPanel();
 		buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.LIGHT_GRAY);
 		buttonPanel.setLayout(new BorderLayout(3,3));
-		textArea = new JTextArea(35, 45);
-		textArea.setEditable(false);
-		scrollPane = new JScrollPane(textArea);
-		
 		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
 		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
-		
-		displayPanel.add(scrollPane);
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
 		helperPanel.add(pauseButton);
@@ -96,15 +108,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 		sliderCustomer.setPaintLabels(true);
 		sliderTeller.setPaintLabels(true);
-
 		
-		
-		this.getContentPane().add(buttonPanel);
-		this.getContentPane().add(displayPanel);
-		this.pack();  //used to put all the items in the correct position
-		this.setVisible(true);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
-														//the close button(x) is pressed
 	}
 
 
