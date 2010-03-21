@@ -1,6 +1,7 @@
 package asePackage;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Queue Manager class is has the purpose to administrate the content elements of the program queue.
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  *
  */
 
-public class QueueManager{
+public class QueueManager extends Observable{
 	private final static int FIRSTQUEUENUMBER = 1;
 	private ArrayList<Queue> customerQueue;
 	private int nextQueueNumber;
@@ -42,28 +43,28 @@ public class QueueManager{
 	 * @param element customer details
 	 * @param transactions customer's list of transactions
 	 */
-	public void addQueueElement(Customer element, ArrayList<Transaction> transactions) {
-		synchronized(this) {
-
-		this.customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
-		this.nextQueueNumber++;
-		}
+	public synchronized void addQueueElement(Customer element, ArrayList<Transaction> transactions) {
+		customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
+		nextQueueNumber++;
+		setChanged();
+		notifyObservers(queueCustomersToString());
 	}
 	/**
 	 * Will remove the first inserted element from the queue. It returns an queue element containing
 	 * information about the customer and his transactions.
 	 * @return a queue object
 	 */
-	public Queue removeQueueElement() {
-		synchronized(this) {
-			return this.customerQueue.remove(0);
-		}
+	public synchronized Queue removeQueueElement() {
+		Queue returnQueu = customerQueue.remove(0);
+		setChanged();
+		notifyObservers(queueCustomersToString());
+		return returnQueu;
 	}
 	/**
 	 * Tests if the queue is empty or not.
 	 * @return queue status by true or false
 	 */
-	public boolean isQueueEmpty(){
+	public synchronized boolean isQueueEmpty(){
 		return this.customerQueue.isEmpty();
 	}
 	/**
@@ -74,13 +75,23 @@ public class QueueManager{
 		return this.nextQueueNumber;
 	}
 	
-	public boolean containsCustomer(Customer cust){
+	public synchronized boolean containsCustomer(Customer cust){
 		synchronized(this) {
 		for(Queue q:customerQueue){
 			if(q.getCustomer().equals(cust))return true;
 		}
 		return false;
 		}
+	}
+	
+	public String queueCustomersToString(){
+		String str = new String();
+		int counter = 0;
+		for (Queue q : customerQueue){
+			counter ++;
+			str += counter +") " + q.getCustomer().toString() + "\n";
+		}
+		return str;
 	}
 	
 }

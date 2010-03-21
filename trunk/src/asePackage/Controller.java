@@ -3,6 +3,8 @@ package asePackage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -25,6 +27,7 @@ public class Controller {
 		gui.addRunButtonListener(new RunBankListener());
 		gui.addCustomerSliderListener(new CustomerSlideListener());
 		gui.addTellerSliderListener(new TellerSlideListener());
+		gui.addCloseButtonListener(new CloseButtonListener());
 		bank.setObserver(gui);
 	}
 	
@@ -33,7 +36,7 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(true);
 			bank.start();
-			gui.getRunButton().setEnabled(false);
+			((JComponent)e.getSource()).setEnabled(false);
 			
 		}
 	}
@@ -54,6 +57,17 @@ public class Controller {
 		     int delay = (int)source.getValue();
 		     bank.setTellerGenerationDelay(delay);
 		}		
+	}
+	
+	class CloseButtonListener implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+			bank.setOpen(false);
+		    ((JComponent)e.getSource()).setEnabled(false);
+		    
+			
+		}
+		
 	}
 }
 

@@ -10,6 +10,7 @@ import java.util.Random;
  *
  */
 public class Bank extends Thread{
+	private static final int INITIALCUSTOMERDELAY = 400;
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -38,7 +39,7 @@ public class Bank extends Thread{
 
 
 	public Bank(){
-		customerGenerationDelay=400;
+		customerGenerationDelay= INITIALCUSTOMERDELAY;
 		rndGen = new Random();
 		log = new Log();
 		qm = new QueueManager();
@@ -53,6 +54,14 @@ public class Bank extends Thread{
 
 		loadData(proofOfAccurateTransactions);
 
+	}
+
+	public static int getInitialcustomerdelay() {
+		return INITIALCUSTOMERDELAY;
+	}
+
+	public QueueManager getQm() {
+		return qm;
 	}
 
 	private void loadData(boolean proofOfAccurateTransactions) {
@@ -252,4 +261,6 @@ public class Bank extends Thread{
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
 		teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
+
+	
 }

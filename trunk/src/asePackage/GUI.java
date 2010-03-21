@@ -1,18 +1,24 @@
 package asePackage;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 import java.util.Observable;
 
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -26,13 +32,16 @@ public class GUI extends JFrame implements GuiWrapper
 /**
  * The panel containing the button and the textArea
  */
-	private JPanel panel; 
+	private JPanel buttonPanel; 
+	private JPanel displayPanel;
 	private JTextArea textArea;
 	/**
 	 * it is used to put scroll bars in the textArea
 	 */
 	private JScrollPane	scrollPane;   
-	private JButton button = new JButton("Run Bank");
+	private JButton startButton = new JButton("Run Bank");
+	private JButton closeButton = new JButton("Close Bank");
+	private JToggleButton pauseButton = new JToggleButton("Pause");
 	
 	static final int MIN_DELAY = 0;
 	static final int MAX_DELAY = 2000;
@@ -45,8 +54,15 @@ public class GUI extends JFrame implements GuiWrapper
 	public GUI()
 	{
 		super("Simple GUI Stage 1");
-		panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
+		JPanel helperPanel = new JPanel();
+		helperPanel.setLayout(new GridLayout(0,1,0,3));
+		helperPanel.setBackground(Color.LIGHT_GRAY);
+		setLayout(new FlowLayout());
+		
+		displayPanel = new JPanel();
+		buttonPanel = new JPanel();
+		buttonPanel.setBackground(Color.LIGHT_GRAY);
+		buttonPanel.setLayout(new BorderLayout(3,3));
 		textArea = new JTextArea(35, 45);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
@@ -54,10 +70,13 @@ public class GUI extends JFrame implements GuiWrapper
 		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
 		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
 		
-		panel.add(scrollPane);
-		panel.add(button);
-		panel.add(sliderCustomer);
-		panel.add(sliderTeller);
+		displayPanel.add(scrollPane);
+		helperPanel.add(startButton);
+		helperPanel.add(closeButton);
+		helperPanel.add(pauseButton);
+		buttonPanel.add(helperPanel,BorderLayout.WEST);
+		buttonPanel.add(sliderCustomer,BorderLayout.CENTER);
+		buttonPanel.add(sliderTeller,BorderLayout.EAST );
 		
 		sliderCustomer.setMajorTickSpacing(50);
 		sliderCustomer.setPaintTicks(true);
@@ -78,7 +97,9 @@ public class GUI extends JFrame implements GuiWrapper
 		sliderTeller.setPaintLabels(true);
 
 		
-		this.getContentPane().add(panel);
+		
+		this.getContentPane().add(buttonPanel);
+		this.getContentPane().add(displayPanel);
 		this.pack();  //used to put all the items in the correct position
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
@@ -95,7 +116,7 @@ public class GUI extends JFrame implements GuiWrapper
 
  
 	public void addRunButtonListener(ActionListener al) {
-		button.addActionListener(al);
+		startButton.addActionListener(al);
 	}
 	
 	public void addCustomerSliderListener(ChangeListener cl){
@@ -109,13 +130,11 @@ public class GUI extends JFrame implements GuiWrapper
 		textArea.append((String)arg + "\n");
 		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
-
-
-	public JButton getRunButton() {
-		return button;
+	
+	public void addCloseButtonListener (ActionListener al){
+		closeButton.addActionListener(al);
 	}
-
-
+	
 	public void setCustomerGenerationDelay(int customerGenerationDelay) {
 		this.customerGenerationDelay = customerGenerationDelay;
 		this.sliderCustomer.setValue(customerGenerationDelay);
@@ -124,4 +143,6 @@ public class GUI extends JFrame implements GuiWrapper
 		this.tellerGenerationDelay = tellerGenerationDelay;
 		this.sliderTeller.setValue(tellerGenerationDelay);
 	}
+	
+	
 }
