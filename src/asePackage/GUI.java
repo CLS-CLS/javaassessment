@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeListener;
 
 /**
  * Graphical User Interface (GUI) that shows the results of the bank session 
@@ -95,10 +96,14 @@ public class GUI extends JFrame implements GuiWrapper
 	public void addRunButtonListener(ActionListener al) {
 		button.addActionListener(al);
 	}
-
+	
+	public void addCustomerSliderListener(ChangeListener cl){
+		sliderCustomer.addChangeListener(cl);
+	}
 
 	public void update(Observable o, Object arg) {
 		textArea.append((String)arg + "\n");
+		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 
 

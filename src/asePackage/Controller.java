@@ -3,6 +3,10 @@ package asePackage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 public class Controller {
 	
 	GuiWrapper gui;
@@ -16,6 +20,7 @@ public class Controller {
 		this.gui = gui;
 		this.bank = bank;
 		gui.addRunButtonListener(new RunBankListener());
+		gui.addCustomerSliderListener(new CustomerSlideListener());
 		bank.setObserver(gui);
 	}
 	
@@ -25,9 +30,19 @@ public class Controller {
 			bank.setOpen(true);
 			bank.start();
 			gui.getRunButton().setEnabled(false);
+			
 		}
 	}
 	
+	class CustomerSlideListener implements ChangeListener{
+
+		public void stateChanged(ChangeEvent e) {
+			 JSlider source = (JSlider)e.getSource();
+		     int delay = (int)source.getValue();
+		     bank.setCustomerGenerationDelay(delay);
+		}
+		
+	}
 
 }
 
