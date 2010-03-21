@@ -208,11 +208,11 @@ public class Bank {
         }
         
         private Customer pickRandomCustomer() {
-        	Customer result;
+        	Customer result = null;
         	boolean success=false;
         	while(!success){
         		int index = rndGen.nextInt(customers.size());
-       			if (containsCustomer(customers.get(index))==false) {
+       			if (qm.containsCustomer(customers.get(index))==false) {
        				result=customers.get(index);
        				success=true;
        			}
