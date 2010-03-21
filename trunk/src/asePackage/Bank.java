@@ -183,7 +183,7 @@ public class Bank extends Thread{
 		boolean success=false;
 		while(!success){
 			int index = rndGen.nextInt(customers.size());
-			if (qm.containsCustomer(customers.get(index))==false) {
+			if (qm.containsCustomer(customers.get(index))==false && !customers.get(index).isInsideBank()) {
 				result=customers.get(index);
 				success=true;
 			}
@@ -197,7 +197,7 @@ public class Bank extends Thread{
 		qm.addQueueElement(cust, trans);
 		currentQueueNumber=qm.getNextNumber()-1;
 		log.addLogEvent(currentQueueNumber, cust, LogEvent.ENTERQUEUE);
-
+		cust.setInsideBank(true);
 	}
 
 

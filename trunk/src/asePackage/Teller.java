@@ -26,7 +26,7 @@ public class Teller extends Thread{
 		this.accountManager = accountManager;
 		this.log = log;
 		this.id = tellerID;
-		this.tellerGenerationDelay=600;
+		this.tellerGenerationDelay=500;
 	}
 	
 	/**
@@ -64,6 +64,7 @@ public class Teller extends Thread{
 			}
 			
 			generateReport(isValidTransaction,transaction);
+			currentCustomer.setInsideBank(false);
 		}
 	}
 	

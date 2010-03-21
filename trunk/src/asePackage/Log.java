@@ -36,7 +36,7 @@ public class Log extends Observable {
 	 * @param status indicates if the transaction was successful of failed
 	 * @param errorMessage stores the message for the case of error
 	 */
-	public void addLogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status, String errorMessage) {
+	public synchronized void addLogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status, String errorMessage) {
 		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status, errorMessage);
 		logEventList.add(le);
 		setChanged();
