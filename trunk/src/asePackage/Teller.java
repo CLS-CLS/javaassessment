@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  */
 public class Teller {
-	private int tellerID;
+	private int id;
 	private QueueManager qm;
 	private AccountManager accountManager;
 	private Queue customerInQueue;
@@ -23,7 +23,7 @@ public class Teller {
 		this.qm = qm;
 		this.accountManager = accountManager;
 		this.log = log;
-		this.tellerID = tellerID;
+		this.id = tellerID;
 	}
 	
 	/**
@@ -49,7 +49,6 @@ public class Teller {
 			if (transaction.getType().equals(Transaction.WITHDRAWAL))
 				isValidTransaction = doWithdrawal(transaction,currentCustomer);
 				
-		
 			if(transaction.getType().equals(Transaction.OPEN))
 				isValidTransaction = openAccount(transaction, currentCustomer);
 				
@@ -216,10 +215,10 @@ public class Teller {
 	 */
 	private void generateReport(boolean isValidTransaction, Transaction transaction) {
 		if(isValidTransaction){
-			log.addLogEvent(customerInQueue.getQueueNumber(), tellerID, customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
+			log.addLogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
 		}
 		else{
-			log.addLogEvent(customerInQueue.getQueueNumber(), tellerID, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
+			log.addLogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
 		}
 		
 	}

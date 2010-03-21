@@ -23,6 +23,7 @@ public class Controller {
 	class RunBankListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			bank.runBank();
+			gui.getRunButton().setEnabled(false);
 		}
 	}
 
