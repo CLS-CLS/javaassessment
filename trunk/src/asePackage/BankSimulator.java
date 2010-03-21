@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class BankSimulator {
 	public static void main(String[] args){
-		GuiWrapper gui;
+		GuiControl gui;
 		Bank bank = new Bank();
 		//Ask the user to select the desired GUI
 		int result = JOptionPane.showOptionDialog(null,"Selece GUI","Selector",0,

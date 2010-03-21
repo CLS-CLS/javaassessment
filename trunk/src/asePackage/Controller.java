@@ -11,13 +11,13 @@ import javax.swing.event.ChangeListener;
 
 public class Controller {
 	
-	GuiWrapper gui;
+	GuiControl gui;
 	Bank bank;
 	/**
 	 * @param gui
 	 * @param bank
 	 */
-	public Controller(GuiWrapper gui, Bank bank) {
+	public Controller(GuiControl gui, Bank bank) {
 		super();
 		this.gui = gui;
 		this.bank = bank;

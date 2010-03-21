@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 import java.util.Observable;
+import java.util.Observer;
 
 
 import javax.swing.BoxLayout;
@@ -27,7 +28,7 @@ import javax.swing.event.ChangeListener;
  *
  */
 
-public class GUI extends JFrame implements GuiWrapper
+public class GUI extends JFrame implements GuiControl,Observer
 {
 /**
  * The panel containing the button and the textArea

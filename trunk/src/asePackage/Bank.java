@@ -261,12 +261,10 @@ public class Bank extends Thread{
 	}
 
 	public int getTellerGenerationDelay() {
-		return teller[0].getTellerGenerationDelay();
+		return Teller.getTellerGenerationDelay();
 	}
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
-		for (int i = 0; i <NUMBEROFTELLERS; i++){
-			teller[i].setTellerGenerationDelay(tellerGenerationDelay);
-		}
+		Teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
 
 	

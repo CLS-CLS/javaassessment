@@ -12,7 +12,7 @@ public class Teller extends Thread{
 	private AccountManager accountManager;
 	private Queue customerInQueue;
 	private Log log;
-	private int tellerGenerationDelay;
+	private static int tellerGenerationDelay;
 	private boolean bankIsClosed = false;
 	
 	/*
@@ -248,11 +248,11 @@ public class Teller extends Thread{
 		this.bankIsClosed = bankIsClosed;
 	}
 
-	public void setTellerGenerationDelay(int tellerGenerationDelay) {
-		this.tellerGenerationDelay = tellerGenerationDelay;
+	public static void  setTellerGenerationDelay(int tellerGenerationDelay) {
+		Teller.tellerGenerationDelay = tellerGenerationDelay;
 	}
 
-	public int getTellerGenerationDelay() {
+	public static int getTellerGenerationDelay() {
 		return tellerGenerationDelay;
 	}
 	
