@@ -37,7 +37,7 @@ public class Controller {
 			bank.setOpen(true);
 			bank.start();
 			((JComponent)e.getSource()).setEnabled(false);
-			
+			gui.getCloseButton().setEnabled(true);
 		}
 	}
 	
@@ -64,10 +64,7 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(false);
 		    ((JComponent)e.getSource()).setEnabled(false);
-		    
-			
 		}
-		
 	}
 }
 

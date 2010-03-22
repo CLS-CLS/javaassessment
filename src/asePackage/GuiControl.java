@@ -2,6 +2,8 @@ package asePackage;
 
 import java.awt.event.ActionListener;
 import java.util.Observer;
+
+import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 
 public interface GuiControl extends Observer{
@@ -13,4 +15,6 @@ public interface GuiControl extends Observer{
 
 	public void setCustomerGenerationDelay(int customerGenerationDelay);
 	public void setTellerGenerationDelay(int tellerGenerationDelay);
+	
+	public JComponent getCloseButton();
 }
