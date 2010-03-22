@@ -139,6 +139,9 @@ public class GUI extends JFrame implements GuiControl,Observer
 	public void addCloseButtonListener (ActionListener al){
 		closeButton.addActionListener(al);
 	}
+	public void addPauseButtonListener (ActionListener al){
+		pauseButton.addActionListener(al);
+	}
 	
 	public void setCustomerGenerationDelay(int customerGenerationDelay) {
 		this.customerGenerationDelay = customerGenerationDelay;

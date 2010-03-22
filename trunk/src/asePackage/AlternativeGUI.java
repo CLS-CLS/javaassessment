@@ -143,4 +143,9 @@ class AlternativeGUI extends JFrame implements GuiControl
 		return null;
 	}
 
+	public void addPauseButtonListener(ActionListener al) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -20,7 +20,7 @@ public class LogEvent {
 	private int tellerID;	
 	private double oldBalance;
 	private double newBalance;
-	private double ammount;
+	private double amount;
 	private String status;
 	private String message;
 	
@@ -48,7 +48,7 @@ public class LogEvent {
 		this.transactionType=transaction.getType();
 		this.tellerID=tellerID;
 		this.status=status;
-		this.ammount=transaction.getAmmount();
+		this.amount=transaction.getAmount();
 		this.newBalance=transaction.getAccount().getBalance();
 		this.message=message;
 		
@@ -57,9 +57,9 @@ public class LogEvent {
 		}
 		else 
 			if(this.transactionType.equals(Transaction.DEPOSIT) || this.transactionType.equals(Transaction.OPEN))
-				this.oldBalance=this.newBalance-transaction.getAmmount();
+				this.oldBalance=this.newBalance-transaction.getAmount();
 			else
-				this.oldBalance=this.newBalance+transaction.getAmmount();
+				this.oldBalance=this.newBalance+transaction.getAmount();
 	}
 	/**
 	 * The constructor for the case in which we have receive
@@ -76,7 +76,7 @@ public class LogEvent {
 		this.transactionType="";
 		this.tellerID=1;
 		this.status=status;
-		this.ammount=0;
+		this.amount=0;
 		this.newBalance=-1;
 		this.oldBalance=-1;
 		this.message="";
@@ -144,7 +144,7 @@ public class LogEvent {
 	 * @return money amount
 	 */
 	public double getTransactionSum(){
-		return this.ammount;
+		return this.amount;
 	}
 	/**
 	 * Provides the status of the transaction from the event or if the current event is the entering of the customer in the queue.
@@ -194,18 +194,18 @@ public class LogEvent {
 		String result;
 		result="\n  - Transaction: ";
 		if(transactionType.equals(Transaction.OPEN))
-			result+= transactionType + " account with initial amount: £" + ammount;
+			result+= transactionType + " account with initial amount: £" + amount;
 		else
 			if(transactionType.equals(Transaction.CLOSE))
 				result+= transactionType + " account number " + accountID;
 			else
 				if(transactionType.equals(Transaction.DEPOSIT))
-					result+= transactionType + " to account " + accountID + " £" + ammount;
+					result+= transactionType + " to account " + accountID + " £" + amount;
 				else
 					if(transactionType.equals(Transaction.VIEWBALANCE))
 						result+= transactionType + " for account " + accountID;
 					else
-						result+= transactionType + " from account " + accountID + " £" + ammount;
+						result+= transactionType + " from account " + accountID + " £" + amount;
 		return result;
 	}
 	private String getCustomerDetails() {
@@ -223,7 +223,7 @@ public class LogEvent {
 			result=" (New Balance: £" + newBalance + " from Old Balance: £" + oldBalance + ")";
 		else
 			if(transactionType.equals(Transaction.CLOSE))
-				result=" (Old Balance: £" + oldBalance + " with Final Withdrawed Sum: £" + ammount + ")";
+				result=" (Old Balance: £" + oldBalance + " with Final Withdrawed Sum: £" + amount + ")";
 			else
 				if(transactionType.equals(Transaction.VIEWBALANCE))
 					result=" (Balance: £" + newBalance + ")";

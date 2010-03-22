@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -187,5 +188,12 @@ public class MyUtilities<E> {
 		}
 		saveStringToFile(result, fileName);
 	}
+	
+    public static double roundDouble(double initialValue)
+    {
+        BigDecimal bd = new BigDecimal(initialValue);
+        BigDecimal bd_round = bd.setScale( 2, BigDecimal.ROUND_HALF_UP );
+        return bd_round.doubleValue();
+    }
 
 }

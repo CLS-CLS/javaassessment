@@ -28,6 +28,7 @@ public class Controller {
 		gui.addCustomerSliderListener(new CustomerSlideListener());
 		gui.addTellerSliderListener(new TellerSlideListener());
 		gui.addCloseButtonListener(new CloseButtonListener());
+		gui.addPauseButtonListener(new PauseButtonListener());
 		bank.setObserver(gui);
 	}
 	
@@ -64,6 +65,20 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(false);
 		    ((JComponent)e.getSource()).setEnabled(false);
+		}
+	}
+	
+	class PauseButtonListener implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+			if(bank.isPaused()) {
+				bank.setPaused(false);
+				((JComponent)e.getSource()).setEnabled(true);
+			}
+			else {
+				bank.setPaused(true);
+				((JComponent)e.getSource()).setEnabled(true);
+			}
 		}
 	}
 }

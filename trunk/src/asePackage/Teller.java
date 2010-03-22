@@ -14,6 +14,7 @@ public class Teller extends Thread{
 	private Log log;
 	private static int tellerGenerationDelay;
 	private boolean bankIsClosed = false;
+	private static boolean bankIsPaused = false;
 	
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
@@ -86,7 +87,7 @@ public class Teller extends Thread{
 			Account account = transaction.getAccount();
 			//sets the ammount to be withdrawed in the transaction so it can be used as
 			//info for the log 
-			transaction.setAmmount(account.getBalance());
+			transaction.setAmount(account.getBalance());
 			//first withdraws all the money from the account
 			if(account.getBalance()>0) 
 				account.withdrawMoney(account.getBalance());
@@ -96,20 +97,24 @@ public class Teller extends Thread{
 	}
    
 	private boolean openAccount(Transaction transaction, Customer currentCustomer) {
+		double amount;
 		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
 		if(isValidTransaction){
 			Account account = accountManager.addAccount(currentCustomer);
 			transaction.setAccount(account);
-			account.depositMoney(transaction.getAmmount());
+			amount=MyUtilities.roundDouble(transaction.getAmount());
+			account.depositMoney(amount);
 		    
 		}
 		return isValidTransaction;
 	}
 
 	private boolean doWithdrawal(Transaction transaction, Customer currentCustomer) {
+		double amount;
 		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
 		if (isValidTransaction){
-			transaction.getAccount().withdrawMoney(transaction.getAmmount());
+			amount=MyUtilities.roundDouble(transaction.getAmount());
+			transaction.getAccount().withdrawMoney(amount);
 		}
 		return isValidTransaction;
 	}
@@ -125,13 +130,14 @@ public class Teller extends Thread{
 	 * @return true if the transaction is done, false if the transactions is not valid.
 	 */
 	private boolean doDeposit(Transaction transaction, Customer currentCustomer) {
+		double amount;
 		boolean isValidTransaction = 
 			isValidTransaction(transaction,currentCustomer);
 		
 		if (isValidTransaction){
 			Account account = transaction.getAccount();
-			double money = transaction.getAmmount();
-			account.depositMoney(money);
+			amount=MyUtilities.roundDouble(transaction.getAmount());
+			account.depositMoney(amount);
 		}
 		
 		return isValidTransaction;
@@ -167,12 +173,12 @@ public class Teller extends Thread{
 					errorMessage = "Not owner of the account";
 					isValid = false;
 				}
-				else if(transaction.getAccount().getBalance()< transaction.getAmmount() ){
+				else if(transaction.getAccount().getBalance()< transaction.getAmount() ){
 					errorMessage = "There is not enough money";
 					isValid = false;
 					
 				}
-				else if (log.getCustomerWithdrawalTotal(currentCustomer)+ transaction.getAmmount()> 200){
+				else if (log.getCustomerWithdrawalTotal(currentCustomer)+ transaction.getAmount()> 200){
 					errorMessage = "Reached total withdrawal limit ";
 					isValid = false;
 				}
@@ -228,7 +234,7 @@ public class Teller extends Thread{
 	}
 	public void run(){
 		while(!qm.isQueueEmpty() || !bankIsClosed) {
-			if (!qm.isQueueEmpty()){
+			if (!qm.isQueueEmpty() && !bankIsPaused){
 				getNextCustomer();
 				doTransaction();
 			}
@@ -254,6 +260,14 @@ public class Teller extends Thread{
 
 	public static int getTellerGenerationDelay() {
 		return tellerGenerationDelay;
+	}
+
+	public static void setBankIsPaused(boolean bankIsPaused) {
+		Teller.bankIsPaused = bankIsPaused;
+	}
+
+	public static boolean isBankIsPaused() {
+		return bankIsPaused;
 	}
 	
 }
