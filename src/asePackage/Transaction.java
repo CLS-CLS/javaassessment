@@ -21,19 +21,19 @@ public class Transaction {
 	public static final String VIEWBALANCE = TRANSACTIONTYPE[4];
 	private String transactionType;
 	private Account account;
-	private double ammount;
+	private double amount;
 	/**
 	 * @param transactionType 
 	 * @param account The account which the transactions will take place.
-	 * @param ammount The amount of money is going to be transacted.
+	 * @param amount The amount of money is going to be transacted.
 	 * @throws exception if the transactionType is not a valid string.
 	 */
-	public Transaction(String transactionType, Account account, double ammount)throws Exception{
-		if (!isValidTransaction(transactionType,account, ammount))throw new Exception("The type " + transactionType + 
-				"with the account ^^ " + "and amount of" + ammount + "is notApplicable" );
+	public Transaction(String transactionType, Account account, double amount)throws Exception{
+		if (!isValidTransaction(transactionType,account, amount))throw new Exception("The type " + transactionType + 
+				"with the account ^^ " + "and amount of" + amount + "is notApplicable" );
 		this.transactionType = transactionType;
 		this.account = account;
-		this.ammount = ammount;
+		this.amount = amount;
 	}
 	
 	/**
@@ -63,11 +63,11 @@ public class Transaction {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	public double getAmmount() {
-		return ammount;
+	public double getAmount() {
+		return amount;
 	}
-	public void setAmmount(double ammount) {
-		this.ammount = ammount;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 	
 	public static Transaction generateRandomTransaction(Account account,Random rnd){

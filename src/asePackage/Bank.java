@@ -22,6 +22,7 @@ public class Bank extends Thread{
 	 * holds information about the customers in the queue
 	 */
 	private boolean isOpen = false;
+	private boolean isPaused = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
 	private Teller[] teller = new Teller[NUMBEROFTELLERS];
@@ -223,7 +224,7 @@ public class Bank extends Thread{
 		for (int i = 0; i < NUMBEROFTELLERS ; i++)
 			teller[i].start();
 		while(isOpen || !qm.isQueueEmpty()){
-			if(isOpen) {
+			if(isOpen && !isPaused) {
 				Customer customer = pickRandomCustomer();
 				generateQueueElement(customer);
 			}
@@ -265,6 +266,15 @@ public class Bank extends Thread{
 	}
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
 		Teller.setTellerGenerationDelay(tellerGenerationDelay);
+	}
+
+	public void setPaused(boolean isPaused) {
+		this.isPaused = isPaused;
+		Teller.setBankIsPaused(isPaused);
+	}
+
+	public boolean isPaused() {
+		return isPaused;
 	}
 
 	

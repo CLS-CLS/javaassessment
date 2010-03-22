@@ -10,7 +10,7 @@ public class BankSimulator {
 		GuiControl gui;
 		Bank bank = new Bank();
 		//Ask the user to select the desired GUI
-		int result = JOptionPane.showOptionDialog(null,"Selece GUI","Selector",0,
+		int result = JOptionPane.showOptionDialog(null,"Select GUI","Selector",0,
 				JOptionPane.INFORMATION_MESSAGE,null,new String[]{"Original GUI","Alternative GUI"},0);
 		if (result == 0 ) {
 			gui = new GUI();
@@ -18,13 +18,13 @@ public class BankSimulator {
 			Point p = ((JFrame)gui).getLocation();
 			qGui.setLocation(p.x + ((JFrame)gui).getWidth(), p.y);
 			new QueueController(qGui,bank);
+			new Controller(gui, bank);
 		}
 		else
-			gui = new AlternativeGUI();
-
-		
-		new Controller(gui, bank);
-
+			if(result == 1) {
+				gui = new AlternativeGUI();
+				new Controller(gui, bank);
+			}
 	}
 }
 
