@@ -41,10 +41,10 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JButton closeButton = new JButton("Close Bank");
 	private JToggleButton pauseButton = new JToggleButton("Pause");
 	
-	static final int MIN_DELAY = 0;
-	static final int MAX_DELAY = 2000;
-	private int customerGenerationDelay;
-	private int tellerGenerationDelay;
+	static final int MIN_DELAY = 10;
+	static final int MAX_DELAY = 4000;
+	private int customerGenerationDelay = 500;
+	private int tellerGenerationDelay = 500;
 	private JSlider sliderCustomer;
 	private JSlider sliderTeller;
 	private Hashtable<Integer, JLabel> labelTable;
@@ -91,15 +91,15 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.add(sliderCustomer,BorderLayout.CENTER);
 		buttonPanel.add(sliderTeller,BorderLayout.EAST );
 		
-		sliderCustomer.setMajorTickSpacing(50);
+		sliderCustomer.setMajorTickSpacing(100);
 		sliderCustomer.setPaintTicks(true);
 		
-		sliderTeller.setMajorTickSpacing(50);
+		sliderTeller.setMajorTickSpacing(100);
 		sliderTeller.setPaintTicks(true);
 
 		//Create the label table
 		labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer( 0 ), new JLabel("Fast"));
+		labelTable.put(new Integer( MIN_DELAY ), new JLabel("Fast"));
 		labelTable.put(new Integer( MAX_DELAY ), new JLabel("Slow"));
 		
 		sliderCustomer.setLabelTable(labelTable);
