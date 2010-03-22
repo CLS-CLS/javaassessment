@@ -21,6 +21,7 @@ public class Controller {
 		super();
 		this.gui = gui;
 		this.bank = bank;
+		
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
 
@@ -29,6 +30,9 @@ public class Controller {
 		gui.addTellerSliderListener(new TellerSlideListener());
 		gui.addCloseButtonListener(new CloseButtonListener());
 		bank.setObserver(gui);
+		TellerGui tg = new TellerGui(1);
+//		bank.setMyObserver(tg);
+		bank.setObserver(tg);
 	}
 	
 	
