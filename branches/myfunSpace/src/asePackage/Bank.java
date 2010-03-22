@@ -267,5 +267,9 @@ public class Bank extends Thread{
 		Teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
 
+//	public void setMyObserver(MyObserver tg) {
+//		log.addMyObserver(tg);		
+//	}
+
 	
 }
