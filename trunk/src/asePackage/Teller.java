@@ -26,7 +26,7 @@ public class Teller extends Thread{
 		this.accountManager = accountManager;
 		this.log = log;
 		this.id = tellerID;
-		this.tellerGenerationDelay=500;
+		this.tellerGenerationDelay=2000;
 	}
 	
 	/**

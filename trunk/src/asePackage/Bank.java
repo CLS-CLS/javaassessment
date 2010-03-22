@@ -10,7 +10,7 @@ import java.util.Random;
  *
  */
 public class Bank extends Thread{
-	private static final int INITIALCUSTOMERDELAY = 400;
+	private static final int INITIALCUSTOMERDELAY = 700;
 	private static final int NUMBEROFTELLERS = 3;
 	/*
 	 * used to generate random numbers needed for creating random transactions
