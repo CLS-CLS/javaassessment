@@ -52,7 +52,6 @@ public class GUI extends JFrame implements GuiControl,Observer
 	public GUI()
 	{
 		super("Simple GUI Stage 1");
-		
 		createButtonPanel();
 		createDisplayPanel();
 		
@@ -86,6 +85,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
+		closeButton.setEnabled(false);
 		helperPanel.add(pauseButton);
 		buttonPanel.add(helperPanel,BorderLayout.WEST);
 		buttonPanel.add(sliderCustomer,BorderLayout.CENTER);
@@ -149,5 +149,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 		this.sliderTeller.setValue(tellerGenerationDelay);
 	}
 	
+	public JComponent getCloseButton(){
+		return closeButton;
+	}
 	
 }
