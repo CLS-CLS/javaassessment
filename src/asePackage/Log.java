@@ -10,7 +10,7 @@ import java.util.Observable;
  * @author Ioan
  */
 
-public class Log extends Observable {
+public class Log extends Observable{
 	private ArrayList<LogEvent> logEventList;
 	
 	/**
@@ -40,7 +40,8 @@ public class Log extends Observable {
 		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status, errorMessage);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(le.toString());
+		notifyObservers(new String[]{""+tellerID,le.toString()});
+		//myUpdate(new String[]{""+tellerID,le.toString()});
 	}
 	/**
 	 * Add a new log event to the event list for the case we don't know or we don't know all the normal transaction information.
@@ -53,7 +54,8 @@ public class Log extends Observable {
 		LogEvent le = new LogEvent(queueNumber, customer, status);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(le.toString());
+		notifyObservers(new String[]{"",le.toString()});
+		//myUpdate(new String[]{"",le.toString()});
 	}
 	/*
 	 * NEW
@@ -63,6 +65,8 @@ public class Log extends Observable {
 		logEventList.add(le);
 		setChanged();
 		notifyObservers(le.toString());
+		//myUpdate(new String[]{"theEnd",""});
+		
 	}
 	
 	/**
@@ -156,4 +160,18 @@ public class Log extends Observable {
 		result+="Total Withdrawn Money : £" + getWithdrawalTotal() + "\n";
 		return result;
 	}
+//	public void addMyObserver(MyObserver tg) {
+//		mo = tg;
+//	}
+//	
+//	public void myUpdate(Object o){
+//		mo.myUpdate(o);
+//	}
+//	MyObserver mo = new MyObserver() {
+//		
+//		public void myUpdate(Object o) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//	};;;
 }

@@ -132,7 +132,11 @@ public class GUI extends JFrame implements GuiControl,Observer
 	}
 
 	public void update(Observable o, Object arg) {
-		textArea.append((String)arg + "\n");
+		if (arg instanceof String[]){
+			String[] str = (String[]) arg;
+			textArea.append(str[1] + "\n");
+		}
+		else textArea.append((String)arg + "\n");
 		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 	
