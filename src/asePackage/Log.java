@@ -71,7 +71,7 @@ public class Log extends Observable {
 	 * he cannot enter twice in the queue.
 	 * @return number of served customers
 	 */
-	public synchronized int getProcessedCustomersNumber() {
+	public  int getProcessedCustomersNumber() {
 		int queueNumber=0;
 		
 		for(int i=0;i<logEventList.size();i++) {		
@@ -86,7 +86,7 @@ public class Log extends Observable {
 	 * was done from a successful transaction.
 	 * @return total deposited money
 	 */
-	public synchronized double getDepositTotal(){
+	public double getDepositTotal(){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
