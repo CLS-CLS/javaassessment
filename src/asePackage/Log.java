@@ -135,7 +135,7 @@ public class Log extends Observable {
 	 * @return a report string
 	 */
 	@Override
-	public synchronized String toString() {
+	public String toString() {
 		StringBuilder result = new StringBuilder();
 						
 		for(int i=0;i<logEventList.size();i++) {
