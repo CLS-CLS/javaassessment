@@ -49,7 +49,7 @@ public class Log extends Observable {
 	 * @param status indicates that the customer has enter the queue or if the transaction
 	 * was successful or not
 	 */
-	public void addLogEvent(int queueNumber, Customer customer, String status) {
+	public synchronized void addLogEvent(int queueNumber, Customer customer, String status) {
 		LogEvent le = new LogEvent(queueNumber, customer, status);
 		logEventList.add(le);
 		setChanged();
@@ -58,7 +58,7 @@ public class Log extends Observable {
 	/*
 	 * NEW
 	 */
-	public void addLogEvent(String status, String message) {
+	public synchronized void addLogEvent(String status, String message) {
 		LogEvent le = new LogEvent(status, message);
 		logEventList.add(le);
 		setChanged();
@@ -71,7 +71,7 @@ public class Log extends Observable {
 	 * he cannot enter twice in the queue.
 	 * @return number of served customers
 	 */
-	public int getProcessedCustomersNumber() {
+	public synchronized int getProcessedCustomersNumber() {
 		int queueNumber=0;
 		
 		for(int i=0;i<logEventList.size();i++) {		
@@ -86,7 +86,7 @@ public class Log extends Observable {
 	 * was done from a successful transaction.
 	 * @return total deposited money
 	 */
-	public double getDepositTotal(){
+	public synchronized double getDepositTotal(){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
@@ -102,7 +102,7 @@ public class Log extends Observable {
 	 * was done from a successful transaction.
 	 * @return total withdrawn money
 	 */
-	public double getWithdrawalTotal(){
+	public synchronized double getWithdrawalTotal(){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
@@ -119,7 +119,7 @@ public class Log extends Observable {
 	 * @param customer the customer that needs his total
 	 * @return total withdrawn money
 	 */
-	public double getCustomerWithdrawalTotal(Customer customer){
+	public synchronized double getCustomerWithdrawalTotal(Customer customer){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
@@ -135,16 +135,15 @@ public class Log extends Observable {
 	 * @return a report string
 	 */
 	@Override
-	public String toString() {
-		String result="";
-		int i;
-		
-		for(i=0;i<logEventList.size();i++) {
-			result+=logEventList.get(i)+"\n";
+	public synchronized String toString() {
+		StringBuilder result = new StringBuilder();
+						
+		for(int i=0;i<logEventList.size();i++) {
+			result.append(logEventList.get(i)+"\n");
 		}
-		result+=getStatistics();
+		result.append(getStatistics());
 		addLogEvent(LogEvent.MESSAGE,this.getStatistics());
-		return result;
+		return result.toString();
 	}
 	
 	private String getStatistics() {

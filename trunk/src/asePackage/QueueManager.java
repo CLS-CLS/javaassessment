@@ -67,19 +67,25 @@ public class QueueManager extends Observable{
 	 * @return a queue object
 	 */
 	public synchronized Queue removeQueueElement() {
+		Queue returnQueue = null;
 		if(customerQueue.isEmpty()){
 			try{
+				System.out.println(Thread.currentThread().getName() + " waits");
 				wait();
 			}catch (InterruptedException e) {
 				System.out.println("Oops ");
 				e.printStackTrace();
 			}
 		}
-		Queue returnQueu = customerQueue.remove(0);
-		setChanged();
-		notifyObservers(queueCustomersToString());
-		notifyAll();
-		return returnQueu;
+		else{
+			System.out.println(Thread.currentThread().getName() +" accesses cq" );
+			returnQueue = customerQueue.remove(0);
+			setChanged();
+			notifyObservers(queueCustomersToString());
+			notifyAll();
+			
+		}
+		return returnQueue;
 	}
 	/**
 	 * Tests if the queue is empty or not.
@@ -97,15 +103,14 @@ public class QueueManager extends Observable{
 	}
 	
 	public synchronized boolean containsCustomer(Customer cust){
-		synchronized(this) {
 		for(Queue q:customerQueue){
 			if(q.getCustomer().equals(cust))return true;
 		}
 		return false;
-		}
+		
 	}
 	
-	public String queueCustomersToString(){
+	public synchronized String queueCustomersToString(){
 		String str = new String();
 		int counter = 0;
 		for (Queue q : customerQueue){

@@ -23,6 +23,7 @@ public class Teller extends Thread{
 	
 		
 	public Teller(QueueManager qm, AccountManager accountManager, Log log, int tellerID) {
+		super("T("+tellerID+")");
 		this.qm = qm;
 		this.accountManager = accountManager;
 		this.log = log;
@@ -33,7 +34,7 @@ public class Teller extends Thread{
 	/**
 	 * gets the next customer from the queue.
 	 */
-	public synchronized void getNextCustomer(){
+	public  void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
     }
 	
@@ -41,6 +42,7 @@ public class Teller extends Thread{
 	 * Makes all the transactions that the customers wants to do if they are valid
 	 */
 	public void doTransaction(){
+		if (customerInQueue==null)return;
 		Customer currentCustomer = customerInQueue.getCustomer();
 		ArrayList<Transaction> transactions = customerInQueue.getTransactionList();
 		boolean isValidTransaction;
@@ -211,9 +213,6 @@ public class Teller extends Thread{
 					isValid = false;
 				}
 		}
-		
-		
-	
 		return isValid;
 	}
 	
@@ -233,8 +232,8 @@ public class Teller extends Thread{
 		
 	}
 	public void run(){
-		while(!qm.isQueueEmpty() || !bankIsClosed) {
-			if (!qm.isQueueEmpty() && !bankIsPaused){
+		while(!bankIsClosed || !qm.isQueueEmpty() ) {
+			if (!bankIsPaused){
 				getNextCustomer();
 				doTransaction();
 			}

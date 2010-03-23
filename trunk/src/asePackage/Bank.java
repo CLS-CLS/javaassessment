@@ -221,12 +221,15 @@ public class Bank extends Thread{
 
 
 	public void run(){
+		int counter = 0;
 		for (int i = 0; i < NUMBEROFTELLERS ; i++)
 			teller[i].start();
 		while(isOpen || !qm.isQueueEmpty()){
 			if(isOpen && !isPaused) {
 				Customer customer = pickRandomCustomer();
 				generateQueueElement(customer);
+				counter ++;
+				System.out.println(counter);
 			}
 			try {
 				Thread.sleep(customerGenerationDelay);
