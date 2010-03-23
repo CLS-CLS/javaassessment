@@ -9,16 +9,10 @@ import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
-
-import com.sun.java.swing.plaf.motif.MotifBorders.BevelBorder;
-
-import sun.awt.image.ToolkitImage;
 
 public class TellerGui extends JFrame {
 	
