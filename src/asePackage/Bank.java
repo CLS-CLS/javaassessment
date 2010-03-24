@@ -266,6 +266,14 @@ public class Bank extends Thread{
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
 		Teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
+	
+	public int[] getTellersId(){
+		int[] tellersId = new int[teller.length];
+		for (int i=0;i<teller.length;i++){
+			tellersId[i] = teller[i].getTellerId();
+		}
+		return tellersId;
+	}
 
 //	public void setMyObserver(MyObserver tg) {
 //		log.addMyObserver(tg);		

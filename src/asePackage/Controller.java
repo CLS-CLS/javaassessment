@@ -30,9 +30,16 @@ public class Controller {
 		gui.addTellerSliderListener(new TellerSlideListener());
 		gui.addCloseButtonListener(new CloseButtonListener());
 		bank.setObserver(gui);
-		TellerGui tg = new TellerGui(1);
+		
+		int[] tellersId = bank.getTellersId();
+		for (int i = 0; i<tellersId.length;i++){
+			TellerGui tg = new TellerGui(tellersId[i]);
+			bank.setObserver(tg);
+			tg.setLocation(700, i*tg.getHeight());
+		}
+		
 //		bank.setMyObserver(tg);
-		bank.setObserver(tg);
+		
 	}
 	
 	

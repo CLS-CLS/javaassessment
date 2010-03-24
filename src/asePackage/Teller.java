@@ -29,6 +29,14 @@ public class Teller extends Thread{
 		tellerGenerationDelay = 2000;
 	}
 	
+	public int getTellerId() {
+		return id;
+	}
+
+	public void setTellerId(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * gets the next customer from the queue.
 	 */
