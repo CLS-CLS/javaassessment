@@ -54,7 +54,7 @@ public class Log extends Observable{
 		LogEvent le = new LogEvent(queueNumber, customer, status);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(new String[]{"",le.toString()});
+		notifyObservers(new String[]{"JOIN",le.toString()});
 		//myUpdate(new String[]{"",le.toString()});
 	}
 	/*
@@ -64,7 +64,7 @@ public class Log extends Observable{
 		LogEvent le = new LogEvent(status, message);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(le.toString());
+		notifyObservers(new String[]{"STATS",le.toString()});
 		//myUpdate(new String[]{"theEnd",""});
 		
 	}

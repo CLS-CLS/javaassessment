@@ -55,10 +55,11 @@ public class TellerGui extends JFrame implements Observer {
 		controlPanel.setBackground(new Color(153,204,204));
 		displayPanel.setBorder(BorderFactory.createBevelBorder(0));
 		setResizable(false);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		displayPanel.add(ta);
 		add(displayPanel,BorderLayout.NORTH);
 		add(controlPanel,BorderLayout.SOUTH);
+		
 		
 		pack();
 		glassPane = new CustomGlassPane(this.getWidth(), this.getHeight());
@@ -117,30 +118,15 @@ public class TellerGui extends JFrame implements Observer {
 	}
 
 	public void update(Observable arg0, Object arg1) {
-		//if(!isClosed){
-			if (arg1 instanceof String[]){
-				String[] str = (String[])arg1;
-				if(str[0].equals("1") || str[0].equals("2"))
-	//				ta.setText(str[1]);
-					isClosed = true;
-					glassPane.setVisible(true);
-					glassPane.animate();
-			}
-	//	}
-		
-		
-	}
-
-	public void myUpdate(Object o) {
-		if (!isClosed){
-			String[] str = (String[])o;
-			ta.setText(str[1]);
-			if(str[0].equals("theEnd")){
+		String[] str = (String[])arg1;
+		if (str[0].equals(""+id))ta.setText(str[1]);
+		else if (str[0].equals("STATS")){
+				isClosed = true;
 				glassPane.setVisible(true);
 				glassPane.animate();
-				isClosed = true;
-				System.err.println("asdasdasdasd");
+				
 			}
-		}
 	}
+
+	
 }
