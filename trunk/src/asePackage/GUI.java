@@ -5,13 +5,18 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 
 
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,10 +53,11 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JSlider sliderCustomer;
 	private JSlider sliderTeller;
 	private Hashtable<Integer, JLabel> labelTable;
+	private JCheckBox queueCheckbox;
 	
 	public GUI()
 	{
-		super("Simple GUI Stage 1");
+		super("GUI Stage 2");
 		createButtonPanel();
 		createDisplayPanel();
 		
@@ -83,6 +89,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.setLayout(new BorderLayout(3,3));
 		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
 		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
+		queueCheckbox = new	JCheckBox("Queue Window");
+		
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
 		closeButton.setEnabled(false);
@@ -90,6 +98,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.add(helperPanel,BorderLayout.WEST);
 		buttonPanel.add(sliderCustomer,BorderLayout.CENTER);
 		buttonPanel.add(sliderTeller,BorderLayout.EAST );
+		buttonPanel.add(queueCheckbox,BorderLayout.SOUTH);
 		
 		sliderCustomer.setMajorTickSpacing(100);
 		sliderCustomer.setPaintTicks(true);
@@ -105,9 +114,12 @@ public class GUI extends JFrame implements GuiControl,Observer
 		sliderCustomer.setLabelTable(labelTable);
 		sliderTeller.setLabelTable(labelTable);
 		
-
 		sliderCustomer.setPaintLabels(true);
 		sliderTeller.setPaintLabels(true);
+		
+		queueCheckbox.setMnemonic(KeyEvent.VK_C); 
+		queueCheckbox.setSelected(true);
+
 		
 	}
 
@@ -154,6 +166,12 @@ public class GUI extends JFrame implements GuiControl,Observer
 	
 	public JComponent getCloseButton(){
 		return closeButton;
+	}
+
+
+	public void addQueueCheckboxListener(ItemListener il) {
+		queueCheckbox.addItemListener(il);
+		
 	}
 	
 }

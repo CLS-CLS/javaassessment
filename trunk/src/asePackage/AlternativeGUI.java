@@ -2,6 +2,7 @@ package asePackage;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.Observable;
 
 import javax.swing.*;
@@ -144,6 +145,11 @@ class AlternativeGUI extends JFrame implements GuiControl
 	}
 
 	public void addPauseButtonListener(ActionListener al) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addQueueCheckboxListener(ItemListener event) {
 		// TODO Auto-generated method stub
 		
 	}

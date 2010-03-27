@@ -18,7 +18,7 @@ public class BankSimulator {
 			Point p = ((JFrame)gui).getLocation();
 			qGui.setLocation(p.x + ((JFrame)gui).getWidth(), p.y);
 			new QueueController(qGui,bank);
-			new Controller(gui, bank);
+			new Controller(gui, bank, qGui);
 		}
 		else
 			if(result == 1) {
