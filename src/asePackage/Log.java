@@ -50,21 +50,29 @@ public class Log extends Observable {
 	 * was successful or not
 	 */
 	public synchronized void addLogEvent(int queueNumber, Customer customer, String status) {
-		LogEvent le = new LogEvent(queueNumber, customer, status);
-		logEventList.add(le);
+		LogEvent logEvent = new LogEvent(queueNumber, customer, status);
+		logEventList.add(logEvent);
 		setChanged();
-		notifyObservers(le.toString());
+		notifyObservers(logEvent.toString());
 	}
 	/*
 	 * NEW
 	 */
 	public synchronized void addLogEvent(String status, String message) {
-		LogEvent le = new LogEvent(status, message);
-		logEventList.add(le);
+		LogEvent logEvent = new LogEvent(status, message);
+		logEventList.add(logEvent);
 		setChanged();
-		notifyObservers(le.toString());
+		notifyObservers(logEvent.toString());
 	}
-	
+	/*
+	 * NEW
+	 */
+	public synchronized void addLogEvent(LogEvent logEvent) {
+		logEventList.add(logEvent);
+
+		setChanged();
+		notifyObservers(logEvent.toString());
+	}
 	/**
 	 * The purpose of this method is to return the total number of unique customers 
 	 * served in the program execution time. A customer can be served for just a queue number,
