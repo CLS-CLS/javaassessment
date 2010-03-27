@@ -1,13 +1,9 @@
 package asePackage;
 
-import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -17,32 +13,15 @@ public class Controller {
 	
 	GuiControl gui;
 	Bank bank;
-	QueueGui queueGui;
 	/**
 	 * @param gui
 	 * @param bank
 	 */
-	public Controller(GuiControl gui, Bank bank, QueueGui queueGui) {
-		super();
-		this.gui = gui;
-		this.bank = bank;
-		this.queueGui = queueGui;
-		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
-		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
-
-		gui.addRunButtonListener(new RunBankListener());
-		gui.addCustomerSliderListener(new CustomerSlideListener());
-		gui.addTellerSliderListener(new TellerSlideListener());
-		gui.addCloseButtonListener(new CloseButtonListener());
-		gui.addPauseButtonListener(new PauseButtonListener());
-		gui.addQueueCheckboxListener(new QueueCheckboxListener());
-		bank.setObserver(gui);
-	}
-	
 	public Controller(GuiControl gui, Bank bank) {
 		super();
 		this.gui = gui;
 		this.bank = bank;
+		
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
 
@@ -52,6 +31,8 @@ public class Controller {
 		gui.addCloseButtonListener(new CloseButtonListener());
 		gui.addPauseButtonListener(new PauseButtonListener());
 		bank.setObserver(gui);
+		bank.setObserver(gui.getQueueGui());
+
 	}
 	
 	
@@ -100,19 +81,6 @@ public class Controller {
 			else {
 				bank.setPaused(true);
 				((JComponent)e.getSource()).setEnabled(true);
-			}
-		}
-	}
-	
-	class QueueCheckboxListener implements ItemListener{
-		public void itemStateChanged(ItemEvent e) {
-			if(e.getStateChange() == ItemEvent.DESELECTED) {
-				queueGui.setVisible(false);
-				((JCheckBox)e.getSource()).setSelected(false);
-			}
-			else {
-				queueGui.setVisible(true);
-				((JCheckBox)e.getSource()).setSelected(true);
 			}
 		}
 	}

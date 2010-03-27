@@ -40,7 +40,7 @@ public class Log extends Observable {
 		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status, errorMessage);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(le.toString());
+		notifyObservers(new String[]{"TRANS",le.toString()});
 	}
 	/**
 	 * Add a new log event to the event list for the case we don't know or we don't know all the normal transaction information.
@@ -50,36 +50,28 @@ public class Log extends Observable {
 	 * was successful or not
 	 */
 	public synchronized void addLogEvent(int queueNumber, Customer customer, String status) {
-		LogEvent logEvent = new LogEvent(queueNumber, customer, status);
-		logEventList.add(logEvent);
+		LogEvent le = new LogEvent(queueNumber, customer, status);
+		logEventList.add(le);
 		setChanged();
-		notifyObservers(logEvent.toString());
+		notifyObservers(new String[]{"JOINS",le.toString()});
 	}
 	/*
 	 * NEW
 	 */
 	public synchronized void addLogEvent(String status, String message) {
-		LogEvent logEvent = new LogEvent(status, message);
-		logEventList.add(logEvent);
+		LogEvent le = new LogEvent(status, message);
+		logEventList.add(le);
 		setChanged();
-		notifyObservers(logEvent.toString());
+		notifyObservers(new String[]{"STATS",le.toString()});
 	}
-	/*
-	 * NEW
-	 */
-	public synchronized void addLogEvent(LogEvent logEvent) {
-		logEventList.add(logEvent);
-
-		setChanged();
-		notifyObservers(logEvent.toString());
-	}
+	
 	/**
 	 * The purpose of this method is to return the total number of unique customers 
 	 * served in the program execution time. A customer can be served for just a queue number,
 	 * he cannot enter twice in the queue.
 	 * @return number of served customers
 	 */
-	public  int getProcessedCustomersNumber() {
+	public synchronized int getProcessedCustomersNumber() {
 		int queueNumber=0;
 		
 		for(int i=0;i<logEventList.size();i++) {		
@@ -94,7 +86,7 @@ public class Log extends Observable {
 	 * was done from a successful transaction.
 	 * @return total deposited money
 	 */
-	public double getDepositTotal(){
+	public synchronized double getDepositTotal(){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
@@ -143,7 +135,7 @@ public class Log extends Observable {
 	 * @return a report string
 	 */
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		StringBuilder result = new StringBuilder();
 						
 		for(int i=0;i<logEventList.size();i++) {

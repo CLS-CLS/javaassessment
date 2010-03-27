@@ -5,18 +5,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 
 
-import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,22 +40,24 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JButton startButton = new JButton("Run Bank");
 	private JButton closeButton = new JButton("Close Bank");
 	private JToggleButton pauseButton = new JToggleButton("Pause");
+	private QueueGui queueGui;
 	
-	static final int MIN_DELAY = 10;
+
+	static final int MIN_DELAY = 100;
 	static final int MAX_DELAY = 4000;
 	private int customerGenerationDelay = 500;
 	private int tellerGenerationDelay = 500;
 	private JSlider sliderCustomer;
 	private JSlider sliderTeller;
 	private Hashtable<Integer, JLabel> labelTable;
-	private JCheckBox queueCheckbox;
 	
 	public GUI()
 	{
-		super("GUI Stage 2");
+		super("Simple GUI Stage 1");
 		createButtonPanel();
 		createDisplayPanel();
 		
+		queueGui = new QueueGui();
 		this.getContentPane().add(buttonPanel);
 		this.getContentPane().add(displayPanel);
 		this.pack();  //used to put all the items in the correct position
@@ -72,7 +69,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 	private void createDisplayPanel() {
 		displayPanel = new JPanel();
-		textArea = new JTextArea(30, 45);
+		textArea = new JTextArea(35, 45);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		displayPanel.add(scrollPane);
@@ -89,8 +86,6 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.setLayout(new BorderLayout(3,3));
 		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
 		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
-		queueCheckbox = new	JCheckBox("Queue Window");
-		
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
 		closeButton.setEnabled(false);
@@ -98,7 +93,6 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.add(helperPanel,BorderLayout.WEST);
 		buttonPanel.add(sliderCustomer,BorderLayout.CENTER);
 		buttonPanel.add(sliderTeller,BorderLayout.EAST );
-		buttonPanel.add(queueCheckbox,BorderLayout.SOUTH);
 		
 		sliderCustomer.setMajorTickSpacing(100);
 		sliderCustomer.setPaintTicks(true);
@@ -114,12 +108,9 @@ public class GUI extends JFrame implements GuiControl,Observer
 		sliderCustomer.setLabelTable(labelTable);
 		sliderTeller.setLabelTable(labelTable);
 		
+
 		sliderCustomer.setPaintLabels(true);
 		sliderTeller.setPaintLabels(true);
-		
-		queueCheckbox.setMnemonic(KeyEvent.VK_C); 
-		queueCheckbox.setSelected(true);
-
 		
 	}
 
@@ -144,7 +135,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 	}
 
 	public void update(Observable o, Object arg) {
-		textArea.append((String)arg + "\n");
+		String[] str = (String[])arg;
+		textArea.append(str[1] + "\n");
 		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 	
@@ -169,9 +161,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 	}
 
 
-	public void addQueueCheckboxListener(ItemListener il) {
-		queueCheckbox.addItemListener(il);
-		
+	public QueueGui getQueueGui() {
+		return queueGui;
 	}
 	
 }

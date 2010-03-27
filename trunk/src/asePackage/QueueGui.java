@@ -17,7 +17,7 @@ public class QueueGui extends JFrame implements Observer{
 		super("Customers in Queue");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		textArea = new JTextArea(31, 16);
+		textArea = new JTextArea(20, 15);
 		scrollPane = new JScrollPane(textArea);
 		panel = new JPanel();
 		panel.add(scrollPane);
@@ -25,18 +25,21 @@ public class QueueGui extends JFrame implements Observer{
 		add(panel);
 		pack();
 		setVisible(true);
-	}	
+	}
+		
 	
 	public static void main(String[] args) {
 		new QueueGui();
 	}
 
-	public void toggleVisible(boolean state) {
-			panel.setVisible(state);
-	}
+
+
 
 	public void update(Observable o, Object arg) {
-		textArea.setText((String)arg);
+		String[] str = (String[])arg;
+		if(str[0].equals("JOINS")){
+			textArea.setText(str[1]);
+		}
 	}
 
 }
