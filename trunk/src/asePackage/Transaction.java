@@ -70,27 +70,33 @@ public class Transaction {
 		this.amount = amount;
 	}
 	
-	public static Transaction generateRandomTransaction(Account account,Random rnd){
+	public static Transaction generateRandomTransaction(Account account,Random rnd, boolean owner){
 		int randomInt = rnd.nextInt(12);
 		String transactionType =new String();
 		double amount = 0;
-		if(randomInt==0 || account==null){
-			transactionType = Transaction.OPEN;
-			amount = rnd.nextInt(1000);
+		if(owner==true) {
+			if(randomInt==0 || account==null){
+				transactionType = Transaction.OPEN;
+				amount = rnd.nextInt(1000);
+			}
+			else if(randomInt==1){
+				transactionType = Transaction.CLOSE;
+			}
+			else if(randomInt >= 2 && randomInt < 6){
+				transactionType = Transaction.DEPOSIT;
+				amount = rnd.nextInt(1000);
+			}
+			else if(randomInt >= 6 && randomInt <10){
+				transactionType = Transaction.WITHDRAWAL;
+				amount = rnd.nextInt(201);
+			}
+			else if (randomInt >=10){
+				transactionType = Transaction.VIEWBALANCE;
+			}
 		}
-		else if(randomInt==1){
-			transactionType = Transaction.CLOSE;
-		}
-		else if(randomInt >= 2 && randomInt < 6){
+		else {
 			transactionType = Transaction.DEPOSIT;
 			amount = rnd.nextInt(1000);
-		}
-		else if(randomInt >= 6 && randomInt <10){
-			transactionType = Transaction.WITHDRAWAL;
-			amount = rnd.nextInt(201);
-		}
-		else if (randomInt >=10){
-			transactionType = Transaction.VIEWBALANCE;
 		}
 		
 		Transaction trans = null;
