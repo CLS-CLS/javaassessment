@@ -72,7 +72,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 	private void createDisplayPanel() {
 		displayPanel = new JPanel();
-		textArea = new JTextArea(35, 45);
+		textArea = new JTextArea(30, 45);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		displayPanel.add(scrollPane);
