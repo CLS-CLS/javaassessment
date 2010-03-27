@@ -1,12 +1,13 @@
 package asePackage;
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * 
  * @author Chris
  *
  */
-public class Teller extends Thread{
+public class Teller extends Observable implements Runnable{
 	private int id;
 	private QueueManager qm;
 	private AccountManager accountManager;
@@ -23,7 +24,7 @@ public class Teller extends Thread{
 	
 		
 	public Teller(QueueManager qm, AccountManager accountManager, Log log, int tellerID) {
-		super("T("+tellerID+")");
+		//super("T("+tellerID+")");
 		this.qm = qm;
 		this.accountManager = accountManager;
 		this.log = log;
@@ -34,7 +35,7 @@ public class Teller extends Thread{
 	/**
 	 * gets the next customer from the queue.
 	 */
-	public  void getNextCustomer(){
+	public void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
     }
 	
@@ -198,8 +199,7 @@ public class Teller extends Thread{
 		//in case the transaction is to deposit money or close the account or 
 		// view balance, it checks if the customer owns the account
 		
-		if(transaction.getType().equals(Transaction.DEPOSIT) || 
-				transaction.getType().equals(Transaction.CLOSE) ||
+		if(transaction.getType().equals(Transaction.CLOSE) ||
 				transaction.getType().equals(Transaction.VIEWBALANCE)){
 			
 			//in case the account was closed during the bank session we give a 
@@ -212,7 +212,17 @@ public class Teller extends Thread{
 					errorMessage = "Not owner of the account";
 					isValid = false;
 				}
+			
+		if(transaction.getType().equals(Transaction.DEPOSIT)) {
+			if(transaction.getAccount().isClosed()==true){
+				errorMessage = "Account is closed";
+				isValid = false;
+			}
 		}
+	}
+		
+		
+	
 		return isValid;
 	}
 	
@@ -223,12 +233,16 @@ public class Teller extends Thread{
 	 * @param transaction
 	 */
 	private void generateReport(boolean isValidTransaction, Transaction transaction) {
+		LogEvent logEvent;
 		if(isValidTransaction){
-			log.addLogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
+			logEvent = new LogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.SUCCESS,errorMessage);
 		}
 		else{
-			log.addLogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
+			logEvent = new LogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
 		}
+		log.addLogEvent(logEvent);
+		notifyObservers(logEvent.toString());
+		//notifyAll();
 		
 	}
 	public void run(){
@@ -243,10 +257,7 @@ public class Teller extends Thread{
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	
-		
+	}		
 	
 
 	public void setBankIsClosed(boolean bankIsClosed) {
