@@ -37,7 +37,7 @@ public class TellerOriginalGui extends JFrame implements Observer{
 	}
 
 	public void update(Observable o, Object arg) {
-		textArea.setText((String)arg);
+		textArea.append((String)arg + "\n");
 	}
 
 	public int getTellerID() {
