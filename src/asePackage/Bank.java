@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 700;
-	private static final int NUMBEROFTELLERS = 3;
+	public static final int NUMBEROFTELLERS = 3;
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -64,7 +64,7 @@ public class Bank extends Thread{
 		return INITIALCUSTOMERDELAY;
 	}
 
-	public QueueManager getQm() {
+	public QueueManager getQueueManager() {
 		return qm;
 	}
 
@@ -168,10 +168,30 @@ public class Bank extends Thread{
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		for (int i = 0;i < numberOfTransactions;i++){
-			Account aca = selectRandomAca(customer);
-			trans.add(Transaction.generateRandomTransaction(aca, rndGen));
+			int ownerRandom = rndGen.nextInt(10)+1;
+			if(ownerRandom==1){
+				boolean owner=false;
+				Account aca = selectRandomAca();
+				trans.add(Transaction.generateRandomTransaction(aca, rndGen, owner));
+				System.out.println("-");
+			}
+			else {
+				boolean owner=true;
+				Account aca = selectRandomAca(customer);
+				trans.add(Transaction.generateRandomTransaction(aca, rndGen, owner));
+			}
 		}
 		return trans;
+	}
+
+	private Account selectRandomAca() {
+		Account account = null;
+		ArrayList<Account> accounts = am.getAccountList();
+		if(accounts.size()>0){
+			account =  accounts.get(
+					rndGen.nextInt(accounts.size()));
+		}
+		return account;
 	}
 
 	/**
@@ -223,7 +243,7 @@ public class Bank extends Thread{
 	public void run(){
 		int counter = 0;
 		for (int i = 0; i < NUMBEROFTELLERS ; i++)
-			teller[i].start();
+			new Thread(teller[i]).start();
 		while(isOpen || !qm.isQueueEmpty()){
 			if(isOpen && !isPaused) {
 				Customer customer = pickRandomCustomer();
@@ -280,5 +300,7 @@ public class Bank extends Thread{
 		return isPaused;
 	}
 
-	
+	public Teller getTeller(int tellerID) {
+		return teller[tellerID];
+	}	
 }
