@@ -241,6 +241,7 @@ public class Teller extends Observable implements Runnable{
 			logEvent = new LogEvent(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), transaction, LogEvent.FAIL,errorMessage);
 		}
 		log.addLogEvent(logEvent);
+		setChanged();
 		notifyObservers(logEvent.toString());
 		//notifyAll();
 		
