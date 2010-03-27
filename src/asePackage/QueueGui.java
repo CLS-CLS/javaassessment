@@ -17,7 +17,7 @@ public class QueueGui extends JFrame implements Observer{
 		super("Customers in Queue");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		textArea = new JTextArea(20, 15);
+		textArea = new JTextArea(31, 16);
 		scrollPane = new JScrollPane(textArea);
 		panel = new JPanel();
 		panel.add(scrollPane);
