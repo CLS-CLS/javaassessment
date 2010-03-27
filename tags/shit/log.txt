@@ -1,0 +1,24 @@
+Customer 6 (John, Smith) joins queue on position 1
+Teller 3 serves customer 6 (John, Smith)with queue number 1
+  - Transaction: viewBalance for account 6
+  - Status: Success (Balance: £18934.0)
+Customer 5 (Mike, Chantler) joins queue on position 2
+Customer 7 (Juan, Carlos) joins queue on position 3
+Teller 2 serves customer 5 (Mike, Chantler)with queue number 2
+  - Transaction: viewBalance for account 5
+  - Status: Success (Balance: £7864.0)
+Teller 2 serves customer 5 (Mike, Chantler)with queue number 2
+  - Transaction: withdrawal from account 5 £94.0
+  - Status: Success (New Balance: £7770.0 from Old Balance: £7864.0)
+Teller 1 serves customer 7 (Juan, Carlos)with queue number 3
+  - Transaction: viewBalance for account 7
+  - Status: Success (Balance: £11234.0)
+Teller 1 serves customer 7 (Juan, Carlos)with queue number 3
+  - Transaction: deposit to account 7 £757.0
+  - Status: Success (New Balance: £11991.0 from Old Balance: £11234.0)
+
+Statistics
+-------------
+Number of Processed Customers : 3
+Total Deposited Money : £757.0
+Total Withdrawn Money : £94.0
