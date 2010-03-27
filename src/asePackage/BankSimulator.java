@@ -14,23 +14,11 @@ public class BankSimulator {
 				JOptionPane.INFORMATION_MESSAGE,null,new String[]{"Original GUI","Alternative GUI"},0);
 		if (result == 0 ) {
 			gui = new GUI();
-			QueueGui qGui = new QueueGui();
+			//QueueGui qGui = new QueueGui();
+			//Point p = ((JFrame)gui).getLocation();
+			//qGui.setLocation(p.x + ((JFrame)gui).getWidth(), p.y);
 			
-			//TellerOriginalGui[] tellerGuiList = new TellerOriginalGui[Bank.NUMBEROFTELLERS];
-			TellerOriginalGui tellerGuiList;
-			
-			Point p = ((JFrame)gui).getLocation();
-			qGui.setLocation(p.x + ((JFrame)gui).getWidth(), p.y);
-			
-			new QueueController(qGui,bank);
-			new Controller(gui, bank, qGui);
-			
-			//for (int i = 0; i < Bank.NUMBEROFTELLERS; i++){
-			int i=0;
-				tellerGuiList = new TellerOriginalGui(i);
-				tellerGuiList.setLocation(p.x+(((JFrame)tellerGuiList).getHeight()+30)*i, p.y + ((JFrame)gui).getHeight());
-				new TellerOriginalController(tellerGuiList, bank);
-			//}
+			new Controller(gui, bank);
 		}
 		else
 			if(result == 1) {

@@ -2,7 +2,6 @@ package asePackage;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.util.Observable;
 
 import javax.swing.*;
@@ -149,9 +148,9 @@ class AlternativeGUI extends JFrame implements GuiControl
 		
 	}
 
-	public void addQueueCheckboxListener(ItemListener event) {
+	public QueueGui getQueueGui() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

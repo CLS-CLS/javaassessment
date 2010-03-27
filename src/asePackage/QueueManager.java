@@ -12,7 +12,7 @@ import java.util.Observable;
  *
  */
 
-public class QueueManager extends Observable{
+public class QueueManager{
 	private final static int MAXIMUMNUMBEROFELEMENTS = 10;
 	private final static int FIRSTQUEUENUMBER = 1;
 	private ArrayList<Queue> customerQueue;
@@ -57,8 +57,6 @@ public class QueueManager extends Observable{
 		}
 		customerQueue.add(new Queue(element,transactions,this.nextQueueNumber));
 		nextQueueNumber++;
-		setChanged();
-		notifyObservers(queueCustomersToString());
 		notifyAll();
 	}
 	/**
@@ -80,8 +78,6 @@ public class QueueManager extends Observable{
 		else{
 			System.out.println(Thread.currentThread().getName() +" accesses cq" );
 			returnQueue = customerQueue.remove(0);
-			setChanged();
-			notifyObservers(queueCustomersToString());
 			notifyAll();
 			
 		}
