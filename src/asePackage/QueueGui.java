@@ -25,17 +25,15 @@ public class QueueGui extends JFrame implements Observer{
 		add(panel);
 		pack();
 		setVisible(true);
-	}
-	
-	
-	
+	}	
 	
 	public static void main(String[] args) {
 		new QueueGui();
 	}
 
-
-
+	public void toggleVisible(boolean state) {
+			panel.setVisible(state);
+	}
 
 	public void update(Observable o, Object arg) {
 		textArea.setText((String)arg);
