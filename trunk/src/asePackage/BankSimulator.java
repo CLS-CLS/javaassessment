@@ -15,10 +15,22 @@ public class BankSimulator {
 		if (result == 0 ) {
 			gui = new GUI();
 			QueueGui qGui = new QueueGui();
+			
+			//TellerOriginalGui[] tellerGuiList = new TellerOriginalGui[Bank.NUMBEROFTELLERS];
+			TellerOriginalGui tellerGuiList;
+			
 			Point p = ((JFrame)gui).getLocation();
 			qGui.setLocation(p.x + ((JFrame)gui).getWidth(), p.y);
+			
 			new QueueController(qGui,bank);
 			new Controller(gui, bank, qGui);
+			
+			//for (int i = 0; i < Bank.NUMBEROFTELLERS; i++){
+			int i=0;
+				tellerGuiList = new TellerOriginalGui(i);
+				tellerGuiList.setLocation(p.x+(((JFrame)tellerGuiList).getHeight()+30)*i, p.y + ((JFrame)gui).getHeight());
+				new TellerOriginalController(tellerGuiList, bank);
+			//}
 		}
 		else
 			if(result == 1) {
