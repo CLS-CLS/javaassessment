@@ -65,12 +65,34 @@ public class Teller extends Thread{
 			if(transaction.getType().endsWith(Transaction.VIEWBALANCE)){
 				isValidTransaction = viewBalance(transaction,currentCustomer);
 			}
+			/*
+			 * IOAN 27.03
+			 */		
+			if(transaction.getType().endsWith(Transaction.DEPOSITFOREIGNACCOUNT)){
+				isValidTransaction = doDepositForeignAccount(transaction,currentCustomer);
+			}
 			
 			generateReport(isValidTransaction,transaction);
 			currentCustomer.setInsideBank(false);
 		}
 	}
-	
+	/*
+	 * IOAN 27.03
+	 */
+	private boolean doDepositForeignAccount(Transaction transaction, Customer currentCustomer) {
+		double amount;
+		boolean isValidTransaction = 
+			isValidTransaction(transaction,currentCustomer);
+		
+		if (isValidTransaction){
+			Account account = transaction.getAccount();
+			amount=MyUtilities.roundDouble(transaction.getAmount());
+			account.depositMoney(amount);
+		}
+		
+		return isValidTransaction;
+	}
+
 	/**
 	 * doesn't do anything special.
 	 * @param transaction 
@@ -212,6 +234,16 @@ public class Teller extends Thread{
 					errorMessage = "Not owner of the account";
 					isValid = false;
 				}
+		}
+		
+		if(transaction.getType().equals(Transaction.DEPOSITFOREIGNACCOUNT)){
+			
+			//in case the account was closed during the bank session we give a 
+			//different message
+			if(transaction.getAccount().isClosed()==true){
+				errorMessage = "Account is closed";
+				isValid = false;
+			}
 		}
 		return isValid;
 	}

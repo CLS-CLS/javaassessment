@@ -27,7 +27,7 @@ public class TransactionTest {
 	
 	@Test
 	public void genRandomTrans(){
-		Transaction trns = Transaction.generateRandomTransaction(aca, new Random());
+		Transaction trns = Transaction.generateRandomTransaction(aca, new Random(),true);
 		assertEquals(aca.getId(), trns.getAccount().getId());
 	}
 	

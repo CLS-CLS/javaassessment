@@ -1,24 +1,25 @@
-
 package asePackage;
 import java.util.Random;
-
-
 
 /**
  * @author Chris
  * Contains the type of transactions that is to be made and information about the
- * amount of money they are going to be transated (in case the transaction is a 
+ * amount of money they are going to be transacted (in case the transaction is a 
  * deposit or withdrawal 
  *
  */
 public class Transaction {
 	private static final String[] TRANSACTIONTYPE = {"open", "close",
-		"withdrawal","deposit","viewBalance"};
+		"withdrawal","deposit","viewBalance","depositForeignAccount"};
 	public static final String OPEN = TRANSACTIONTYPE[0];
 	public static final String CLOSE = TRANSACTIONTYPE[1];
 	public static final String WITHDRAWAL = TRANSACTIONTYPE[2];
 	public static final String DEPOSIT = TRANSACTIONTYPE[3];
 	public static final String VIEWBALANCE = TRANSACTIONTYPE[4];
+	/*
+	 * IOAN 27.03
+	 */
+	public static final String DEPOSITFOREIGNACCOUNT = TRANSACTIONTYPE[5];
 	private String transactionType;
 	private Account account;
 	private double amount;
@@ -45,10 +46,7 @@ public class Transaction {
 			if (type.equals(transactionType))isValid = true;
 		}
 		return isValid;
-	}
-	
-	
-	
+	}	
 	
 	/// GETTERS AND SETTERS
 	public String getType() {
@@ -70,27 +68,37 @@ public class Transaction {
 		this.amount = amount;
 	}
 	
-	public static Transaction generateRandomTransaction(Account account,Random rnd){
+	/*
+	 * MODIFIED
+	 * IOAN 27.03
+	 */
+	public static Transaction generateRandomTransaction(Account account,Random rnd, boolean owner){
 		int randomInt = rnd.nextInt(12);
 		String transactionType =new String();
 		double amount = 0;
-		if(randomInt==0 || account==null){
-			transactionType = Transaction.OPEN;
+		if(owner == true) { //IOAN
+			if(randomInt==0 || account==null){
+				transactionType = Transaction.OPEN;
+				amount = rnd.nextInt(1000);
+			}
+			else if(randomInt==1){
+				transactionType = Transaction.CLOSE;
+			}
+			else if(randomInt >= 2 && randomInt < 6){
+				transactionType = Transaction.DEPOSIT;
+				amount = rnd.nextInt(1000);
+			}
+			else if(randomInt >= 6 && randomInt <10){
+				transactionType = Transaction.WITHDRAWAL;
+				amount = rnd.nextInt(201);
+			}
+			else if (randomInt >=10){
+				transactionType = Transaction.VIEWBALANCE;
+			}
+		}
+		else {
+			transactionType = Transaction.DEPOSITFOREIGNACCOUNT;
 			amount = rnd.nextInt(1000);
-		}
-		else if(randomInt==1){
-			transactionType = Transaction.CLOSE;
-		}
-		else if(randomInt >= 2 && randomInt < 6){
-			transactionType = Transaction.DEPOSIT;
-			amount = rnd.nextInt(1000);
-		}
-		else if(randomInt >= 6 && randomInt <10){
-			transactionType = Transaction.WITHDRAWAL;
-			amount = rnd.nextInt(201);
-		}
-		else if (randomInt >=10){
-			transactionType = Transaction.VIEWBALANCE;
 		}
 		
 		Transaction trans = null;
@@ -100,11 +108,6 @@ public class Transaction {
 			e.printStackTrace();
 		}
 		
-		return trans;
-		
-		
+		return trans;		
 	}
-
-	
-
 }
