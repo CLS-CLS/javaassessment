@@ -13,6 +13,9 @@ public class LogEvent {
 	public static final String ENTERQUEUE = "joins queue";
 	public static final String MESSAGE = "Message";
 
+	public static final String EXITQUEUE = "exit queue";
+	public static final String STARTTRANSACTION = "start transaction";
+	
 	private int queueNumber;
 	private String transactionType;
 	private Customer customer;
@@ -61,13 +64,8 @@ public class LogEvent {
 			else
 				this.oldBalance=this.newBalance+transaction.getAmount();
 	}
-	/**
-	 * The constructor for the case in which we have receive
-	 * a normal set of information from the teller
-	 * @param queueNumber the queue number of the customer
-	 * @param customer the instance of the customer who will do the transaction
-	 * @param status indicates that the customer has enter the queue or if the transaction
-	 * was successful or not
+	/*
+	 * NEW for entering queue
 	 */
 	public LogEvent(int queueNumber, Customer customer, String status){
 		this.queueNumber=queueNumber;
@@ -82,13 +80,49 @@ public class LogEvent {
 		this.message="";
 	}
 	/*
-	 * NEW
+	 * NEW for statistics
 	 */
 	public LogEvent(String status, String message){
 		this.status=status;
 		this.message=message;
 	}
-	
+	/*
+	 * NEW for exit queue
+	 */
+	public LogEvent(int queueNumber, int tellerID, Customer customer, String status) {
+		this.queueNumber=queueNumber;
+		this.customer=customer;
+		this.accountID=-1;
+		this.transactionType="";
+		this.tellerID=tellerID;
+		this.status=status;
+		this.amount=0;
+		this.newBalance=-1;
+		this.oldBalance=-1;
+		this.message="";
+	}
+	/*
+	 * NEW for starting transaction
+	 */
+	public LogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status) {
+		System.out.println(queueNumber+"-"+tellerID+"-"+customer+"-"+transaction.getAccount()+"-"+status);
+		this.queueNumber=queueNumber;
+		this.customer=customer;
+		if(transaction.getAccount() == null)
+			this.accountID=-1;
+		else
+			this.accountID=transaction.getAccount().getId();
+		this.transactionType=transaction.getType();
+		this.tellerID=tellerID;
+		this.status=status;
+		this.amount=transaction.getAmount();
+		this.newBalance=-1;
+		if(transaction.getAccount() == null)
+			this.oldBalance=-1;
+		else
+			this.oldBalance=transaction.getAccount().getBalance();
+		this.message="";
+	}
 	/**
 	 * Provides the queue number of the customer that requested
 	 * the current transaction.
@@ -161,25 +195,19 @@ public class LogEvent {
 	@Override
 	public String toString() {
 		String result="";
-		if(status.equals(MESSAGE)) {
-			result=getMessage();
-		}
-		else {
-			if(status.equals(ENTERQUEUE)) {
-				result=getEnterQueue();
-			}
-			else {
-				if(status.equals(SUCCESS) || status.equals(FAIL)) {
-					result=getCustomerDetails();
-					result+=getTransactionDetails();
-					result+="\n  - Status: " + status;
-					if(status.equals(SUCCESS))
-						result+=getAccountDetails();
-					if(status.equals(FAIL))
-						result+= " (" + getMessage() + ")";
-				}
-			}
-		}
+		if(status.equals(EXITQUEUE))
+			result+=getExitQueue();
+		if(status.equals(ENTERQUEUE))
+			result+=getEnterQueue();
+		if(status.equals(STARTTRANSACTION))
+			result+=getStartTransaction();
+		if(status.equals(SUCCESS))
+			result+=getSuccess();
+		if(status.equals(FAIL)) 
+			result+=getFail();
+		if(status.equals(MESSAGE))
+			result+=getMessage();
+
 		return result;
 	}
 	
@@ -189,10 +217,49 @@ public class LogEvent {
 	public String getMessage() {
 		return message;
 	}
-	
-	private String getTransactionDetails() {
+
+	private String getSuccessDetails() {
+		String result="";
+		if(transactionType.equals(Transaction.DEPOSIT) 
+				|| transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT)
+				|| transactionType.equals(Transaction.WITHDRAWAL))
+			result=" - New Balance: £" + newBalance + " from Old Balance: £" + oldBalance;
+		else
+			if(transactionType.equals(Transaction.CLOSE))
+				result=" - Old Balance: £" + oldBalance + " with Final Withdrawed Sum: £" + amount;
+			else
+				if(transactionType.equals(Transaction.VIEWBALANCE))
+					result=" - Balance: £" + newBalance;
+				else
+					result=" - New Account ID: " + accountID + " Balance: £" + newBalance;
+		
+		return result;
+	}	
+	/*
+	 * NEW
+	 */
+	private String getEnterQueue() {
+		String result="";
+		result="Customer " + customer.getId() + " (" + customer.getFirstName() +
+			", " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
+		return result;
+	}
+	/*
+	 * NEW
+	 */
+	private String getExitQueue() {
+		String result="";
+		result="Teller " + tellerID + " receive customer " + customer.getId() +
+			" (" + customer.getFirstName() + ", " + customer.getLastName() + ")" +
+			"with queue number " + queueNumber + " to serve";
+		return result;
+	}
+	/*
+	 * NEW
+	 */
+	private String getStartTransaction() {
 		String result;
-		result="\n  - Transaction: ";
+		result = "Teller " + tellerID + " serves customer " + customer.getId() + " with transaction: ";
 		if(transactionType.equals(Transaction.OPEN))
 			result+= transactionType + " account with initial amount: £" + amount;
 		else
@@ -212,35 +279,20 @@ public class LogEvent {
 								result+= transactionType + " " + accountID + " £" + amount;
 		return result;
 	}
-	private String getCustomerDetails() {
+	/*
+	 * NEW
+	 */
+	private String getSuccess() {
 		String result;
-		result="Teller " +tellerID + " serves customer " + customer.getId() +
-				" (" + customer.getFirstName() + ", " + customer.getLastName() + ")" +
-				"with queue number " + queueNumber;
-		
+		result = "Teller " + tellerID + " SUCCESSFULLY completes the " + transactionType + " for customer " + customer.getId()+"\n";
+		result += getSuccessDetails();
 		return result;
 	}
-	private String getAccountDetails() {
-		String result="";
-		if(transactionType.equals(Transaction.DEPOSIT) 
-				|| transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT)
-				|| transactionType.equals(Transaction.WITHDRAWAL))
-			result=" (New Balance: £" + newBalance + " from Old Balance: £" + oldBalance + ")";
-		else
-			if(transactionType.equals(Transaction.CLOSE))
-				result=" (Old Balance: £" + oldBalance + " with Final Withdrawed Sum: £" + amount + ")";
-			else
-				if(transactionType.equals(Transaction.VIEWBALANCE))
-					result=" (Balance: £" + newBalance + ")";
-				else
-					result=" (New Account ID: " + accountID + " Balance: £" + newBalance + ")";
-		
-		return result;
-	}	
-	private String getEnterQueue() {
-		String result="";
-		result="Customer " + customer.getId() + " (" + customer.getFirstName() +
-				", " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
+	
+	private String getFail() {
+		String result;
+		result = "Teller " + tellerID + " FAIL completing the " + transactionType + " for customer " + customer.getId()+"\n";
+		result += " - " + getMessage();
 		return result;
 	}
 }

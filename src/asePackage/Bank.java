@@ -124,10 +124,10 @@ public class Bank extends Thread{
 
 
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
-		log.addLogEvent(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
-		log.addLogEvent(qm.getNextNumber()+1, customers.get(2), LogEvent.ENTERQUEUE);
-		log.addLogEvent(qm.getNextNumber()+2,customers.get(3),LogEvent.ENTERQUEUE);
-		log.addLogEvent(qm.getNextNumber()+3, customers.get(1), LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber()+1, customers.get(2), LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber()+2,customers.get(3),LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber()+3, customers.get(1), LogEvent.ENTERQUEUE);
 
 		try {
 			trans.add(new Transaction(Transaction.OPEN, new Account(), 200));
@@ -242,7 +242,7 @@ public class Bank extends Thread{
 		ArrayList<Transaction> trans = generateTransactions(cust);
 		qm.addQueueElement(cust, trans);
 		currentQueueNumber=qm.getNextNumber()-1;
-		log.addLogEvent(currentQueueNumber, cust, LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(currentQueueNumber, cust, LogEvent.ENTERQUEUE);
 		cust.setInsideBank(true);
 	}
 
@@ -255,15 +255,24 @@ public class Bank extends Thread{
 
 	public void run(){
 		int counter = 0;
+		boolean tellersFinish = false;
 		for (int i = 0; i < NUMBEROFTELLERS ; i++)
 			teller[i].start();
-		while(isOpen || !qm.isQueueEmpty()){
+		while(isOpen || !qm.isQueueEmpty() || !tellersFinish){
 			if(isOpen && !isPaused) {
 				Customer customer = pickRandomCustomer();
 				generateQueueElement(customer);
 				counter ++;
 				System.out.println(counter);
 			}
+			
+			if(!isOpen && qm.isQueueEmpty()) {
+				tellersFinish = true;
+				for (int i = 0; i < NUMBEROFTELLERS ; i++)
+					if(teller[i].isTellerBusy())
+						tellersFinish = false;
+			}
+			
 			try {
 				Thread.sleep(customerGenerationDelay);
 			} catch (InterruptedException e) {

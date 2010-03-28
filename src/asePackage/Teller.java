@@ -15,6 +15,7 @@ public class Teller extends Thread{
 	private static int tellerGenerationDelay;
 	private boolean bankIsClosed = false;
 	private static boolean bankIsPaused = false;
+	private boolean tellerBusy = false;
 	
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
@@ -36,17 +37,26 @@ public class Teller extends Thread{
 	 */
 	public  void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
+		if(customerInQueue != null) {
+			log.addLogEventExitQueue(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), LogEvent.EXITQUEUE);
+			tellerBusy = true;
+		}
     }
 	
 	/**
 	 * Makes all the transactions that the customers wants to do if they are valid
+	 * @throws InterruptedException 
 	 */
-	public void doTransaction(){
-		if (customerInQueue==null)return;
+	public void doTransaction() throws InterruptedException{
+		if (customerInQueue==null) return;
 		Customer currentCustomer = customerInQueue.getCustomer();
 		ArrayList<Transaction> transactions = customerInQueue.getTransactionList();
 		boolean isValidTransaction;
 		for (Transaction transaction : transactions){
+			
+			log.addLogEventStartTrans(customerInQueue.getQueueNumber(), id, currentCustomer, transaction, LogEvent.STARTTRANSACTION);
+			Thread.sleep(tellerGenerationDelay/2);
+			
 			isValidTransaction = false;
 			
 			if (transaction.getType().equals(Transaction.DEPOSIT)) 
@@ -73,8 +83,11 @@ public class Teller extends Thread{
 			}
 			
 			generateReport(isValidTransaction,transaction);
-			currentCustomer.setInsideBank(false);
+			
+			Thread.sleep(tellerGenerationDelay/4);			
 		}
+		currentCustomer.setInsideBank(false);
+		tellerBusy=false;
 	}
 	/*
 	 * IOAN 27.03
@@ -265,11 +278,12 @@ public class Teller extends Thread{
 	}
 	public void run(){
 		while(!bankIsClosed || !qm.isQueueEmpty() ) {
-			if (!bankIsPaused){
-				getNextCustomer();
-				doTransaction();
-			}
-			try {
+			try {			
+				if (!bankIsPaused){
+					getNextCustomer();
+					Thread.sleep(tellerGenerationDelay/4);
+					doTransaction();
+				}
 				Thread.sleep(tellerGenerationDelay);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -299,6 +313,10 @@ public class Teller extends Thread{
 
 	public static boolean isBankIsPaused() {
 		return bankIsPaused;
+	}
+
+	public boolean isTellerBusy() {
+		return tellerBusy;
 	}
 	
 }
