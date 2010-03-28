@@ -205,7 +205,11 @@ public class LogEvent {
 					if(transactionType.equals(Transaction.VIEWBALANCE))
 						result+= transactionType + " for account " + accountID;
 					else
-						result+= transactionType + " from account " + accountID + " £" + amount;
+						if(transactionType.equals(Transaction.WITHDRAWAL))
+							result+= transactionType + " from account " + accountID + " £" + amount;
+						else
+							if(transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT))
+								result+= transactionType + " " + accountID + " £" + amount;
 		return result;
 	}
 	private String getCustomerDetails() {
@@ -219,6 +223,7 @@ public class LogEvent {
 	private String getAccountDetails() {
 		String result="";
 		if(transactionType.equals(Transaction.DEPOSIT) 
+				|| transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT)
 				|| transactionType.equals(Transaction.WITHDRAWAL))
 			result=" (New Balance: £" + newBalance + " from Old Balance: £" + oldBalance + ")";
 		else
@@ -234,10 +239,8 @@ public class LogEvent {
 	}	
 	private String getEnterQueue() {
 		String result="";
-
 		result="Customer " + customer.getId() + " (" + customer.getFirstName() +
 				", " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
-		
 		return result;
 	}
 }

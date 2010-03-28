@@ -12,6 +12,7 @@ import java.util.Random;
 public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 700;
 	private static final int NUMBEROFTELLERS = 3;
+	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -164,14 +165,46 @@ public class Bank extends Thread{
 	 * @param customer the customer who will get a random transaction
 	 * @return an arraylist of the transactions generated for the given customer
 	 */
+	/*
+	 * MODIFIED
+	 * IOAN 27.03
+	 */
 	private ArrayList<Transaction> generateTransactions(Customer customer) {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
+		int ownerRandom;
 		for (int i = 0;i < numberOfTransactions;i++){
-			Account aca = selectRandomAca(customer);
-			trans.add(Transaction.generateRandomTransaction(aca, rndGen));
+			ownerRandom = rndGen.nextInt(OCCURANCEDEPOSITFOREIGNACCOUNT)+1;
+			if(ownerRandom == 1){
+				Account aca = selectRandomAcountQM(customer);
+				trans.add(Transaction.generateRandomTransaction(aca, rndGen, false));
+			}
+			else {
+				Account aca = selectRandomAcount(customer);
+				trans.add(Transaction.generateRandomTransaction(aca, rndGen, true));
+			}
 		}
 		return trans;
+	}
+	/*
+	 * IOAN 27.03
+	 */
+	private Account selectRandomAcountQM(Customer customer) {
+		Account account = null;
+		boolean success=false;
+		ArrayList<Account> accounts = am.getAccountList();
+		int randomValue;
+		
+		if(accounts.size()>0){
+			while(!success){
+				randomValue = rndGen.nextInt(accounts.size());
+				if(!accounts.get(randomValue).getOwnerList().contains(customer)) {
+					account =  accounts.get(randomValue);
+					success = true;
+				}
+			}
+		}
+		return account;
 	}
 
 	/**
@@ -179,7 +212,7 @@ public class Bank extends Thread{
 	 * @param customer
 	 * @return a random account, null if the customer has no accounts
 	 */
-	private Account selectRandomAca(Customer customer) {
+	private Account selectRandomAcount(Customer customer) {
 		Account account = null;
 		ArrayList<Account> accounts = customer.getAccountList();
 		if(accounts.size()>0){
