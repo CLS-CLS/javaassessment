@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Transaction {
 	private static final String[] TRANSACTIONTYPE = {"open", "close",
-		"withdrawal","deposit","viewBalance","depositForeignAccount"};
+		"withdrawal","deposit","viewBalance","deposit to foreign account"};
 	public static final String OPEN = TRANSACTIONTYPE[0];
 	public static final String CLOSE = TRANSACTIONTYPE[1];
 	public static final String WITHDRAWAL = TRANSACTIONTYPE[2];

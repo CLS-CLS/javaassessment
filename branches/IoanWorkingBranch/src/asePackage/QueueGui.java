@@ -26,19 +26,11 @@ public class QueueGui extends JFrame implements Observer{
 		pack();
 		setVisible(true);
 	}
-		
-	
-	public static void main(String[] args) {
-		new QueueGui();
-	}
-
-
-
 
 	public void update(Observable o, Object arg) {
-		String[] str = (String[])arg;
-		if(str[0].equals("JOINS")){
-			textArea.setText(str[1]);
+		LogEvent logEvent = (LogEvent)arg;
+		if(logEvent.getStatus().equals(LogEvent.ENTERQUEUE)){
+			textArea.setText(logEvent.toString() + "\n");
 		}
 	}
 
