@@ -105,7 +105,6 @@ public class LogEvent {
 	 * NEW for starting transaction
 	 */
 	public LogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status) {
-		System.out.println(queueNumber+"-"+tellerID+"-"+customer+"-"+transaction.getAccount()+"-"+status);
 		this.queueNumber=queueNumber;
 		this.customer=customer;
 		if(transaction.getAccount() == null)
@@ -295,4 +294,10 @@ public class LogEvent {
 		result += " - " + getMessage();
 		return result;
 	}
+	public String toStringQueue() {
+		String result;
+		result = queueNumber + ". " + customer.getFirstName() + " " + customer.getLastName() + " (ID: " + customer.getId() + ")";
+		return result;
+	}
+	
 }
