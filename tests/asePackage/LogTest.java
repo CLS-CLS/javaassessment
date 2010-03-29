@@ -43,7 +43,7 @@ public class LogTest {
 
 	@Test
 	public void testAddLogEvent(){
-		log.addLogEvent(2, cust1, LogEvent.ENTERQUEUE); 
+		log.addLogEventJoinQueue(2, cust1, LogEvent.ENTERQUEUE); 
 		Integer result=2;
 		Integer currentValue=log.getProcessedCustomersNumber();
 		assertTrue("Wrong Total Customer Number (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));

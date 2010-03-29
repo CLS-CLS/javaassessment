@@ -40,29 +40,41 @@ public class Log extends Observable {
 		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status, errorMessage);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(new String[]{"TRANS",le.toString()});
+		notifyObservers(le);
 	}
-	/**
-	 * Add a new log event to the event list for the case we don't know or we don't know all the normal transaction information.
-	 * @param queueNumber queue number of the customer
-	 * @param customer instance of the customer who will do the transaction
-	 * @param status indicates that the customer has enter the queue or if the transaction
-	 * was successful or not
+
+	/*
+	 * NEW
 	 */
-	public synchronized void addLogEvent(int queueNumber, Customer customer, String status) {
+	public synchronized void addLogEventJoinQueue(int queueNumber, Customer customer, String status) {
 		LogEvent le = new LogEvent(queueNumber, customer, status);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(new String[]{"JOINS",le.toString()});
+		notifyObservers(le);
 	}
 	/*
 	 * NEW
 	 */
-	public synchronized void addLogEvent(String status, String message) {
+	public synchronized void addLogEventExitQueue(int queueNumber, int tellerID, Customer customer, String status) {
+		LogEvent le = new LogEvent(queueNumber, tellerID, customer, status);
+		logEventList.add(le);
+		setChanged();
+		notifyObservers(le);
+	}
+	public synchronized void addLogEventStartTrans(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status) {
+		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status);
+		logEventList.add(le);
+		setChanged();
+		notifyObservers(le);
+	}
+	/*
+	 * NEW
+	 */
+	public synchronized void addLogEventStatistics(String status, String message) {
 		LogEvent le = new LogEvent(status, message);
 		logEventList.add(le);
 		setChanged();
-		notifyObservers(new String[]{"STATS",le.toString()});
+		notifyObservers(le);
 	}
 	
 	/**
@@ -142,7 +154,7 @@ public class Log extends Observable {
 			result.append(logEventList.get(i)+"\n");
 		}
 		result.append(getStatistics());
-		addLogEvent(LogEvent.MESSAGE,this.getStatistics());
+		addLogEventStatistics(LogEvent.MESSAGE,this.getStatistics());
 		return result.toString();
 	}
 	

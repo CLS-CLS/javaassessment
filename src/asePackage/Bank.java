@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
 
+import asePackage.Controller.TellerSlideListener;
+
 /**
  * 
  * @author Chris
@@ -11,8 +13,8 @@ import java.util.Random;
  */
 public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 700;
-	private static final int NUMBEROFTELLERS = 3;
 	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
+	private int numberOfTellers = 3;
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -26,7 +28,7 @@ public class Bank extends Thread{
 	private boolean isPaused = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
-	private Teller[] teller = new Teller[NUMBEROFTELLERS];
+	private Teller[] teller = new Teller[numberOfTellers];
 	private ArrayList<Customer> customers;
 	private boolean proofOfAccurateTransactions = false;
 
@@ -49,9 +51,7 @@ public class Bank extends Thread{
 		customers = new ArrayList<Customer>();
 		am = new AccountManager();
 		
-		for (int i = 0; i < NUMBEROFTELLERS; i++){
-			teller[i] = new Teller(qm,am,log,i+1);
-		}
+		createTellers();
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 		//proofOfAccurateTransactions should be set as true for full testing of//
 		//transactions                                                         //
@@ -101,6 +101,7 @@ public class Bank extends Thread{
 	//generates a predefined set of transactions for 
 	//proof of Accurate Transactions
 	private void proofOfAccurateTransactions(){
+/*
 		ArrayList<Account> accounts;
 		//loads customers and accounts and creates connects the accounts
 		//with the customers
@@ -124,10 +125,10 @@ public class Bank extends Thread{
 
 
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
-		log.addLogEvent(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
-		log.addLogEvent(qm.getNextNumber()+1, customers.get(2), LogEvent.ENTERQUEUE);
-		log.addLogEvent(qm.getNextNumber()+2,customers.get(3),LogEvent.ENTERQUEUE);
-		log.addLogEvent(qm.getNextNumber()+3, customers.get(1), LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber()+1, customers.get(2), LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber()+2,customers.get(3),LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(qm.getNextNumber()+3, customers.get(1), LogEvent.ENTERQUEUE);
 
 		try {
 			trans.add(new Transaction(Transaction.OPEN, new Account(), 200));
@@ -156,7 +157,7 @@ public class Bank extends Thread{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 	/**
@@ -172,39 +173,33 @@ public class Bank extends Thread{
 	private ArrayList<Transaction> generateTransactions(Customer customer) {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
-		int ownerRandom;
 		for (int i = 0;i < numberOfTransactions;i++){
-			ownerRandom = rndGen.nextInt(OCCURANCEDEPOSITFOREIGNACCOUNT)+1;
-			if(ownerRandom == 1){
-				Account aca = selectRandomAcountQM(customer);
-				trans.add(Transaction.generateRandomTransaction(aca, rndGen, false));
-			}
-			else {
-				Account aca = selectRandomAcount(customer);
-				trans.add(Transaction.generateRandomTransaction(aca, rndGen, true));
-			}
+				Account account = selectRandomAccount(customer);
+				Account foreignAccount = selectRandomAccountQM(account);
+				
+				trans.add(Transaction.generateRandomTransaction(account, foreignAccount, rndGen));
 		}
 		return trans;
 	}
 	/*
 	 * IOAN 27.03
 	 */
-	private Account selectRandomAcountQM(Customer customer) {
-		Account account = null;
+	private Account selectRandomAccountQM(Account account) {
 		boolean success=false;
 		ArrayList<Account> accounts = am.getAccountList();
 		int randomValue;
+		Account newAccount = null;
 		
 		if(accounts.size()>0){
 			while(!success){
 				randomValue = rndGen.nextInt(accounts.size());
-				if(!accounts.get(randomValue).getOwnerList().contains(customer)) {
-					account =  accounts.get(randomValue);
+				if(!accounts.get(randomValue).equals(account)) {
+					newAccount =  accounts.get(randomValue);
 					success = true;
 				}
 			}
 		}
-		return account;
+		return newAccount;
 	}
 
 	/**
@@ -212,7 +207,7 @@ public class Bank extends Thread{
 	 * @param customer
 	 * @return a random account, null if the customer has no accounts
 	 */
-	private Account selectRandomAcount(Customer customer) {
+	private Account selectRandomAccount(Customer customer) {
 		Account account = null;
 		ArrayList<Account> accounts = customer.getAccountList();
 		if(accounts.size()>0){
@@ -242,7 +237,7 @@ public class Bank extends Thread{
 		ArrayList<Transaction> trans = generateTransactions(cust);
 		qm.addQueueElement(cust, trans);
 		currentQueueNumber=qm.getNextNumber()-1;
-		log.addLogEvent(currentQueueNumber, cust, LogEvent.ENTERQUEUE);
+		log.addLogEventJoinQueue(currentQueueNumber, cust, LogEvent.ENTERQUEUE);
 		cust.setInsideBank(true);
 	}
 
@@ -255,15 +250,24 @@ public class Bank extends Thread{
 
 	public void run(){
 		int counter = 0;
-		for (int i = 0; i < NUMBEROFTELLERS ; i++)
+		boolean tellersFinish = false;
+		for (int i = 0; i < numberOfTellers ; i++)
 			teller[i].start();
-		while(isOpen || !qm.isQueueEmpty()){
+		while(isOpen || !qm.isQueueEmpty() || !tellersFinish){
 			if(isOpen && !isPaused) {
 				Customer customer = pickRandomCustomer();
 				generateQueueElement(customer);
 				counter ++;
 				System.out.println(counter);
 			}
+			
+			if(!isOpen && qm.isQueueEmpty()) {
+				tellersFinish = true;
+				for (int i = 0; i < numberOfTellers ; i++)
+					if(teller[i].isTellerBusy())
+						tellersFinish = false;
+			}
+			
 			try {
 				Thread.sleep(customerGenerationDelay);
 			} catch (InterruptedException e) {
@@ -296,6 +300,9 @@ public class Bank extends Thread{
 	public void setObserver(Observer o){
 		log.addObserver(o);
 	}
+	public void removeObserver(Observer o) {
+		log.deleteObserver(o);
+	}
 
 	public int getTellerGenerationDelay() {
 		return Teller.getTellerGenerationDelay();
@@ -312,6 +319,24 @@ public class Bank extends Thread{
 	public boolean isPaused() {
 		return isPaused;
 	}
+
+	public int getNumberOfTellers() {
+		return numberOfTellers;
+	}
+
+	public void setNumberOfTellers(int numberOfTellers) {
+		this.numberOfTellers = numberOfTellers;
+		teller = new Teller[numberOfTellers];
+	}
+
+	public void createTellers() {
+		for (int i = 0; i < numberOfTellers; i++){
+			teller[i] = new Teller(qm,am,log,i+1);
+		}
+		
+	}
+
+	
 
 	
 }

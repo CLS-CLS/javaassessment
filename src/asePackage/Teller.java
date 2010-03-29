@@ -15,6 +15,7 @@ public class Teller extends Thread{
 	private static int tellerGenerationDelay;
 	private boolean bankIsClosed = false;
 	private static boolean bankIsPaused = false;
+	private boolean tellerBusy = false;
 	
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
@@ -36,17 +37,26 @@ public class Teller extends Thread{
 	 */
 	public  void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
+		if(customerInQueue != null) {
+			log.addLogEventExitQueue(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), LogEvent.EXITQUEUE);
+			tellerBusy = true;
+		}
     }
 	
 	/**
 	 * Makes all the transactions that the customers wants to do if they are valid
+	 * @throws InterruptedException 
 	 */
-	public void doTransaction(){
-		if (customerInQueue==null)return;
+	public void doTransaction() throws InterruptedException{
+		if (customerInQueue==null) return;
 		Customer currentCustomer = customerInQueue.getCustomer();
 		ArrayList<Transaction> transactions = customerInQueue.getTransactionList();
 		boolean isValidTransaction;
 		for (Transaction transaction : transactions){
+			
+			log.addLogEventStartTrans(customerInQueue.getQueueNumber(), id, currentCustomer, transaction, LogEvent.STARTTRANSACTION);
+			Thread.sleep(tellerGenerationDelay/2);
+			
 			isValidTransaction = false;
 			
 			if (transaction.getType().equals(Transaction.DEPOSIT)) 
@@ -62,32 +72,59 @@ public class Teller extends Thread{
 				isValidTransaction = closeAccount(transaction, currentCustomer);
 			}
 			
-			if(transaction.getType().endsWith(Transaction.VIEWBALANCE)){
+			if(transaction.getType().equals(Transaction.VIEWBALANCE)){
 				isValidTransaction = viewBalance(transaction,currentCustomer);
 			}
 			/*
 			 * IOAN 27.03
 			 */		
-			if(transaction.getType().endsWith(Transaction.DEPOSITFOREIGNACCOUNT)){
+			if(transaction.getType().equals(Transaction.DEPOSITFOREIGNACCOUNT)){
 				isValidTransaction = doDepositForeignAccount(transaction,currentCustomer);
 			}
+			if(transaction.getType().equals(Transaction.TRANSFER)){
+				isValidTransaction = doTransfer(transaction,currentCustomer);
+			}
+			
 			
 			generateReport(isValidTransaction,transaction);
-			currentCustomer.setInsideBank(false);
+			
+			Thread.sleep(tellerGenerationDelay/4);			
 		}
+		
+		log.addLogEventJoinQueue(customerInQueue.getQueueNumber(), currentCustomer, LogEvent.EXITBANK);
+		currentCustomer.setInsideBank(false);
+		tellerBusy=false;
 	}
+	
 	/*
 	 * IOAN 27.03
-	 */
+	 */	
+	private boolean doTransfer(Transaction transaction, Customer currentCustomer) {
+		double amount;
+		boolean isValidTransaction = 
+			isValidTransaction(transaction,currentCustomer);
+		
+		if (isValidTransaction){
+			Account custAccount = transaction.getAccount();
+			Account foreignAccount = transaction.getForeignAccount();
+
+			amount=MyUtilities.roundDouble(transaction.getAmount());
+			custAccount.withdrawMoney(amount);
+			foreignAccount.depositMoney(amount);
+		}
+		
+		return isValidTransaction;
+	}
+
 	private boolean doDepositForeignAccount(Transaction transaction, Customer currentCustomer) {
 		double amount;
 		boolean isValidTransaction = 
 			isValidTransaction(transaction,currentCustomer);
 		
 		if (isValidTransaction){
-			Account account = transaction.getAccount();
+			Account foreignAccount = transaction.getForeignAccount();
 			amount=MyUtilities.roundDouble(transaction.getAmount());
-			account.depositMoney(amount);
+			foreignAccount.depositMoney(amount);
 		}
 		
 		return isValidTransaction;
@@ -240,11 +277,31 @@ public class Teller extends Thread{
 			
 			//in case the account was closed during the bank session we give a 
 			//different message
-			if(transaction.getAccount().isClosed()==true){
+			if(transaction.getForeignAccount().isClosed()==true){
 				errorMessage = "Account is closed";
 				isValid = false;
 			}
 		}
+		
+		if(transaction.getType().equals(Transaction.TRANSFER)){
+			if(transaction.getAccount().isClosed()==true){
+				errorMessage = "Account is closed";
+				isValid = false;
+			}
+			else if(!currentCustomer.hasAccount(transaction.getAccount())){
+				errorMessage = "Not owner of the account";
+				isValid = false;
+			}
+			else if(transaction.getAccount().getBalance()< transaction.getAmount() ){
+				errorMessage = "There is not enough money";
+				isValid = false;				
+			}
+			else if(transaction.getForeignAccount().isClosed()==true){
+				errorMessage = "Foreign account is closed";
+				isValid = false;
+			}
+		}
+		
 		return isValid;
 	}
 	
@@ -265,11 +322,12 @@ public class Teller extends Thread{
 	}
 	public void run(){
 		while(!bankIsClosed || !qm.isQueueEmpty() ) {
-			if (!bankIsPaused){
-				getNextCustomer();
-				doTransaction();
-			}
-			try {
+			try {			
+				if (!bankIsPaused){
+					getNextCustomer();
+					Thread.sleep(tellerGenerationDelay/4);
+					doTransaction();
+				}
 				Thread.sleep(tellerGenerationDelay);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -299,6 +357,10 @@ public class Teller extends Thread{
 
 	public static boolean isBankIsPaused() {
 		return bankIsPaused;
+	}
+
+	public boolean isTellerBusy() {
+		return tellerBusy;
 	}
 	
 }
