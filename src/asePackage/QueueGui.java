@@ -1,5 +1,6 @@
 package asePackage;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,9 +13,10 @@ public class QueueGui extends JFrame implements Observer{
 	JPanel panel;
 	JScrollPane scrollPane;
 	JTextArea textArea;
-	
+	ArrayList<LogEvent> currentQueue;
 	public QueueGui() {
 		super("Customers in Queue");
+		currentQueue = new ArrayList<LogEvent>();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		textArea = new JTextArea(20, 15);
@@ -26,20 +28,27 @@ public class QueueGui extends JFrame implements Observer{
 		pack();
 		setVisible(true);
 	}
-		
-	
-	public static void main(String[] args) {
-		new QueueGui();
-	}
-
-
-
 
 	public void update(Observable o, Object arg) {
-		String[] str = (String[])arg;
-		if(str[0].equals("JOINS")){
-			textArea.setText(str[1]);
+		LogEvent logEvent = (LogEvent)arg;
+		if(logEvent.getStatus().equals(LogEvent.ENTERQUEUE)){
+			currentQueue.add(logEvent);
+			textArea.setText(getTextFromArrayList());
 		}
+		
+		if(logEvent.getStatus().equals(LogEvent.EXITQUEUE)){
+			for (int i = 0; i < currentQueue.size(); i++)
+				if(currentQueue.get(i).getCustomerID() == logEvent.getCustomerID())
+					currentQueue.remove(i);
+			textArea.setText(getTextFromArrayList());
+		}
+	}
+	
+	private String getTextFromArrayList() {
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < currentQueue.size(); i++)
+			result.append(currentQueue.get(i).toStringQueue()+"\n");
+		return result.toString();
 	}
 
 }

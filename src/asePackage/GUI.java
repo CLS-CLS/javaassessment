@@ -3,8 +3,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
@@ -41,8 +43,10 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JButton closeButton = new JButton("Close Bank");
 	private JToggleButton pauseButton = new JToggleButton("Pause");
 	private QueueGui queueGui;
+	private ArrayList<TellerGui> tellerGuiList;
 	
-
+	private int numberTellers=3;
+	
 	static final int MIN_DELAY = 100;
 	static final int MAX_DELAY = 4000;
 	private int customerGenerationDelay = 500;
@@ -56,11 +60,16 @@ public class GUI extends JFrame implements GuiControl,Observer
 		super("Simple GUI Stage 1");
 		createButtonPanel();
 		createDisplayPanel();
-		
 		queueGui = new QueueGui();
+		tellerGuiList = new ArrayList<TellerGui>();
+		
 		this.getContentPane().add(buttonPanel);
 		this.getContentPane().add(displayPanel);
 		this.pack();  //used to put all the items in the correct position
+		
+		Point p = this.getLocation();
+		queueGui.setLocation(p.x + this.getWidth(), p.y);
+		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
 														//the close button(x) is pressed
@@ -135,8 +144,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 	}
 
 	public void update(Observable o, Object arg) {
-		String[] str = (String[])arg;
-		textArea.append(str[1] + "\n");
+		LogEvent logEvent = (LogEvent)arg;
+		textArea.append(logEvent.toString() + "\n");
 		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 	
@@ -165,4 +174,17 @@ public class GUI extends JFrame implements GuiControl,Observer
 		return queueGui;
 	}
 	
+	public void setNumberTellers(int numberTellers) {
+		this.numberTellers = numberTellers;
+	}
+
+	public int getNumberTellers() {
+		return numberTellers;
+	}
+
+	public void addTellerGui(TellerGui tGui, int id) {
+		tellerGuiList.add(id,tGui);
+		Point p = this.getLocation();
+		tGui.setLocation(p.x + tGui.getWidth()*id , p.y + this.getHeight());
+	}
 }
