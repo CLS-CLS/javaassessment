@@ -102,6 +102,7 @@ public class Controller {
 			for (TellerGui tg :tellerGuis) bank.removeObserver(tg);
 			int numberOfTellers =Integer.parseInt(e.getActionCommand());
 			bank.setNumberOfTellers(numberOfTellers);
+			bank.createTellers();
 			gui.setNumberTellers(numberOfTellers);
 			gui.createTellerGuis();
 			// register to the observer the new teller guis

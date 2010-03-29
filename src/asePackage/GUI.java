@@ -89,21 +89,20 @@ public class GUI extends JFrame implements GuiControl,Observer
 	}
 
 
-	
-
-
 	private void createMenuBar() {
 		mb = new JMenuBar();
 		JMenu mn = new JMenu("Options");
+		JMenu tellerSubMenu = new JMenu("Tellers");
 		ButtonGroup bg = new ButtonGroup();
 		for (int i = 0; i < MAXNUMBEROFTELLERS; i++){
 			cb[i] = new JCheckBoxMenuItem(i+1 + "Teller(s)");
 			cb[i].setActionCommand(Integer.toString(i+1));
 			bg.add(cb[i]);
-			mn.add(cb[i]);
+			tellerSubMenu.add(cb[i]);
 		}
 						
 		cb[2].setSelected(true);
+		mn.add(tellerSubMenu);
 		mb.add(mn);
 	}
 		
