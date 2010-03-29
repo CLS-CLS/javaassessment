@@ -73,7 +73,7 @@ public class LogEvent {
 		this.customer=customer;
 		this.accountID=-1;
 		this.transactionType="";
-		this.tellerID=1;
+		this.tellerID=-1;
 		this.status=status;
 		this.amount=0;
 		this.newBalance=-1;
