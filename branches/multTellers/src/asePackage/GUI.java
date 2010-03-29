@@ -13,12 +13,18 @@ import java.util.Observer;
 
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
@@ -43,32 +49,39 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JButton closeButton = new JButton("Close Bank");
 	private JToggleButton pauseButton = new JToggleButton("Pause");
 	private QueueGui queueGui;
-	private ArrayList<TellerGui> tellerGuiList;
+	private ArrayList<TellerGui> tellerGuiList = new ArrayList<TellerGui>();
 	
 	private int numberTellers=3;
 	
 	static final int MIN_DELAY = 100;
 	static final int MAX_DELAY = 4000;
+	private static final int MAXNUMBEROFTELLERS = 4;
 	private int customerGenerationDelay = 500;
 	private int tellerGenerationDelay = 500;
 	private JSlider sliderCustomer;
 	private JSlider sliderTeller;
 	private Hashtable<Integer, JLabel> labelTable;
+	private JMenuBar mb;
+	private JCheckBoxMenuItem[] cb = new JCheckBoxMenuItem[MAXNUMBEROFTELLERS];
 	
-	public GUI()
-	{
+	public GUI(){
+		
 		super("Simple GUI Stage 1");
 		createButtonPanel();
 		createDisplayPanel();
-		queueGui = new QueueGui();
-		tellerGuiList = new ArrayList<TellerGui>();
+	    createTellerGuis();
+	    createMenuBar();
 		
-		this.getContentPane().add(buttonPanel);
-		this.getContentPane().add(displayPanel);
+	    setJMenuBar(mb);
+		queueGui = new QueueGui();
+			
+		
 		this.pack();  //used to put all the items in the correct position
 		
 		Point p = this.getLocation();
 		queueGui.setLocation(p.x + this.getWidth(), p.y);
+		for (TellerGui tGui :tellerGuiList)
+			tGui.setLocation(p.x + tGui.getWidth()*tGui.getId() , p.y + this.getHeight());
 		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
@@ -76,12 +89,32 @@ public class GUI extends JFrame implements GuiControl,Observer
 	}
 
 
+	
+
+
+	private void createMenuBar() {
+		mb = new JMenuBar();
+		JMenu mn = new JMenu("Options");
+		ButtonGroup bg = new ButtonGroup();
+		for (int i = 0; i < MAXNUMBEROFTELLERS; i++){
+			cb[i] = new JCheckBoxMenuItem(i+1 + "Teller(s)");
+			cb[i].setActionCommand(Integer.toString(i+1));
+			bg.add(cb[i]);
+			mn.add(cb[i]);
+		}
+						
+		cb[2].setSelected(true);
+		mb.add(mn);
+	}
+		
+
 	private void createDisplayPanel() {
 		displayPanel = new JPanel();
 		textArea = new JTextArea(35, 45);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		displayPanel.add(scrollPane);
+		this.getContentPane().add(displayPanel);
 	}
 
 
@@ -121,6 +154,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 		sliderCustomer.setPaintLabels(true);
 		sliderTeller.setPaintLabels(true);
 		
+		this.getContentPane().add(buttonPanel);
+		
 	}
 
 
@@ -156,6 +191,13 @@ public class GUI extends JFrame implements GuiControl,Observer
 		pauseButton.addActionListener(al);
 	}
 	
+	public void addTellersMenuItemListener(ActionListener al){
+		for (int i = 0; i < MAXNUMBEROFTELLERS ;i++){
+			cb[i].addActionListener(al);
+			
+		}
+	}
+	
 	public void setCustomerGenerationDelay(int customerGenerationDelay) {
 		this.customerGenerationDelay = customerGenerationDelay;
 		this.sliderCustomer.setValue(customerGenerationDelay);
@@ -164,6 +206,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 		this.tellerGenerationDelay = tellerGenerationDelay;
 		this.sliderTeller.setValue(tellerGenerationDelay);
 	}
+	
+	
 	
 	public JComponent getCloseButton(){
 		return closeButton;
@@ -182,9 +226,33 @@ public class GUI extends JFrame implements GuiControl,Observer
 		return numberTellers;
 	}
 
-	public void addTellerGui(TellerGui tGui, int id) {
-		tellerGuiList.add(id,tGui);
+	public void addTellerGui(TellerGui tGui) {
+		tellerGuiList.add(tGui);
 		Point p = this.getLocation();
-		tGui.setLocation(p.x + tGui.getWidth()*id , p.y + this.getHeight());
+	}
+	
+	public void createTellerGuis() {
+		for(TellerGui tg :tellerGuiList)tg.dispose();
+		tellerGuiList.clear();
+		for (int i=0; i < numberTellers; i++){
+			TellerGui tg = new TellerGui(i+1);
+			addTellerGui(tg);
+		}
+		Point p =this.getLocation();
+		for (TellerGui tGui :tellerGuiList)
+			tGui.setLocation(p.x + tGui.getWidth()*tGui.getId() , p.y + this.getHeight());
+		
+	}
+	
+	public JCheckBoxMenuItem[] getCb() {
+		return cb;
+	}
+
+
+
+
+
+	public ArrayList<TellerGui> getTellerGuis(){
+		return tellerGuiList;
 	}
 }

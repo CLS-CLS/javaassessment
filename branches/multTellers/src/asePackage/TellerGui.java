@@ -45,4 +45,12 @@ public class TellerGui extends JFrame implements Observer {
 			textArea.append(logEvent + "\n");
 		}
 	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id){
+		this.id = id;
+	}
 }
