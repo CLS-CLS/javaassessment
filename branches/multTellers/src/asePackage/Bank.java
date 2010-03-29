@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
 
+import asePackage.Controller.TellerSlideListener;
+
 /**
  * 
  * @author Chris
@@ -49,9 +51,7 @@ public class Bank extends Thread{
 		customers = new ArrayList<Customer>();
 		am = new AccountManager();
 		
-		for (int i = 0; i < numberOfTellers; i++){
-			teller[i] = new Teller(qm,am,log,i+1);
-		}
+		createTellers();
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 		//proofOfAccurateTransactions should be set as true for full testing of//
 		//transactions                                                         //
@@ -331,6 +331,14 @@ public class Bank extends Thread{
 
 	public void setNumberOfTellers(int numberOfTellers) {
 		this.numberOfTellers = numberOfTellers;
+		teller = new Teller[numberOfTellers];
+	}
+
+	public void createTellers() {
+		for (int i = 0; i < numberOfTellers; i++){
+			teller[i] = new Teller(qm,am,log,i+1);
+		}
+		
 	}
 
 	
