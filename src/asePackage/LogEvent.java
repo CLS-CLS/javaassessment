@@ -21,6 +21,7 @@ public class LogEvent {
 	private String transactionType;
 	private Customer customer;
 	private int accountID;
+	private int foreignAccountID;
 	private int tellerID;	
 	private double oldBalance;
 	private double newBalance;
@@ -49,6 +50,10 @@ public class LogEvent {
 		this.queueNumber=queueNumber;
 		this.customer=customer;
 		this.accountID=transaction.getAccount().getId();
+		if(transaction.getForeignAccount()==null)
+			this.foreignAccountID=-1;
+		else
+			this.foreignAccountID=transaction.getForeignAccount().getId();
 		this.transactionType=transaction.getType();
 		this.tellerID=tellerID;
 		this.status=status;
@@ -72,6 +77,7 @@ public class LogEvent {
 		this.queueNumber=queueNumber;
 		this.customer=customer;
 		this.accountID=-1;
+		this.foreignAccountID=-1;
 		this.transactionType="";
 		this.tellerID=-1;
 		this.status=status;
@@ -94,6 +100,7 @@ public class LogEvent {
 		this.queueNumber=queueNumber;
 		this.customer=customer;
 		this.accountID=-1;
+		this.foreignAccountID=-1;
 		this.transactionType="";
 		this.tellerID=tellerID;
 		this.status=status;
@@ -112,6 +119,10 @@ public class LogEvent {
 			this.accountID=-1;
 		else
 			this.accountID=transaction.getAccount().getId();
+		if(transaction.getForeignAccount() == null)
+			this.foreignAccountID=-1;
+		else
+			this.foreignAccountID=transaction.getForeignAccount().getId();
 		this.transactionType=transaction.getType();
 		this.tellerID=tellerID;
 		this.status=status;
@@ -233,7 +244,11 @@ public class LogEvent {
 				if(transactionType.equals(Transaction.VIEWBALANCE))
 					result=" - Balance: £" + newBalance;
 				else
-					result=" - New Account ID: " + accountID + " Balance: £" + newBalance;
+					if(transactionType.equals(Transaction.OPEN))
+						result=" - New Account ID: " + accountID + " Balance: £" + newBalance;
+					else
+						if(transactionType.equals(Transaction.TRANSFER))
+							result=" - Customer account New Balance: £" + newBalance + " from Old Balance: £" + oldBalance;
 		
 		return result;
 	}	
@@ -279,6 +294,9 @@ public class LogEvent {
 						else
 							if(transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT))
 								result+= transactionType + " " + accountID + " £" + amount;
+							else
+								if(transactionType.equals(Transaction.TRANSFER))
+									result+= transactionType + " " + accountID + " from account " + accountID + " £" + amount;
 		return result;
 	}
 	/*
