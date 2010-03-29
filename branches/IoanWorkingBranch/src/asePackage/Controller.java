@@ -42,6 +42,12 @@ public class Controller {
 			bank.start();
 			((JComponent)e.getSource()).setEnabled(false);
 			gui.getCloseButton().setEnabled(true);
+			
+			for(int i=0; i < ((GUI)gui).getNumberTellers();i++) {
+				TellerGui newTellerGui = new TellerGui(i+1);
+				((GUI)gui).addTellerGui(newTellerGui, (i));
+				bank.setObserver(newTellerGui);
+			}				
 		}
 	}
 	

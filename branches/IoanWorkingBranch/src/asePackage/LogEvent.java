@@ -15,6 +15,7 @@ public class LogEvent {
 
 	public static final String EXITQUEUE = "exit queue";
 	public static final String STARTTRANSACTION = "start transaction";
+	public static final String EXITBANK = "left bank";
 	
 	private int queueNumber;
 	private String transactionType;
@@ -204,6 +205,8 @@ public class LogEvent {
 			result+=getSuccess();
 		if(status.equals(FAIL)) 
 			result+=getFail();
+		if(status.equals(EXITBANK)) 
+			result+=getExitBank();
 		if(status.equals(MESSAGE))
 			result+=getMessage();
 
@@ -240,7 +243,7 @@ public class LogEvent {
 	private String getEnterQueue() {
 		String result="";
 		result="Customer " + customer.getId() + " (" + customer.getFirstName() +
-			", " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
+			" " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
 		return result;
 	}
 	/*
@@ -249,7 +252,7 @@ public class LogEvent {
 	private String getExitQueue() {
 		String result="";
 		result="Teller " + tellerID + " receive customer " + customer.getId() +
-			" (" + customer.getFirstName() + ", " + customer.getLastName() + ")" +
+			" (" + customer.getFirstName() + " " + customer.getLastName() + ")" +
 			"with queue number " + queueNumber + " to serve";
 		return result;
 	}
@@ -287,13 +290,26 @@ public class LogEvent {
 		result += getSuccessDetails();
 		return result;
 	}
-	
+	/*
+	 * NEW
+	 */
 	private String getFail() {
 		String result;
 		result = "Teller " + tellerID + " FAIL completing the " + transactionType + " for customer " + customer.getId()+"\n";
 		result += " - " + getMessage();
 		return result;
 	}
+	
+	/*
+	 * NEW
+	 */
+	private String getExitBank() {
+		String result="";
+		result="Customer " + customer.getFirstName() + " " + customer.getLastName()+
+			" (ID: " + customer.getId() + ") left bank";
+		return result;
+	}
+	
 	public String toStringQueue() {
 		String result;
 		result = queueNumber + ". " + customer.getFirstName() + " " + customer.getLastName() + " (ID: " + customer.getId() + ")";
