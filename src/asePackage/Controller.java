@@ -52,7 +52,6 @@ public class Controller {
 			gui.getCloseButton().setEnabled(true);
 			JComponent[] cbs = gui.getCb();
 			for (JComponent cb : cbs)cb.setEnabled(false);
-						
 		}
 	}
 	
