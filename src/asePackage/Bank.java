@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 700;
-	private static final int NUMBEROFTELLERS = 3;
 	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
+	private int numberOfTellers = 3;
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -26,7 +26,7 @@ public class Bank extends Thread{
 	private boolean isPaused = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
-	private Teller[] teller = new Teller[NUMBEROFTELLERS];
+	private Teller[] teller = new Teller[numberOfTellers];
 	private ArrayList<Customer> customers;
 	private boolean proofOfAccurateTransactions = false;
 
@@ -49,7 +49,7 @@ public class Bank extends Thread{
 		customers = new ArrayList<Customer>();
 		am = new AccountManager();
 		
-		for (int i = 0; i < NUMBEROFTELLERS; i++){
+		for (int i = 0; i < numberOfTellers; i++){
 			teller[i] = new Teller(qm,am,log,i+1);
 		}
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
@@ -256,7 +256,7 @@ public class Bank extends Thread{
 	public void run(){
 		int counter = 0;
 		boolean tellersFinish = false;
-		for (int i = 0; i < NUMBEROFTELLERS ; i++)
+		for (int i = 0; i < numberOfTellers ; i++)
 			teller[i].start();
 		while(isOpen || !qm.isQueueEmpty() || !tellersFinish){
 			if(isOpen && !isPaused) {
@@ -268,7 +268,7 @@ public class Bank extends Thread{
 			
 			if(!isOpen && qm.isQueueEmpty()) {
 				tellersFinish = true;
-				for (int i = 0; i < NUMBEROFTELLERS ; i++)
+				for (int i = 0; i < numberOfTellers ; i++)
 					if(teller[i].isTellerBusy())
 						tellersFinish = false;
 			}
@@ -305,6 +305,9 @@ public class Bank extends Thread{
 	public void setObserver(Observer o){
 		log.addObserver(o);
 	}
+	public void removeObserver(Observer o) {
+		log.deleteObserver(o);
+	}
 
 	public int getTellerGenerationDelay() {
 		return Teller.getTellerGenerationDelay();
@@ -321,6 +324,16 @@ public class Bank extends Thread{
 	public boolean isPaused() {
 		return isPaused;
 	}
+
+	public int getNumberOfTellers() {
+		return numberOfTellers;
+	}
+
+	public void setNumberOfTellers(int numberOfTellers) {
+		this.numberOfTellers = numberOfTellers;
+	}
+
+	
 
 	
 }

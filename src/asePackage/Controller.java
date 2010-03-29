@@ -2,9 +2,12 @@ package asePackage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -30,8 +33,13 @@ public class Controller {
 		gui.addTellerSliderListener(new TellerSlideListener());
 		gui.addCloseButtonListener(new CloseButtonListener());
 		gui.addPauseButtonListener(new PauseButtonListener());
+		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
+		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
+		for (TellerGui tg : tellersGui){
+			bank.setObserver(tg);
+		}
 
 	}
 	
@@ -42,12 +50,9 @@ public class Controller {
 			bank.start();
 			((JComponent)e.getSource()).setEnabled(false);
 			gui.getCloseButton().setEnabled(true);
-			
-			for(int i=0; i < ((GUI)gui).getNumberTellers();i++) {
-				TellerGui newTellerGui = new TellerGui(i+1);
-				((GUI)gui).addTellerGui(newTellerGui, (i));
-				bank.setObserver(newTellerGui);
-			}				
+			JComponent[] cbs = gui.getCb();
+			for (JComponent cb : cbs)cb.setEnabled(false);
+						
 		}
 	}
 	
@@ -89,6 +94,22 @@ public class Controller {
 				((JComponent)e.getSource()).setEnabled(true);
 			}
 		}
+	}
+	
+	class NumberOfTellersListener implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+			ArrayList<TellerGui> tellerGuis = gui.getTellerGuis();
+			for (TellerGui tg :tellerGuis) bank.removeObserver(tg);
+			int numberOfTellers =Integer.parseInt(e.getActionCommand());
+			bank.setNumberOfTellers(numberOfTellers);
+			gui.setNumberTellers(numberOfTellers);
+			gui.createTellerGuis();
+			// register to the observer the new teller guis
+			for (TellerGui tg :tellerGuis) bank.setObserver(tg);
+			
+		}
+		
 	}
 }
 

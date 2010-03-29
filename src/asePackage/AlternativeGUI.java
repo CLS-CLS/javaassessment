@@ -2,6 +2,7 @@ package asePackage;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
 
 import javax.swing.*;
@@ -149,6 +150,36 @@ class AlternativeGUI extends JFrame implements GuiControl
 	}
 
 	public QueueGui getQueueGui() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<TellerGui> getTellerGuis() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addTellersMenuItemListener(ActionListener al) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void createTellerGuis() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getNumberTellers() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setNumberTellers(int numberTellers) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public JCheckBoxMenuItem[] getCb() {
 		// TODO Auto-generated method stub
 		return null;
 	}
