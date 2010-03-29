@@ -1,0 +1,141 @@
+Customer 8 (Jane, Smith) joins queue on position 1
+Teller 1 serves customer 8 (Jane, Smith)with queue number 1
+  - Transaction: deposit to account 8 £230.0
+  - Status: Success (New Balance: £1664.0 from Old Balance: £1434.0)
+Teller 1 serves customer 8 (Jane, Smith)with queue number 1
+  - Transaction: viewBalance for account 8
+  - Status: Success (Balance: £1664.0)
+Customer 13 (Billy, Bob) joins queue on position 2
+Customer 8 (Jane, Smith) joins queue on position 3
+Teller 1 serves customer 13 (Billy, Bob)with queue number 2
+  - Transaction: close account number 13
+  - Status: Success (Old Balance: £345.0 with Final Withdrawed Sum: £345.0)
+Teller 1 serves customer 13 (Billy, Bob)with queue number 2
+  - Transaction: depositForeignAccount 5 £676.0
+  - Status: Success (New Balance: £8540.0 from Old Balance: £9216.0)
+Customer 1 (Ali, Alshbel) joins queue on position 4
+Teller 2 serves customer 8 (Jane, Smith)with queue number 3
+  - Transaction: viewBalance for account 8
+  - Status: Success (Balance: £1664.0)
+Teller 2 serves customer 8 (Jane, Smith)with queue number 3
+  - Transaction: withdrawal from account 8 £21.0
+  - Status: Success (New Balance: £1643.0 from Old Balance: £1664.0)
+Teller 3 serves customer 1 (Ali, Alshbel)with queue number 4
+  - Transaction: deposit to account 1 £650.0
+  - Status: Success (New Balance: £25659.99 from Old Balance: £25009.99)
+Teller 3 serves customer 1 (Ali, Alshbel)with queue number 4
+  - Transaction: viewBalance for account 1
+  - Status: Success (Balance: £25659.99)
+Customer 3 (Ioan, Covalcic) joins queue on position 5
+Customer 7 (Juan, Carlos) joins queue on position 6
+Teller 1 serves customer 3 (Ioan, Covalcic)with queue number 5
+  - Transaction: open account with initial amount: £702.0
+  - Status: Success (New Account ID: 17 Balance: £702.0)
+Customer 13 (Billy, Bob) joins queue on position 7
+Teller 2 serves customer 7 (Juan, Carlos)with queue number 6
+  - Transaction: deposit to account 7 £212.0
+  - Status: Success (New Balance: £11446.0 from Old Balance: £11234.0)
+Teller 2 serves customer 7 (Juan, Carlos)with queue number 6
+  - Transaction: deposit to account 7 £732.0
+  - Status: Success (New Balance: £12178.0 from Old Balance: £11446.0)
+Teller 3 serves customer 13 (Billy, Bob)with queue number 7
+  - Transaction: viewBalance for account 2
+  - Status: Success (Balance: £100.0)
+Customer 11 (Ahmed, Ali) joins queue on position 8
+Customer 6 (John, Smith) joins queue on position 9
+Teller 1 serves customer 11 (Ahmed, Ali)with queue number 8
+  - Transaction: open account with initial amount: £315.0
+  - Status: Fail (Customer has already 2 accounts)
+Customer 10 (Jose, Luis) joins queue on position 10
+Teller 2 serves customer 6 (John, Smith)with queue number 9
+  - Transaction: withdrawal from account 6 £107.0
+  - Status: Success (New Balance: £18827.0 from Old Balance: £18934.0)
+Teller 2 serves customer 6 (John, Smith)with queue number 9
+  - Transaction: viewBalance for account 6
+  - Status: Success (Balance: £18827.0)
+Teller 3 serves customer 10 (Jose, Luis)with queue number 10
+  - Transaction: withdrawal from account 16 £91.0
+  - Status: Success (New Balance: £12243.0 from Old Balance: £12334.0)
+Customer 9 (John, Johnson) joins queue on position 11
+Customer 1 (Ali, Alshbel) joins queue on position 12
+Customer 14 (John, Williams) joins queue on position 13
+Customer 15 (Chris, Brown) joins queue on position 14
+Teller 1 serves customer 9 (John, Johnson)with queue number 11
+  - Transaction: deposit to account 9 £798.0
+  - Status: Success (New Balance: £1341.0 from Old Balance: £543.0)
+Teller 1 serves customer 9 (John, Johnson)with queue number 11
+  - Transaction: depositForeignAccount 10 £893.0
+  - Status: Success (New Balance: £1327.0 from Old Balance: £2220.0)
+Customer 4 (Monica, Farrow) joins queue on position 15
+Customer 9 (John, Johnson) joins queue on position 16
+Customer 5 (Mike, Chantler) joins queue on position 17
+Customer 10 (Jose, Luis) joins queue on position 18
+Customer 6 (John, Smith) joins queue on position 19
+Customer 3 (Ioan, Covalcic) joins queue on position 20
+Customer 13 (Billy, Bob) joins queue on position 21
+Teller 2 serves customer 1 (Ali, Alshbel)with queue number 12
+  - Transaction: withdrawal from account 1 £183.0
+  - Status: Success (New Balance: £25476.99 from Old Balance: £25659.99)
+Teller 2 serves customer 1 (Ali, Alshbel)with queue number 12
+  - Transaction: deposit to account 1 £838.0
+  - Status: Success (New Balance: £26314.99 from Old Balance: £25476.99)
+Teller 3 serves customer 14 (John, Williams)with queue number 13
+  - Transaction: viewBalance for account 14
+  - Status: Success (Balance: £23.0)
+Teller 3 serves customer 14 (John, Williams)with queue number 13
+  - Transaction: depositForeignAccount 8 £35.0
+  - Status: Success (New Balance: £1678.0 from Old Balance: £1713.0)
+Customer 11 (Ahmed, Ali) joins queue on position 22
+Customer 14 (John, Williams) joins queue on position 23
+Teller 1 serves customer 15 (Chris, Brown)with queue number 14
+  - Transaction: deposit to account 15 £579.0
+  - Status: Success (New Balance: £2921.0 from Old Balance: £2342.0)
+Teller 1 serves customer 15 (Chris, Brown)with queue number 14
+  - Transaction: viewBalance for account 15
+  - Status: Success (Balance: £2921.0)
+Customer 8 (Jane, Smith) joins queue on position 24
+Teller 2 serves customer 4 (Monica, Farrow)with queue number 15
+  - Transaction: withdrawal from account 4 £26.0
+  - Status: Success (New Balance: £98719.0 from Old Balance: £98745.0)
+Teller 2 serves customer 4 (Monica, Farrow)with queue number 15
+  - Transaction: open account with initial amount: £637.0
+  - Status: Success (New Account ID: 18 Balance: £637.0)
+Teller 3 serves customer 9 (John, Johnson)with queue number 16
+  - Transaction: withdrawal from account 9 £131.0
+  - Status: Success (New Balance: £1210.0 from Old Balance: £1341.0)
+Teller 1 serves customer 5 (Mike, Chantler)with queue number 17
+  - Transaction: depositForeignAccount 8 £264.0
+  - Status: Success (New Balance: £1942.0 from Old Balance: £2206.0)
+Teller 2 serves customer 10 (Jose, Luis)with queue number 18
+  - Transaction: withdrawal from account 16 £172.0
+  - Status: Fail (Reached total withdrawal limit )
+Teller 3 serves customer 6 (John, Smith)with queue number 19
+  - Transaction: viewBalance for account 6
+  - Status: Success (Balance: £18827.0)
+Teller 1 serves customer 3 (Ioan, Covalcic)with queue number 20
+  - Transaction: depositForeignAccount 2 £883.0
+  - Status: Success (New Balance: £983.0 from Old Balance: £1866.0)
+Teller 1 serves customer 3 (Ioan, Covalcic)with queue number 20
+  - Transaction: withdrawal from account 17 £189.0
+  - Status: Success (New Balance: £513.0 from Old Balance: £702.0)
+Teller 2 serves customer 13 (Billy, Bob)with queue number 21
+  - Transaction: withdrawal from account 2 £142.0
+  - Status: Success (New Balance: £841.0 from Old Balance: £983.0)
+Teller 3 serves customer 11 (Ahmed, Ali)with queue number 22
+  - Transaction: close account number 11
+  - Status: Success (Old Balance: £2.0 with Final Withdrawed Sum: £2.0)
+Teller 3 serves customer 11 (Ahmed, Ali)with queue number 22
+  - Transaction: open account with initial amount: £498.0
+  - Status: Success (New Account ID: 19 Balance: £498.0)
+Teller 2 serves customer 14 (John, Williams)with queue number 23
+  - Transaction: depositForeignAccount 12 £590.0
+  - Status: Success (New Balance: £913.0 from Old Balance: £1503.0)
+Teller 3 serves customer 8 (Jane, Smith)with queue number 24
+  - Transaction: viewBalance for account 8
+  - Status: Success (Balance: £1942.0)
+
+Statistics
+-------------
+Number of Processed Customers : 24
+Total Deposited Money : £5876.0
+Total Withdrawn Money : £1237.0
