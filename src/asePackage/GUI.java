@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
@@ -56,11 +57,15 @@ public class GUI extends JFrame implements GuiControl,Observer
 		super("Simple GUI Stage 1");
 		createButtonPanel();
 		createDisplayPanel();
-		
 		queueGui = new QueueGui();
+		
 		this.getContentPane().add(buttonPanel);
 		this.getContentPane().add(displayPanel);
 		this.pack();  //used to put all the items in the correct position
+		
+		Point p = this.getLocation();
+		queueGui.setLocation(p.x + this.getWidth(), p.y);
+		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
 														//the close button(x) is pressed
