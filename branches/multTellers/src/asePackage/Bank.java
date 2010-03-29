@@ -101,6 +101,7 @@ public class Bank extends Thread{
 	//generates a predefined set of transactions for 
 	//proof of Accurate Transactions
 	private void proofOfAccurateTransactions(){
+/*
 		ArrayList<Account> accounts;
 		//loads customers and accounts and creates connects the accounts
 		//with the customers
@@ -156,7 +157,7 @@ public class Bank extends Thread{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 	/**
@@ -172,39 +173,33 @@ public class Bank extends Thread{
 	private ArrayList<Transaction> generateTransactions(Customer customer) {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
-		int ownerRandom;
 		for (int i = 0;i < numberOfTransactions;i++){
-			ownerRandom = rndGen.nextInt(OCCURANCEDEPOSITFOREIGNACCOUNT)+1;
-			if(ownerRandom == 1){
-				Account aca = selectRandomAcountQM(customer);
-				trans.add(Transaction.generateRandomTransaction(aca, rndGen, false));
-			}
-			else {
-				Account aca = selectRandomAcount(customer);
-				trans.add(Transaction.generateRandomTransaction(aca, rndGen, true));
-			}
+				Account account = selectRandomAccount(customer);
+				Account foreignAccount = selectRandomAccountQM(account);
+				
+				trans.add(Transaction.generateRandomTransaction(account, foreignAccount, rndGen));
 		}
 		return trans;
 	}
 	/*
 	 * IOAN 27.03
 	 */
-	private Account selectRandomAcountQM(Customer customer) {
-		Account account = null;
+	private Account selectRandomAccountQM(Account account) {
 		boolean success=false;
 		ArrayList<Account> accounts = am.getAccountList();
 		int randomValue;
+		Account newAccount = null;
 		
 		if(accounts.size()>0){
 			while(!success){
 				randomValue = rndGen.nextInt(accounts.size());
-				if(!accounts.get(randomValue).getOwnerList().contains(customer)) {
-					account =  accounts.get(randomValue);
+				if(!accounts.get(randomValue).equals(account)) {
+					newAccount =  accounts.get(randomValue);
 					success = true;
 				}
 			}
 		}
-		return account;
+		return newAccount;
 	}
 
 	/**
@@ -212,7 +207,7 @@ public class Bank extends Thread{
 	 * @param customer
 	 * @return a random account, null if the customer has no accounts
 	 */
-	private Account selectRandomAcount(Customer customer) {
+	private Account selectRandomAccount(Customer customer) {
 		Account account = null;
 		ArrayList<Account> accounts = customer.getAccountList();
 		if(accounts.size()>0){
