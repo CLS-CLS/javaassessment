@@ -86,6 +86,8 @@ public class Teller extends Thread{
 			
 			Thread.sleep(tellerGenerationDelay/4);			
 		}
+		
+		log.addLogEventJoinQueue(customerInQueue.getQueueNumber(), currentCustomer, LogEvent.EXITBANK);
 		currentCustomer.setInsideBank(false);
 		tellerBusy=false;
 	}
