@@ -16,7 +16,6 @@ public class Teller extends Thread{
 	private static int tellerGenerationDelay;
 	private boolean bankIsClosed = false;
 	private static boolean bankIsPaused = false;
-	private boolean tellerBusy = false;
 	private CountDownLatch countDown;
 	
 	/*
@@ -42,7 +41,6 @@ public class Teller extends Thread{
 		customerInQueue = qm.removeQueueElement();
 		if(customerInQueue != null) {
 			log.addLogEventExitQueue(customerInQueue.getQueueNumber(), id, customerInQueue.getCustomer(), LogEvent.EXITQUEUE);
-			tellerBusy = true;
 		}
     }
 	
@@ -91,7 +89,7 @@ public class Teller extends Thread{
 			Thread.sleep(tellerGenerationDelay/4);			
 		}
 		
-		tellerBusy=false;
+		
 	}
 	
 	/*
@@ -347,7 +345,7 @@ public class Teller extends Thread{
 		}
 	}
 
-	public void setBankIsClosed(boolean bankIsClosed) {
+	public void setBankClosed(boolean bankIsClosed) {
 		this.bankIsClosed = bankIsClosed;
 	}
 
@@ -363,13 +361,9 @@ public class Teller extends Thread{
 		Teller.bankIsPaused = bankIsPaused;
 	}
 
-	public static boolean isBankIsPaused() {
-		return bankIsPaused;
-	}
+	
 
-	public boolean isTellerBusy() {
-		return tellerBusy;
-	}
+	
 
 	
 	

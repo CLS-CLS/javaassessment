@@ -29,7 +29,7 @@ public class Bank extends Thread{
 	private boolean isPaused = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
-	private Teller[] teller = new Teller[numberOfTellers];
+	private Teller[] tellers = new Teller[numberOfTellers];
 	private ArrayList<Customer> customers;
 	private boolean proofOfAccurateTransactions = false;
 	CountDownLatch countDown;
@@ -77,7 +77,7 @@ public class Bank extends Thread{
 
 		if(proofOfAccurateTransactions == true) proofOfAccurateTransactions();
 		else {
-			//loads customers and accounts and creates connects the accounts
+			//loads customers and accounts and connects the accounts
 			//with the customers
 			try{
 				customers = MyUtilities.loadCustomers("customers.txt");
@@ -171,7 +171,8 @@ public class Bank extends Thread{
 	 */
 	/*
 	 * MODIFIED
-	 * IOAN 27.03
+	 * IOAN 27.03 //TODO comments
+	 * 
 	 */
 	private ArrayList<Transaction> generateTransactions(Customer customer) {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
@@ -254,15 +255,21 @@ public class Bank extends Thread{
 public void run(){
 		
 		for (int i = 0; i < numberOfTellers; i++)
-			teller[i].start();
+			tellers[i].start();
+		
 		while(isOpen){
 			Customer customer = pickRandomCustomer();
 			generateQueueElement(customer);
 			try {Thread.sleep(customerGenerationDelay);}
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
+		
+		// awakes the tellers that may be waiting for a customer in the queue
+		//as there is no new customers going to be added 
 		qm.awakeAllThreads();
 		
+		//waits until all the tellers are done their work
+		//(all the customers are served)
 		try {
 			countDown.await();
 		} catch (InterruptedException e) {
@@ -279,8 +286,8 @@ public void run(){
 
 	public void setOpen(boolean bool){
 		isOpen = bool;
-		for (Teller t : teller){
-			t.setBankIsClosed(!bool);
+		for (Teller t : tellers){
+			t.setBankClosed(!bool);
 		}
 
 	}
@@ -323,13 +330,13 @@ public void run(){
 	public void setNumberOfTellers(int numberOfTellers) {
 		this.numberOfTellers = numberOfTellers;
 		countDown = new CountDownLatch(numberOfTellers);
-		teller = new Teller[numberOfTellers];
+		tellers = new Teller[numberOfTellers];
 		
 	}
 
 	public void createTellers() {
 		for (int i = 0; i < numberOfTellers; i++){
-			teller[i] = new Teller(qm,am,log,i+1,countDown);
+			tellers[i] = new Teller(qm,am,log,i+1,countDown);
 		}
 		
 	}
