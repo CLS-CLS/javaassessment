@@ -1,5 +1,6 @@
 package asePackage;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * 
@@ -16,6 +17,7 @@ public class Teller extends Thread{
 	private boolean bankIsClosed = false;
 	private static boolean bankIsPaused = false;
 	private boolean tellerBusy = false;
+	private CountDownLatch countDown;
 	
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
@@ -23,8 +25,9 @@ public class Teller extends Thread{
 	private String errorMessage;  
 	
 		
-	public Teller(QueueManager qm, AccountManager accountManager, Log log, int tellerID) {
+	public Teller(QueueManager qm, AccountManager accountManager, Log log, int tellerID,CountDownLatch countDown) {
 		super("T("+tellerID+")");
+		this.countDown = countDown;
 		this.qm = qm;
 		this.accountManager = accountManager;
 		this.log = log;
@@ -329,6 +332,7 @@ public class Teller extends Thread{
 				e.printStackTrace();
 			}
 		}
+		countDown.countDown();
 	}
 	
 	
@@ -366,6 +370,8 @@ public class Teller extends Thread{
 	public boolean isTellerBusy() {
 		return tellerBusy;
 	}
+
+	
 	
 }
 

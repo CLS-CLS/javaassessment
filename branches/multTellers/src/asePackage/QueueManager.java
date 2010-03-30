@@ -115,5 +115,9 @@ public class QueueManager{
 		}
 		return str;
 	}
+	public synchronized void awakeAllThreads() {
+		notifyAll();
+		
+	}
 	
 }
