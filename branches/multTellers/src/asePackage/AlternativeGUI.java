@@ -106,87 +106,86 @@ class AlternativeGUI extends JFrame implements GuiControl
 	}
 
 	public void update(Observable o, Object arg) {
-		// TODO Updatge with the final report at the end
+		
 		
 	}
 
 	public JButton getRunButton() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void addCustomerSliderListener(ChangeListener cl) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void addTellerSliderListener(ChangeListener cl) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void setCustomerGenerationDelay(int customerGenerationDelay) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void addCloseButtonListener(ActionListener al) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public JComponent getCloseButton() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public void addPauseButtonListener(ActionListener al) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public QueueGui getQueueGui() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public ArrayList<TellerGui> getTellerGuis() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public void addTellersMenuItemListener(ActionListener al) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void createTellerGuis() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public int getNumberTellers() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	public void setNumberTellers(int numberTellers) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public JCheckBoxMenuItem[] getCb() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public void addQueueCheckboxListener(ItemListener event) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
