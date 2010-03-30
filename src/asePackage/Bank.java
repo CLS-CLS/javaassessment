@@ -3,6 +3,7 @@ package asePackage;
 import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 import asePackage.Controller.TellerSlideListener;
 
@@ -31,6 +32,7 @@ public class Bank extends Thread{
 	private Teller[] teller = new Teller[numberOfTellers];
 	private ArrayList<Customer> customers;
 	private boolean proofOfAccurateTransactions = false;
+	CountDownLatch countDown;
 
 	/*
 	 * holds the log of the bank
@@ -44,6 +46,7 @@ public class Bank extends Thread{
 
 
 	public Bank(){
+		countDown = new CountDownLatch(numberOfTellers);
 		customerGenerationDelay= INITIALCUSTOMERDELAY;
 		rndGen = new Random();
 		log = new Log();
@@ -248,33 +251,23 @@ public class Bank extends Thread{
 	}
 
 
-	public void run(){
-		int counter = 0;
-		boolean tellersFinish = false;
-		for (int i = 0; i < numberOfTellers ; i++)
-			teller[i].start();
-		while(isOpen || !qm.isQueueEmpty() || !tellersFinish){
-			if(isOpen && !isPaused) {
-				Customer customer = pickRandomCustomer();
-				generateQueueElement(customer);
-				counter ++;
-				System.out.println(counter);
-			}
-			
-			if(!isOpen && qm.isQueueEmpty()) {
-				tellersFinish = true;
-				for (int i = 0; i < numberOfTellers ; i++)
-					if(teller[i].isTellerBusy())
-						tellersFinish = false;
-			}
-			
-			try {
-				Thread.sleep(customerGenerationDelay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+public void run(){
 		
+		for (int i = 0; i < numberOfTellers; i++)
+			teller[i].start();
+		while(isOpen){
+			Customer customer = pickRandomCustomer();
+			generateQueueElement(customer);
+			try {Thread.sleep(customerGenerationDelay);}
+			catch (InterruptedException e) {e.printStackTrace();}
+		}
+		qm.awakeAllThreads();
+		
+		try {
+			countDown.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		MyUtilities.saveStringToFile(log.toString(), "log.txt");
 		MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
 		MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
@@ -286,6 +279,9 @@ public class Bank extends Thread{
 
 	public void setOpen(boolean bool){
 		isOpen = bool;
+		for (Teller t : teller){
+			t.setBankIsClosed(!bool);
+		}
 
 	}
 
@@ -326,12 +322,14 @@ public class Bank extends Thread{
 
 	public void setNumberOfTellers(int numberOfTellers) {
 		this.numberOfTellers = numberOfTellers;
+		countDown = new CountDownLatch(numberOfTellers);
 		teller = new Teller[numberOfTellers];
+		
 	}
 
 	public void createTellers() {
 		for (int i = 0; i < numberOfTellers; i++){
-			teller[i] = new Teller(qm,am,log,i+1);
+			teller[i] = new Teller(qm,am,log,i+1,countDown);
 		}
 		
 	}
