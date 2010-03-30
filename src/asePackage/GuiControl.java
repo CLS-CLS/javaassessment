@@ -1,6 +1,7 @@
 package asePackage;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Observer;
 
@@ -25,5 +26,5 @@ public interface GuiControl extends Observer{
 	public JComponent getCloseButton();
 	public ArrayList<TellerGui> getTellerGuis();
 	public JComponent[] getCb();
-
+	public void addQueueCheckboxListener(ItemListener event);
 }

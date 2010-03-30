@@ -2,9 +2,12 @@ package asePackage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -34,12 +37,15 @@ public class Controller {
 		gui.addCloseButtonListener(new CloseButtonListener());
 		gui.addPauseButtonListener(new PauseButtonListener());
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
+		gui.addQueueCheckboxListener(new QueueCheckboxListener());
+
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
 		for (TellerGui tg : tellersGui){
 			bank.setObserver(tg);
 		}
+		
 
 	}
 	
@@ -106,10 +112,21 @@ public class Controller {
 			gui.setNumberTellers(numberOfTellers);
 			gui.createTellerGuis();
 			// register to the observer the new teller guis
-			for (TellerGui tg :tellerGuis) bank.setObserver(tg);
-			
-		}
-		
+			for (TellerGui tg :tellerGuis) bank.setObserver(tg);			
+		}		
 	}
+    class QueueCheckboxListener implements ItemListener{
+        public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.DESELECTED) {
+                        gui.getQueueGui().setVisible(false);
+                        ((JCheckBox)e.getSource()).setSelected(false);
+                }
+                else {
+                		gui.getQueueGui().setVisible(true);
+                        ((JCheckBox)e.getSource()).setSelected(true);
+                }
+        }
+}
+
 }
 
