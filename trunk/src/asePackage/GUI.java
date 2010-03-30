@@ -15,6 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -42,6 +45,13 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JToggleButton pauseButton = new JToggleButton("Pause");
 	private QueueGui queueGui;
 	
+	private JMenuBar menubar = new JMenuBar();
+    private JMenu fileMenu = new JMenu("Menu");
+    private JMenuItem tellerItem = new JMenuItem("Teller");
+    private JMenuItem loadCustomerItem = new JMenuItem("Load Customer");
+    private JMenuItem loadAccountItem = new JMenuItem("Load Account");    
+    private JMenuItem closeItem = new JMenuItem("Close");
+      
 
 	static final int MIN_DELAY = 100;
 	static final int MAX_DELAY = 4000;
@@ -57,7 +67,18 @@ public class GUI extends JFrame implements GuiControl,Observer
 		createButtonPanel();
 		createDisplayPanel();
 		
-		queueGui = new QueueGui();
+		JPanel content = new JPanel();
+        content.setLayout(new FlowLayout());
+        
+        menubar.add(fileMenu);
+        fileMenu.add(tellerItem);
+        fileMenu.add(loadCustomerItem);
+        fileMenu.add(loadAccountItem);
+        fileMenu.add(closeItem); 
+		
+        queueGui = new QueueGui();
+		this.setJMenuBar(menubar);
+	    this.setContentPane(content);
 		this.getContentPane().add(buttonPanel);
 		this.getContentPane().add(displayPanel);
 		this.pack();  //used to put all the items in the correct position
@@ -160,9 +181,16 @@ public class GUI extends JFrame implements GuiControl,Observer
 		return closeButton;
 	}
 
-
 	public QueueGui getQueueGui() {
 		return queueGui;
 	}
-	
+
+	public void addAccountItemListener(ActionListener la) {
+		loadAccountItem.addActionListener(la);
+	}
+
+	public void addCustomerItemListener(ActionListener la) {
+		loadCustomerItem.addActionListener(la);		
+	}
+
 }

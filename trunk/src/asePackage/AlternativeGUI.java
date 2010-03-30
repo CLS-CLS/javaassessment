@@ -153,4 +153,19 @@ class AlternativeGUI extends JFrame implements GuiControl
 		return null;
 	}
 
+	public void loadItemListner(ActionListener la) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addAccountItemListener(ActionListener la) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCustomerItemListener(ActionListener la) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

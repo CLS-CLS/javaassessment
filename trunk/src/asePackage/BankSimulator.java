@@ -13,6 +13,7 @@ public class BankSimulator {
 		int result = JOptionPane.showOptionDialog(null,"Select GUI","Selector",0,
 				JOptionPane.INFORMATION_MESSAGE,null,new String[]{"Original GUI","Alternative GUI"},0);
 		if (result == 0 ) {
+			
 			gui = new GUI();
 			//QueueGui qGui = new QueueGui();
 			//Point p = ((JFrame)gui).getLocation();
