@@ -279,7 +279,6 @@ public class GUI extends JFrame implements GuiControl,Observer
         queueCheckbox.addItemListener(il);
     }
   
-
 	public ArrayList<TellerGui> getTellerGuis(){
 		return tellerGuiList;
 	}

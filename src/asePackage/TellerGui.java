@@ -30,6 +30,7 @@ public class TellerGui extends JFrame implements Observer {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		textArea = new JTextArea(15, 25);
+		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		panel = new JPanel();
 		panel.add(scrollPane);
@@ -44,6 +45,7 @@ public class TellerGui extends JFrame implements Observer {
 		if(id == logEvent.getTellerID()){
 			textArea.append(logEvent + "\n");
 		}
+		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 
 	public int getId() {
