@@ -1,5 +1,7 @@
 package asePackage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
@@ -57,8 +59,6 @@ public class Bank extends Thread{
 		//transactions                                                         //
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 
-		loadData(proofOfAccurateTransactions);
-
 	}
 
 	public static int getInitialcustomerdelay() {
@@ -77,9 +77,12 @@ public class Bank extends Thread{
 			//loads customers and accounts and creates connects the accounts
 			//with the customers
 			try{
-				customers = MyUtilities.loadCustomers("customers.txt");
-				accounts = MyUtilities.loadAccounts("accounts.txt",customers);
-				am.addAcounts(accounts);   //adds the account to the account manager
+				if(customers.isEmpty())
+					customers = MyUtilities.loadCustomers("customers.txt");
+				if(accounts.isEmpty()) {
+					accounts = MyUtilities.loadAccounts("accounts.txt",customers);
+					am.addAcounts(accounts);   //adds the account to the account manager
+				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -255,6 +258,9 @@ public class Bank extends Thread{
 
 	public void run(){
 		int counter = 0;
+
+		loadData(proofOfAccurateTransactions);
+
 		for (int i = 0; i < NUMBEROFTELLERS ; i++)
 			teller[i].start();
 		while(isOpen || !qm.isQueueEmpty()){
@@ -313,5 +319,23 @@ public class Bank extends Thread{
 		return isPaused;
 	}
 
-	
+	public void loadCustomers(File file) throws Exception {
+		customers = MyUtilities.loadCustomers(file.getAbsolutePath());
+	}
+	public void loadAccounts(File file)  {
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		String fileName = file.getAbsolutePath();
+		System.out.println(fileName);
+		try {
+			accounts = MyUtilities.loadAccounts(fileName, customers);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotValidFileTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		am.addAcounts(accounts);
+	}
+
 }

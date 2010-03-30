@@ -14,7 +14,7 @@ import java.util.Scanner;
  * Provides general load save methods as well as more specific load save methods
  * concerning account and customers records.
  */
-public class MyUtilities<E> {
+public class MyUtilities {
 	
 	/**
 	 * Saves a given string to a given file
@@ -86,7 +86,6 @@ public class MyUtilities<E> {
 		sc.close();
 	    return returnList;
 	}
-	
 	/**
 	 * 
 	 * @param fileName the filename that contains the account data
@@ -134,8 +133,6 @@ public class MyUtilities<E> {
 		if (accounts.size()==0) throw new NotValidFileTypeException("Accounts");
 		return accounts;
 	}
-	
-	
 	/**
 	 * finds the customer with the given customerID
 	 * @param customerId 
@@ -170,8 +167,7 @@ public class MyUtilities<E> {
 		if (customers.size()==0) throw new NotValidFileTypeException("Customer");
 		return customers;
 	}
-	
-	
+
 	public static void saveCustomersToFile(ArrayList<Customer> customers, String fileName) {
 		String result="";
 		for(int i=0; i<customers.size(); i++) {
