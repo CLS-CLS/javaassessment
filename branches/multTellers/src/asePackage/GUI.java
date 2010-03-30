@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
@@ -15,6 +17,7 @@ import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -52,7 +55,9 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JToggleButton pauseButton = new JToggleButton("Pause");
 	private QueueGui queueGui;
 	private ArrayList<TellerGui> tellerGuiList = new ArrayList<TellerGui>();
-	
+	private JCheckBox queueCheckbox;
+	private ArrayList<JCheckBox> tellersCheckbox;
+
 	private int numberTellers=3;
 	
 	static final int MIN_DELAY = 100;
@@ -149,11 +154,13 @@ public class GUI extends JFrame implements GuiControl,Observer
         TitledBorder borderTeller = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Teller", TitledBorder.LEFT, TitledBorder.TOP);
         tellerPanel.setBorder(borderTeller);
 
+        queueCheckbox = new JCheckBox("Queue Window");
 		
 		buttonPanel.add(helperPanel,BorderLayout.WEST);
 		buttonPanel.add(customerPanel,BorderLayout.CENTER);
 		buttonPanel.add(tellerPanel,BorderLayout.EAST );
-		
+		buttonPanel.add(queueCheckbox,BorderLayout.SOUTH);
+
 		sliderCustomer.setMajorTickSpacing(100);
 		sliderCustomer.setPaintTicks(true);
 		
@@ -172,6 +179,9 @@ public class GUI extends JFrame implements GuiControl,Observer
 		sliderCustomer.setPaintLabels(true);
 		sliderTeller.setPaintLabels(true);
 		
+		queueCheckbox.setMnemonic(KeyEvent.VK_C); 
+        queueCheckbox.setSelected(true);
+        
 		this.getContentPane().add(buttonPanel);
 		
 	}
@@ -265,9 +275,10 @@ public class GUI extends JFrame implements GuiControl,Observer
 		return cb;
 	}
 
-
-
-
+    public void addQueueCheckboxListener(ItemListener il) {
+        queueCheckbox.addItemListener(il);
+    }
+  
 
 	public ArrayList<TellerGui> getTellerGuis(){
 		return tellerGuiList;

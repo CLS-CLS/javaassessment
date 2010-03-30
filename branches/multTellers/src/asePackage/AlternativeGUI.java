@@ -2,6 +2,7 @@ package asePackage;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -182,6 +183,11 @@ class AlternativeGUI extends JFrame implements GuiControl
 	public JCheckBoxMenuItem[] getCb() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void addQueueCheckboxListener(ItemListener event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
