@@ -28,6 +28,8 @@ import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -66,7 +68,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 	
 	public GUI(){
 		
-		super("Simple GUI Stage 1");
+		super("Simple GUI Stage 2");
 		createButtonPanel();
 		createDisplayPanel();
 	    createTellerGuis();
@@ -81,12 +83,13 @@ public class GUI extends JFrame implements GuiControl,Observer
 		Point p = this.getLocation();
 		queueGui.setLocation(p.x + this.getWidth(), p.y);
 		for (TellerGui tGui :tellerGuiList)
-			tGui.setLocation(p.x + tGui.getWidth()*tGui.getId() , p.y + this.getHeight());
+			tGui.setLocation(p.x + tGui.getWidth()*(tGui.getId()-1) , p.y + this.getHeight());
 		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
 														//the close button(x) is pressed
 	}
+
 
 
 	private void createMenuBar() {
@@ -119,21 +122,37 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 	private void createButtonPanel() {
 		JPanel helperPanel = new JPanel();
-		helperPanel.setLayout(new GridLayout(0,1,0,3));
-		helperPanel.setBackground(Color.LIGHT_GRAY);
-		setLayout(new FlowLayout());
+		helperPanel.setLayout(new GridLayout(3,1));
+		
+		JPanel customerPanel = new JPanel();
+		customerPanel.setLayout(new GridLayout(1,1));
+		
+		JPanel tellerPanel = new JPanel();
+		tellerPanel.setLayout(new GridLayout(1,1));
+		
+		setLayout(new FlowLayout());		
 		buttonPanel = new JPanel();
-		buttonPanel.setBackground(Color.LIGHT_GRAY);
 		buttonPanel.setLayout(new BorderLayout(3,3));
-		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
-		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
+		
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
 		closeButton.setEnabled(false);
 		helperPanel.add(pauseButton);
+		
+		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
+		customerPanel.add(sliderCustomer);
+        TitledBorder borderCustomer = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Customer", TitledBorder.LEFT, TitledBorder.TOP);
+        customerPanel.setBorder(borderCustomer);
+		
+		sliderTeller = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, tellerGenerationDelay);
+		tellerPanel.add(sliderTeller);
+        TitledBorder borderTeller = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Teller", TitledBorder.LEFT, TitledBorder.TOP);
+        tellerPanel.setBorder(borderTeller);
+
+		
 		buttonPanel.add(helperPanel,BorderLayout.WEST);
-		buttonPanel.add(sliderCustomer,BorderLayout.CENTER);
-		buttonPanel.add(sliderTeller,BorderLayout.EAST );
+		buttonPanel.add(customerPanel,BorderLayout.CENTER);
+		buttonPanel.add(tellerPanel,BorderLayout.EAST );
 		
 		sliderCustomer.setMajorTickSpacing(100);
 		sliderCustomer.setPaintTicks(true);
@@ -143,8 +162,8 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 		//Create the label table
 		labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer( MIN_DELAY ), new JLabel("Fast"));
-		labelTable.put(new Integer( MAX_DELAY ), new JLabel("Slow"));
+		labelTable.put(new Integer( MIN_DELAY ), new JLabel("Fast  "));
+		labelTable.put(new Integer( MAX_DELAY ), new JLabel("Slow  "));
 		
 		sliderCustomer.setLabelTable(labelTable);
 		sliderTeller.setLabelTable(labelTable);
@@ -156,7 +175,6 @@ public class GUI extends JFrame implements GuiControl,Observer
 		this.getContentPane().add(buttonPanel);
 		
 	}
-
 
 	public void setText(String report) {
 		textArea.append(report);
