@@ -167,4 +167,21 @@ public class Log extends Observable {
 		result+="Total Withdrawn Money : £" + getWithdrawalTotal() + "\n";
 		return result;
 	}
+	
+	public String customersSummary() {
+		StringBuilder result = new StringBuilder();
+		ArrayList<Integer> processedCustomers = new ArrayList<Integer>();
+		int currentCustomer = 0;
+		for(int i=0; i<logEventList.size();i++) {
+			if(currentCustomer == logEventList.get(i).getCustomerID()) {
+				result.append(logEventList.get(i));
+			}
+			else {
+				if(!processedCustomers.contains(logEventList.get(i))) {
+					result.append(logEventList.get(i));
+				}
+			}
+		}
+		return result.toString();			
+	}
 }

@@ -20,6 +20,7 @@ public class QueueGui extends JFrame implements Observer{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		textArea = new JTextArea(20, 15);
+		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		panel = new JPanel();
 		panel.add(scrollPane);
@@ -33,15 +34,15 @@ public class QueueGui extends JFrame implements Observer{
 		LogEvent logEvent = (LogEvent)arg;
 		if(logEvent.getStatus().equals(LogEvent.ENTERQUEUE)){
 			currentQueue.add(logEvent);
-			textArea.setText(getTextFromArrayList());
 		}
 		
 		if(logEvent.getStatus().equals(LogEvent.EXITQUEUE)){
 			for (int i = 0; i < currentQueue.size(); i++)
 				if(currentQueue.get(i).getCustomerID() == logEvent.getCustomerID())
-					currentQueue.remove(i);
-			textArea.setText(getTextFromArrayList());
+					currentQueue.remove(i);			
 		}
+		textArea.setText(getTextFromArrayList());
+		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 	
 	private String getTextFromArrayList() {
