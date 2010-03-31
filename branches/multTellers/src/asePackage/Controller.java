@@ -17,18 +17,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Controller {
-	
+
 	GuiControl gui;
 	Bank bank;
 	/**
 	 * @param gui
 	 * @param bank
 	 */
-	public Controller(GuiControl gui, Bank bank) {
+	public Controller(GuiControl gui, Bank bank){
 		super();
 		this.gui = gui;
 		this.bank = bank;
-		
+
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
 
@@ -46,11 +46,11 @@ public class Controller {
 		for (TellerGui tg : tellersGui){
 			bank.setObserver(tg);
 		}
-		
+
 
 	}
-	
-	
+
+
 	class RunBankListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(true);
@@ -61,38 +61,38 @@ public class Controller {
 			for (JComponent cb : cbs)cb.setEnabled(false);
 		}
 	}
-	
+
 	class CustomerSlideListener implements ChangeListener{
 
 		public void stateChanged(ChangeEvent e) {
-			 JSlider source = (JSlider)e.getSource();
-		     int delay = (int)source.getValue();
-		     bank.setCustomerGenerationDelay(delay);
+			JSlider source = (JSlider)e.getSource();
+			int delay = (int)source.getValue();
+			bank.setCustomerGenerationDelay(delay);
 		}		
 	}
-	
+
 	class TellerSlideListener implements ChangeListener{
 
 		public void stateChanged(ChangeEvent e) {
-			 JSlider source = (JSlider)e.getSource();
-		     int delay = (int)source.getValue();
-		     bank.setTellerGenerationDelay(delay);
+			JSlider source = (JSlider)e.getSource();
+			int delay = (int)source.getValue();
+			bank.setTellerGenerationDelay(delay);
 		}		
 	}
-	
+
 	class CloseButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(false);
-		    ((JComponent)e.getSource()).setEnabled(false);
+			((JComponent)e.getSource()).setEnabled(false);
 		}
 	}
-	
-//	class PauseButtonListener implements ActionListener{
-//		public synchronized void actionPerformed(ActionEvent e) {
-//		}
-//	}
-	
+
+	//	class PauseButtonListener implements ActionListener{
+	//		public synchronized void actionPerformed(ActionEvent e) {
+	//		}
+	//	}
+
 	class NumberOfTellersListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
@@ -107,18 +107,18 @@ public class Controller {
 			for (TellerGui tg :tellerGuis) bank.setObserver(tg);			
 		}		
 	}
-    class QueueCheckboxListener implements ItemListener{
-        public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == ItemEvent.DESELECTED) {
-                        gui.getQueueGui().setVisible(false);
-                        ((JCheckBox)e.getSource()).setSelected(false);
-                }
-                else {
-                		gui.getQueueGui().setVisible(true);
-                        ((JCheckBox)e.getSource()).setSelected(true);
-                }
-        }
-}
+	class QueueCheckboxListener implements ItemListener{
+		public void itemStateChanged(ItemEvent e) {
+			if(e.getStateChange() == ItemEvent.DESELECTED) {
+				gui.getQueueGui().setVisible(false);
+				((JCheckBox)e.getSource()).setSelected(false);
+			}
+			else {
+				gui.getQueueGui().setVisible(true);
+				((JCheckBox)e.getSource()).setSelected(true);
+			}
+		}
+	}
 
 }
 

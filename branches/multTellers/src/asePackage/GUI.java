@@ -56,12 +56,10 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private QueueGui queueGui;
 	private ArrayList<TellerGui> tellerGuiList = new ArrayList<TellerGui>();
 	private JCheckBox queueCheckbox;
-	private ArrayList<JCheckBox> tellersCheckbox;
-
 	private int numberTellers=3;
 	
 	static final int MIN_DELAY = 100;
-	static final int MAX_DELAY = 4000;
+	static final int MAX_DELAY = 8000;
 	private static final int MAXNUMBEROFTELLERS = 4;
 	private int customerGenerationDelay = 500;
 	private int tellerGenerationDelay = 500;
@@ -161,10 +159,10 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.add(tellerPanel,BorderLayout.EAST );
 		buttonPanel.add(queueCheckbox,BorderLayout.SOUTH);
 
-		sliderCustomer.setMajorTickSpacing(100);
+		sliderCustomer.setMajorTickSpacing(500);
 		sliderCustomer.setPaintTicks(true);
 		
-		sliderTeller.setMajorTickSpacing(100);
+		sliderTeller.setMajorTickSpacing(500);
 		sliderTeller.setPaintTicks(true);
 
 		//Create the label table

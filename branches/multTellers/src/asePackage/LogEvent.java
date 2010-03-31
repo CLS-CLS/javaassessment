@@ -90,6 +90,8 @@ public class LogEvent {
 	 * NEW for statistics
 	 */
 	public LogEvent(String status, String message){
+		this.customer = null;
+		this.tellerID = -1;
 		this.status=status;
 		this.message=message;
 	}
@@ -154,7 +156,10 @@ public class LogEvent {
 	 * @return customer id
 	 */
 	public int getCustomerID() {
-		return this.customer.getId();
+		if(this.customer!=null)
+			return this.customer.getId();
+		else
+			return -1;
 	}
 	/**
 	 * Provides the id of the account used in the current transaction.
@@ -236,19 +241,19 @@ public class LogEvent {
 		if(transactionType.equals(Transaction.DEPOSIT) 
 				|| transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT)
 				|| transactionType.equals(Transaction.WITHDRAWAL))
-			result=" - New Balance: £" + newBalance + " from Old Balance: £" + oldBalance;
+			result=" - New Balance: Â£" + newBalance + " from Old Balance: Â£" + oldBalance;
 		else
 			if(transactionType.equals(Transaction.CLOSE))
-				result=" - Old Balance: £" + oldBalance + " with Final Withdrawed Sum: £" + amount;
+				result=" - Old Balance: Â£" + oldBalance + " with Final Withdrawed Sum: Â£" + amount;
 			else
 				if(transactionType.equals(Transaction.VIEWBALANCE))
-					result=" - Balance: £" + newBalance;
+					result=" - Balance: Â£" + newBalance;
 				else
 					if(transactionType.equals(Transaction.OPEN))
-						result=" - New Account ID: " + accountID + " Balance: £" + newBalance;
+						result=" - New Account ID: " + accountID + " Balance: Â£" + newBalance;
 					else
 						if(transactionType.equals(Transaction.TRANSFER))
-							result=" - Customer account New Balance: £" + newBalance + " from Old Balance: £" + oldBalance;
+							result=" - Customer account New Balance: Â£" + newBalance + " from Old Balance: Â£" + oldBalance;
 		
 		return result;
 	}	
@@ -278,25 +283,25 @@ public class LogEvent {
 		String result;
 		result = "Teller " + tellerID + " serves customer " + customer.getId() + " with transaction: ";
 		if(transactionType.equals(Transaction.OPEN))
-			result+= transactionType + " account with initial amount: £" + amount;
+			result+= transactionType + " account with initial amount: Â£" + amount;
 		else
 			if(transactionType.equals(Transaction.CLOSE))
 				result+= transactionType + " account number " + accountID;
 			else
 				if(transactionType.equals(Transaction.DEPOSIT))
-					result+= transactionType + " to account " + accountID + " £" + amount;
+					result+= transactionType + " to account " + accountID + " Â£" + amount;
 				else
 					if(transactionType.equals(Transaction.VIEWBALANCE))
 						result+= transactionType + " for account " + accountID;
 					else
 						if(transactionType.equals(Transaction.WITHDRAWAL))
-							result+= transactionType + " from account " + accountID + " £" + amount;
+							result+= transactionType + " from account " + accountID + " Â£" + amount;
 						else
 							if(transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT))
-								result+= transactionType + " " + accountID + " £" + amount;
+								result+= transactionType + " " + accountID + " Â£" + amount;
 							else
 								if(transactionType.equals(Transaction.TRANSFER))
-									result+= transactionType + " " + accountID + " from account " + accountID + " £" + amount;
+									result+= transactionType + " " + accountID + " from account " + accountID + " Â£" + amount;
 		return result;
 	}
 	/*

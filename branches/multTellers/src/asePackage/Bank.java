@@ -16,7 +16,6 @@ public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 700;
 	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
 	private int numberOfTellers = 3;
-	
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -38,7 +37,7 @@ public class Bank extends Thread{
 	/*
 	 * holds the log of the bank
 	 */
-	private  Log log;
+	private static Log log;
 
 	/*
 	 * manipulates the accounts
@@ -47,7 +46,6 @@ public class Bank extends Thread{
 
 
 	public Bank(){
-		setName("Bank");
 		countDown = new CountDownLatch(numberOfTellers);
 		customerGenerationDelay= INITIALCUSTOMERDELAY;
 		rndGen = new Random();
@@ -278,6 +276,7 @@ public void run(){
 			e.printStackTrace();
 		}
 		MyUtilities.saveStringToFile(log.toString(), "log.txt");
+		MyUtilities.saveStringToFile(log.getSummary(), "summary.txt");
 		MyUtilities.saveCustomersToFile(customers, "newCustomers.txt");
 		MyUtilities.saveAccountsToFile(am, "newAccounts.txt");
 	}

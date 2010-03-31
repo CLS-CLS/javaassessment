@@ -83,7 +83,7 @@ public class Log extends Observable {
 	 * he cannot enter twice in the queue.
 	 * @return number of served customers
 	 */
-	public synchronized int getProcessedCustomersNumber() {
+	private int getProcessedCustomersNumber() {
 		int queueNumber=0;
 		
 		for(int i=0;i<logEventList.size();i++) {		
@@ -98,15 +98,17 @@ public class Log extends Observable {
 	 * was done from a successful transaction.
 	 * @return total deposited money
 	 */
-	public synchronized double getDepositTotal(){
+	private double getDepositTotal(){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
 			if((logEventList.get(i).getTransactionType().equals(Transaction.DEPOSIT) ||
-					logEventList.get(i).getTransactionType().equals(Transaction.OPEN)) && 
+					logEventList.get(i).getTransactionType().equals(Transaction.OPEN) ||
+					logEventList.get(i).getTransactionType().equals(Transaction.DEPOSITFOREIGNACCOUNT)) && 
 					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
 		}
+		total = MyUtilities.roundDouble(total);
 		return total;
 	}
 	/**
@@ -114,17 +116,31 @@ public class Log extends Observable {
 	 * was done from a successful transaction.
 	 * @return total withdrawn money
 	 */
-	public synchronized double getWithdrawalTotal(){
+	private double getWithdrawalTotal(){
 		int i;
 		double total=0;
 		for(i=0;i<logEventList.size();i++) {
-			if((logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) ||
+			if((logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) || 
 					logEventList.get(i).getTransactionType().equals(Transaction.CLOSE)) && 
 					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
 		}
+		total = MyUtilities.roundDouble(total);
 		return total;
 	}
+	
+	
+	private double getTransferedTotal() {
+		double total=0;
+		for(int i=0;i<logEventList.size();i++) {
+			if(logEventList.get(i).getTransactionType().equals(Transaction.TRANSFER) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
+				total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}
+	
 	/**
 	 * compute the total amount of money withdrawn in the time of program execution and which 
 	 * was done from a successful transaction by a single customer.
@@ -140,8 +156,11 @@ public class Log extends Observable {
 					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS))
 				total+=logEventList.get(i).getTransactionSum();
 		} 
+		total = MyUtilities.roundDouble(total);
 		return total;
 	}
+
+	
 	/**
 	 * Creates a report that contains a list of all events that happened in program execution time.
 	 * @return a report string
@@ -163,8 +182,9 @@ public class Log extends Observable {
 		result="\nStatistics\n";
 		result+="-------------\n";
 		result+="Number of Processed Customers : " + getProcessedCustomersNumber() + "\n";
-		result+="Total Deposited Money : �" + getDepositTotal() + "\n";
-		result+="Total Withdrawn Money : �" + getWithdrawalTotal() + "\n";
+		result+="Total Deposited Money : £" + getDepositTotal() + "\n";
+		result+="Total Withdrawn Money : £" + getWithdrawalTotal() + "\n";
+		result+="Total Transfered Money : £" + getTransferedTotal() + "\n";
 		return result;
 	}
 	
@@ -173,15 +193,170 @@ public class Log extends Observable {
 		ArrayList<Integer> processedCustomers = new ArrayList<Integer>();
 		int currentCustomer = 0;
 		for(int i=0; i<logEventList.size();i++) {
-			if(currentCustomer == logEventList.get(i).getCustomerID()) {
-				result.append(logEventList.get(i));
-			}
-			else {
-				if(!processedCustomers.contains(logEventList.get(i))) {
-					result.append(logEventList.get(i));
+			if (logEventList.get(i).getCustomerID()!=-1) {					
+				currentCustomer = logEventList.get(i).getCustomerID();
+				if(!processedCustomers.contains(currentCustomer)) {
+					processedCustomers.add(currentCustomer);
+					result.append(getCustomerSummary(i));
 				}
 			}
 		}
 		return result.toString();			
+	}
+	
+	private String getCustomerSummary(int firstOccurence) {
+		StringBuilder result = new StringBuilder();
+		int id = logEventList.get(firstOccurence).getCustomerID();
+		result.append("\n Customer " + id + " summary:");
+		result.append("\n---------------------------------\n");
+		result.append("Number of entrance in the queue : " + getQueueEntranceCustomer(id) + "\n");
+		result.append("Total Deposited Money : £" + getDepositTotalCustomer(id) + "\n");
+		result.append("Total Withdrawn Money : £" + getWithdrawTotalCustomer(id) + "\n");
+		result.append("Total Transfered Money : £" + getTransferTotalCustomer(id) + "\n");
+		return result.toString();
+	}
+	
+	private int getQueueEntranceCustomer(int id){
+		int i;
+		int total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if(logEventList.get(i).getStatus().equals(LogEvent.ENTERQUEUE) && 
+					logEventList.get(i).getCustomerID()==id)
+				total++;
+		}
+		return total;
+	}
+	
+	private double getDepositTotalCustomer(int id){
+		int i;
+		double total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if (logEventList.get(i).getTransactionType()!=null)
+				if((logEventList.get(i).getTransactionType().equals(Transaction.DEPOSIT) ||
+					logEventList.get(i).getTransactionType().equals(Transaction.OPEN) ||
+					logEventList.get(i).getTransactionType().equals(Transaction.DEPOSITFOREIGNACCOUNT)) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS) && 
+					logEventList.get(i).getCustomerID()==id)
+						total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}
+
+	private double getWithdrawTotalCustomer(int id){
+		int i;
+		double total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if (logEventList.get(i).getTransactionType()!=null)
+				if((logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) || 
+					logEventList.get(i).getTransactionType().equals(Transaction.CLOSE)) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS) && 
+					logEventList.get(i).getCustomerID()==id)
+						total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}	
+	
+	private double getTransferTotalCustomer(int id) {
+		double total=0;
+		for(int i=0;i<logEventList.size();i++) {
+			if (logEventList.get(i).getTransactionType()!=null)
+				if(logEventList.get(i).getTransactionType().equals(Transaction.TRANSFER) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS) && 
+					logEventList.get(i).getCustomerID()==id)
+						total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}
+	
+	public String tellersSummary() {
+		StringBuilder result = new StringBuilder();
+		ArrayList<Integer> processedTellers = new ArrayList<Integer>();
+		int currentTeller = 0;
+		for(int i=0; i<logEventList.size();i++) {
+			currentTeller = logEventList.get(i).getTellerID();
+			if(currentTeller != -1 && !processedTellers.contains(currentTeller)) {
+				processedTellers.add(currentTeller);
+				result.append(getTellerSummary(i));
+			}
+		}
+		return result.toString();	
+	}
+	
+	private String getTellerSummary(int firstOccurence) {
+		StringBuilder result = new StringBuilder();
+		int id = logEventList.get(firstOccurence).getTellerID();
+		result.append("\n Teller " + id + " summary:");
+		result.append("\n---------------------------------\n");
+		result.append("Number of served customers : " + getTellerServedCustomers(id) + "\n");
+		result.append("Total Deposited Money : £" + getDepositTotalTeller(id) + "\n");
+		result.append("Total Withdrawn Money : £" + getWithdrawTotalTeller(id) + "\n");
+		result.append("Total Transfered Money : £" + getTransferTotalTeller(id) + "\n");
+		return result.toString();
+	}
+	
+	private int getTellerServedCustomers(int id){
+		int i;
+		int total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if(logEventList.get(i).getStatus().equals(LogEvent.EXITBANK) && 
+					logEventList.get(i).getTellerID()==id)
+				total++;
+		}
+		return total;
+	}
+	
+	private double getDepositTotalTeller(int id){
+		int i;
+		double total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if (logEventList.get(i).getTransactionType()!=null)
+				if((logEventList.get(i).getTransactionType().equals(Transaction.DEPOSIT) ||
+						logEventList.get(i).getTransactionType().equals(Transaction.OPEN) ||
+						logEventList.get(i).getTransactionType().equals(Transaction.DEPOSITFOREIGNACCOUNT)) && 
+						logEventList.get(i).getStatus().equals(LogEvent.SUCCESS) && 
+						logEventList.get(i).getTellerID()==id)
+					total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}
+
+	private double getWithdrawTotalTeller(int id){
+		int i;
+		double total=0;
+		for(i=0;i<logEventList.size();i++) {
+			if (logEventList.get(i).getTransactionType()!=null)
+				if((logEventList.get(i).getTransactionType().equals(Transaction.WITHDRAWAL) || 
+					logEventList.get(i).getTransactionType().equals(Transaction.CLOSE)) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS) && 
+					logEventList.get(i).getTellerID()==id)
+					total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}	
+	
+	private double getTransferTotalTeller(int id) {
+		double total=0;
+		for(int i=0;i<logEventList.size();i++) {
+			if (logEventList.get(i).getTransactionType()!=null)
+				if(logEventList.get(i).getTransactionType().equals(Transaction.TRANSFER) && 
+					logEventList.get(i).getStatus().equals(LogEvent.SUCCESS) && 
+					logEventList.get(i).getTellerID()==id)
+					total+=logEventList.get(i).getTransactionSum();
+		}
+		total = MyUtilities.roundDouble(total);
+		return total;
+	}
+	
+	public String getSummary() {
+		String result;
+		result=tellersSummary();
+		result+=customersSummary();
+		
+		return result;
 	}
 }
