@@ -1,7 +1,9 @@
 package asePackage;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -14,8 +16,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -26,6 +31,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
@@ -41,11 +47,16 @@ import javax.swing.event.ChangeListener;
  *
  */
 
-public class GUI extends JFrame implements GuiControl,Observer
+public class GUI extends JFrame implements Observer
 {
 /**
  * The panel containing the button and the textArea
  */
+	private static final String ONIMAGELOC = "images/on.png";
+	private static final String OFFIMAGELOC = "images/of.png";
+	private static String on = "on";
+	private static String off = "off";
+	
 	private JPanel buttonPanel; 
 	private JPanel displayPanel;
 	private JTextArea textArea;
@@ -68,6 +79,10 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private Hashtable<Integer, JLabel> labelTable;
 	private JMenuBar mb;
 	private JCheckBoxMenuItem[] cb = new JCheckBoxMenuItem[MAXNUMBEROFTELLERS];
+	private JRadioButton onButton;
+	private JRadioButton offButton;
+	private JLabel picture;
+	
 	
 	public GUI(){
 		
@@ -80,6 +95,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 	    setJMenuBar(mb);
 		queueGui = new QueueGui();
 			
+		
 		
 		this.pack();  //used to put all the items in the correct position
 		
@@ -124,6 +140,9 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 
 	private void createButtonPanel() {
+		JPanel proofPanel = createProofPanel();
+		
+		
 		JPanel helperPanel = new JPanel();
 		helperPanel.setLayout(new GridLayout(3,1));
 		
@@ -140,7 +159,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
 		closeButton.setEnabled(false);
-		//helperPanel.add(pauseButton);
+		//helperPanel.add(proofPanel);
 		
 		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
 		customerPanel.add(sliderCustomer);
@@ -158,6 +177,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 		buttonPanel.add(customerPanel,BorderLayout.CENTER);
 		buttonPanel.add(tellerPanel,BorderLayout.EAST );
 		buttonPanel.add(queueCheckbox,BorderLayout.SOUTH);
+		buttonPanel.add(proofPanel,BorderLayout.NORTH);
 
 		sliderCustomer.setMajorTickSpacing(500);
 		sliderCustomer.setPaintTicks(true);
@@ -184,13 +204,45 @@ public class GUI extends JFrame implements GuiControl,Observer
 		
 	}
 
+	private JPanel createProofPanel() {
+		JPanel proofPanel = new JPanel();
+
+        //Create the radio buttons.
+        onButton = new JRadioButton(on);
+        onButton.setActionCommand(on);
+        onButton.setFocusable(false);
+        offButton = new JRadioButton(off);
+        offButton.setActionCommand(off);
+        offButton.setSelected(true);
+        offButton.setFocusable(false);
+        //Group the radio buttons.
+        ButtonGroup group = new ButtonGroup();
+        group.add(onButton);
+        group.add(offButton);
+        picture = new JLabel(new ImageIcon("images/" + off + ".png"));
+        JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+        radioPanel.add(onButton);
+        radioPanel.add(offButton);
+        proofPanel.add(new JLabel("Proof of Accurate\nTransactions"),BorderLayout.WEST);
+        proofPanel.add(radioPanel, BorderLayout.LINE_START);
+        proofPanel.add(picture, BorderLayout.CENTER);
+        
+	    return proofPanel;
+   	}
+
+
+
 	public void setText(String report) {
 		textArea.append(report);
 		textArea.append("\n---------------------------------------------------" +
 				"------------------------------------------------------\n");
 		
 	}
-
+	
+	public void addProofButtonActionListener(ActionListener al){
+		onButton.addActionListener(al);
+		offButton.addActionListener(al);
+	}
  
 	public void addRunButtonListener(ActionListener al) {
 		startButton.addActionListener(al);
@@ -279,5 +331,12 @@ public class GUI extends JFrame implements GuiControl,Observer
   
 	public ArrayList<TellerGui> getTellerGuis(){
 		return tellerGuiList;
+	}
+
+
+
+	public void setProofPicture(ImageIcon imageIcon) {
+		picture.setIcon(imageIcon);
+		
 	}
 }

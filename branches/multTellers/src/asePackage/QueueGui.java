@@ -51,5 +51,7 @@ public class QueueGui extends JFrame implements Observer{
 			result.append(currentQueue.get(i).toStringQueue()+"\n");
 		return result.toString();
 	}
+	
+	
 
 }
