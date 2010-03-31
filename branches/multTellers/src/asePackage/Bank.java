@@ -16,6 +16,7 @@ public class Bank extends Thread{
 	private static final int INITIALCUSTOMERDELAY = 700;
 	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
 	private int numberOfTellers = 3;
+	
 	/*
 	 * used to generate random numbers needed for creating random transactions
 	 * and pick random customers
@@ -37,7 +38,7 @@ public class Bank extends Thread{
 	/*
 	 * holds the log of the bank
 	 */
-	private static Log log;
+	private  Log log;
 
 	/*
 	 * manipulates the accounts
@@ -46,11 +47,12 @@ public class Bank extends Thread{
 
 
 	public Bank(){
+		setName("Bank");
 		countDown = new CountDownLatch(numberOfTellers);
 		customerGenerationDelay= INITIALCUSTOMERDELAY;
 		rndGen = new Random();
 		log = new Log();
-		qm = new QueueManager();
+		qm = QueueManager.getInstance();
 		customers = new ArrayList<Customer>();
 		am = new AccountManager();
 		
@@ -336,7 +338,7 @@ public void run(){
 
 	public void createTellers() {
 		for (int i = 0; i < numberOfTellers; i++){
-			tellers[i] = new Teller(qm,am,log,i+1,countDown);
+			tellers[i] = new Teller(am,log,i+1,countDown);
 		}
 		
 	}

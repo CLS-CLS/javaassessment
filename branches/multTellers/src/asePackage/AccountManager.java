@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 
 public class AccountManager {
-	private final static int FIRSTACCOUNTID=100000;
+	private final static int FIRSTACCOUNTID = 100000;
 	private ArrayList <Account> accountList;
 	private int nextAccountId;
 	
