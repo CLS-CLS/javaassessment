@@ -43,7 +43,7 @@ public class TellerGui extends JFrame implements Observer {
 	private MediaTracker mt;
 	private int id;
 	private CustomGlassPane glassPane;
-	private boolean isClosed = false;
+	private boolean timeToErase;
 
 	public TellerGui(int id) {
 		super("Teller No " + id);
@@ -98,7 +98,8 @@ public class TellerGui extends JFrame implements Observer {
 	}
 
 	private void createTextArea() {
-		ta =  new JTextArea(10,40){
+		
+		ta =  new JTextArea(10,45){
 			@Override
 			public void setOpaque(boolean isOpaque) {
 				super.setOpaque(false);
@@ -109,6 +110,7 @@ public class TellerGui extends JFrame implements Observer {
 			}
 		};
 		ta.setEditable(false);
+		ta.setLineWrap(true);
 
 	}
 
@@ -119,19 +121,21 @@ public class TellerGui extends JFrame implements Observer {
 	}
 
 	public void update(Observable arg, Object arg1) {
+		
+		
 		LogEvent logEvent = (LogEvent)arg1;
 		if(id == logEvent.getTellerID()){
+			if(timeToErase){
+				ta.setText("");
+				timeToErase = false;
+			}
 			ta.append(logEvent + "\n");
 		}
-		ta.setCaretPosition(ta.getDocument().getLength());
-
-//		if (str[0].equals(""+id))ta.setText(str[1]);
-//		else if (str[0].equals("STATS")){
-//				isClosed = true;
-//				glassPane.setVisible(true);
-//				glassPane.animate();
-//						String[] str = (String[])arg1;
-//			}
+		if (logEvent.getStatus().equals(LogEvent.EXITBANK))timeToErase = true;
+		if (logEvent.getStatus().equals(LogEvent.MESSAGE)){
+				glassPane.setVisible(true);
+				glassPane.animate();
+		}
 	}
 
 	
