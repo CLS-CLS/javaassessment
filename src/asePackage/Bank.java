@@ -6,6 +6,8 @@ import java.util.Observer;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
+import clockUtils.TimeObserver;
+
 import asePackage.Controller.TellerSlideListener;
 
 /**
@@ -13,7 +15,7 @@ import asePackage.Controller.TellerSlideListener;
  * @author Chris
  *
  */
-public class Bank extends Thread{
+public class Bank extends Thread implements TimeObserver {
 	private static final int INITIALCUSTOMERDELAY = 700;
 	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
 	private int numberOfTellers = 3;
@@ -396,5 +398,12 @@ public void run(){
 		System.out.println(fileName);
 		accounts = MyUtilities.loadAccounts(fileName, customers);
 		am.addAcounts(accounts);
+	}
+	
+	
+	/////////////////////////////////////////////////////////////////////////
+	
+	public void endOfTime() {
+		setOpen(false);
 	}
 }
