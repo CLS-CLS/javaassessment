@@ -5,6 +5,8 @@ import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import chrisGui.CGui;
+
 public class BankSimulator {
 	public static void main(String[] args){
 		GuiControl gui;
@@ -14,16 +16,13 @@ public class BankSimulator {
 				JOptionPane.INFORMATION_MESSAGE,null,new String[]{"Original GUI","Alternative GUI"},0);
 		if (result == 0 ) {
 			gui = new GUI();
-			//QueueGui qGui = new QueueGui();
-			//Point p = ((JFrame)gui).getLocation();
-			//qGui.setLocation(p.x + ((JFrame)gui).getWidth(), p.y);
-			
+						
 			new Controller(gui, bank);
 		}
 		else
 			if(result == 1) {
-				gui = new AlternativeGUI();
-				new Controller(gui, bank);
+				CGui cGui= new CGui();
+				new chrisGui.Controller(cGui, bank);
 			}
 	}
 }
