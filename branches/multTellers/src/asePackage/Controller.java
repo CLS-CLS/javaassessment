@@ -19,10 +19,15 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import clockUtils.BankClock;
+import clockUtils.ClockModel;
+
 public class Controller {
 
 	GUI gui;
 	Bank bank;
+	BankClock clockModel;
+	
 	/**
 	 * @param gui
 	 * @param bank
@@ -31,7 +36,7 @@ public class Controller {
 		super();
 		this.gui = gui;
 		this.bank = bank;
-
+		
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
 
@@ -43,8 +48,8 @@ public class Controller {
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		gui.addQueueCheckboxListener(new QueueCheckboxListener());
 		gui.addProofButtonActionListener(new ProofActionListener());
-		gui.addCustomerItemListener(new LoadCustomerActionlistener());
-		gui.addAccountItemListener(new LoadAccountActionlistener());
+		//gui.addCustomerItemListener(new LoadCustomerActionlistener());
+		//gui.addAccountItemListener(new LoadAccountActionlistener());
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
@@ -56,6 +61,13 @@ public class Controller {
 	}
 
 
+	public Controller(GUI gui2, Bank bank2, BankClock clkModel) {
+		this(gui2,bank2);
+		this.clockModel = clkModel;
+		clockModel.addTimeObserver(bank);
+	}
+
+
 	class RunBankListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(true);
@@ -64,6 +76,7 @@ public class Controller {
 			gui.getCloseButton().setEnabled(true);
 			JComponent[] cbs = gui.getCb();
 			for (JComponent cb : cbs)cb.setEnabled(false);
+			if (clockModel!=null && !bank.isProofOfAccurateTransactions())new Thread(clockModel).start();
 		}
 	}
 

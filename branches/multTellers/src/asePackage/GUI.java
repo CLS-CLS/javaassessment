@@ -41,6 +41,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.util.QEncoderStream;
+
 /**
  * Graphical User Interface (GUI) that shows the results of the bank session 
  * @author Ali
@@ -83,6 +85,8 @@ public class GUI extends JFrame implements Observer
 	private JRadioButton offButton;
 	private JLabel picture;
 	
+	private JComponent clock;
+	
 	
 	public GUI(){
 		
@@ -107,6 +111,12 @@ public class GUI extends JFrame implements Observer
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);	//used to exit the program if
 														//the close button(x) is pressed
+	}
+	
+	GUI(JComponent clockGUI){
+		this();
+		clock = clockGUI;
+		
 	}
 
 
