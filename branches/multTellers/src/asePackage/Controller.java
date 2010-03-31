@@ -1,5 +1,6 @@
 package asePackage;
 
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
@@ -41,7 +43,8 @@ public class Controller {
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		gui.addQueueCheckboxListener(new QueueCheckboxListener());
 		gui.addProofButtonActionListener(new ProofActionListener());
-		
+		gui.addCustomerItemListener(new LoadCustomerActionlistener());
+		gui.addAccountItemListener(new LoadAccountActionlistener());
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
@@ -131,6 +134,46 @@ public class Controller {
 		}
 		
 	}
+	
+	 class LoadCustomerActionlistener implements ActionListener {
+	    	private JFileChooser fileChooser = new JFileChooser();
+	    	//private JTextField fileName = new JTextField(15);
+	    	public void actionPerformed(ActionEvent e) {
+	            //Open a file dialog.
+	        	int retval = fileChooser.showOpenDialog(null);
+	            if (retval == JFileChooser.APPROVE_OPTION) {
+					//The user selected a file, get it, use it.
+	                File file = fileChooser.getSelectedFile();
+	                  
+	                try {
+						bank.loadCustomers(file);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+	            }
+	        }
+	    }
+	
+	 class LoadAccountActionlistener implements ActionListener {
+	    	private JFileChooser fileChooser = new JFileChooser();
+	    	//private JTextField fileName = new JTextField(15);
+	    	public void actionPerformed(ActionEvent e) {
+	            //Open a file dialog.
+	        	int retval = fileChooser.showOpenDialog(null);
+	            if (retval == JFileChooser.APPROVE_OPTION) {
+					//The user selected a file, get it, use it.
+	                File file = fileChooser.getSelectedFile();
+	                  
+	                try {
+						bank.loadAccounts(file);
+						
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+	            }
+	        }
+	    }
+	 
 
 }
 
