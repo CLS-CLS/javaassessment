@@ -6,6 +6,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -18,13 +19,13 @@ import javax.swing.event.ChangeListener;
 
 public class Controller {
 
-	GuiControl gui;
+	GUI gui;
 	Bank bank;
 	/**
 	 * @param gui
 	 * @param bank
 	 */
-	public Controller(GuiControl gui, Bank bank){
+	public Controller(GUI gui, Bank bank){
 		super();
 		this.gui = gui;
 		this.bank = bank;
@@ -39,7 +40,8 @@ public class Controller {
 		//gui.addPauseButtonListener(new PauseButtonListener());
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		gui.addQueueCheckboxListener(new QueueCheckboxListener());
-
+		gui.addProofButtonActionListener(new ProofActionListener());
+		
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
@@ -118,6 +120,16 @@ public class Controller {
 				((JCheckBox)e.getSource()).setSelected(true);
 			}
 		}
+	}
+	
+	class ProofActionListener implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+			gui.setProofPicture(new ImageIcon("images/"+ e.getActionCommand()
+                    + ".png"));
+			bank.setProofOfAccurateTransactions(e.getActionCommand().equals("on"));
+		}
+		
 	}
 
 }

@@ -28,9 +28,13 @@ public class Transaction {
 	 * @param amount The amount of money is going to be transacted.
 	 * @throws exception if the transactionType is not a valid string.
 	 */
-	public Transaction(String transactionType, Account account, double amount, Account foreignAccount)throws Exception{
-		if (!isValidTransaction(transactionType,account, amount, foreignAccount))throw new Exception("The type " + transactionType + 
-				"with the account " + account.getId() + " and foreign account " + foreignAccount.getId() +" and amount of" + amount + "is notApplicable" );
+	public Transaction(String transactionType, Account account, double amount, Account foreignAccount)throws NotCorrectConstructorArgumentsException{
+		if (!isValidTransaction(transactionType,account, amount, foreignAccount))
+			throw new NotCorrectConstructorArgumentsException(new String[]{
+				transactionType,Integer.toString(account.getId()),
+				Integer.toString(foreignAccount.getId()),
+				Double.toString(amount)} );
+		
 		this.transactionType = transactionType;
 		this.account = account;
 		this.foreignAccount = foreignAccount;

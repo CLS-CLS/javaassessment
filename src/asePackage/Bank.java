@@ -342,6 +342,14 @@ public void run(){
 		
 	}
 
+	public boolean isProofOfAccurateTransactions() {
+		return proofOfAccurateTransactions;
+	}
+
+	public void setProofOfAccurateTransactions(boolean proofOfAccurateTransactions) {
+		this.proofOfAccurateTransactions = proofOfAccurateTransactions;
+	}
+
 	
 
 	
