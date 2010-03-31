@@ -1,5 +1,6 @@
 package asePackage;
 
+
 /**
  * The logEvent class contains details about one event that occurred in the 
  * bank running time. It will contain information about the customer, the transaction,
@@ -49,7 +50,10 @@ public class LogEvent {
 	public LogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status, String message){
 		this.queueNumber=queueNumber;
 		this.customer=customer;
-		this.accountID=transaction.getAccount().getId();
+		if(transaction.getAccount()==null)
+			this.accountID=-1;
+		else
+			this.accountID=transaction.getAccount().getId();
 		if(transaction.getForeignAccount()==null)
 			this.foreignAccountID=-1;
 		else
@@ -58,7 +62,10 @@ public class LogEvent {
 		this.tellerID=tellerID;
 		this.status=status;
 		this.amount=transaction.getAmount();
-		this.newBalance=transaction.getAccount().getBalance();
+		if(transaction.getAccount()==null)
+			this.newBalance=-1;
+		else
+			this.newBalance=transaction.getAccount().getBalance();
 		this.message=message;
 		
 		if(this.status.equals(FAIL)) {
@@ -238,8 +245,7 @@ public class LogEvent {
 
 	private String getSuccessDetails() {
 		String result="";
-		if(transactionType.equals(Transaction.DEPOSIT) 
-				|| transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT)
+		if(transactionType.equals(Transaction.DEPOSIT)
 				|| transactionType.equals(Transaction.WITHDRAWAL))
 			result=" - New Balance: £" + newBalance + " from Old Balance: £" + oldBalance;
 		else
@@ -254,7 +260,9 @@ public class LogEvent {
 					else
 						if(transactionType.equals(Transaction.TRANSFER))
 							result=" - Customer account New Balance: £" + newBalance + " from Old Balance: £" + oldBalance;
-		
+						else
+							if(transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT))
+								result=" - £" + amount + " where deposed in the account with the id " + foreignAccountID;
 		return result;
 	}	
 	/*
@@ -298,10 +306,10 @@ public class LogEvent {
 							result+= transactionType + " from account " + accountID + " £" + amount;
 						else
 							if(transactionType.equals(Transaction.DEPOSITFOREIGNACCOUNT))
-								result+= transactionType + " " + accountID + " £" + amount;
+								result+= transactionType + " " + foreignAccountID + " £" + amount;
 							else
 								if(transactionType.equals(Transaction.TRANSFER))
-									result+= transactionType + " " + accountID + " from account " + accountID + " £" + amount;
+									result+= transactionType + " " + foreignAccountID + " from account " + accountID + " £" + amount;
 		return result;
 	}
 	/*

@@ -16,16 +16,19 @@ public class CGui extends JFrame{
 	private static Image backGroundImage;
 	
 	
-	ControlButtons cb;
+	
+	private ControlButtons cb;
 	private TellerGui[] cTeller = new TellerGui[3];
+	private QueueGui qGui; 
+	
 	
 	public CGui() {
 		loadImage();
 		cb = new ControlButtons(backGroundImage);
+		qGui = new QueueGui();
 		getContentPane().add(cb);
 		for (int i=0; i<3; i++){
-			cTeller[i] = new TellerGui(i);
-			
+			cTeller[i] = new TellerGui(i+1);
 		}
 		pack();
 		setVisible(true);
@@ -57,10 +60,6 @@ public class CGui extends JFrame{
 		
 	}
 
-	public void addQueueCheckboxListener(ItemListener event) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public void addRunButtonListener(ActionListener al) {
 		((JButton)cb.getStartButton()).addActionListener(al);
@@ -72,9 +71,7 @@ public class CGui extends JFrame{
 		
 	}
 
-	public void addTellersMenuItemListener(ActionListener al) {
-				
-	}
+	
 
 	public void createTellerGuis() {
 		for (int i = 0; i < 3; i++){
@@ -83,11 +80,7 @@ public class CGui extends JFrame{
 		
 	}
 
-	public JComponent[] getCb() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	public JComponent getCloseButton() {
 		return cb.getCloseButton();
 	}
@@ -97,7 +90,7 @@ public class CGui extends JFrame{
 	}
 
 	public QueueGui getQueueGui() {
-		return new QueueGui();
+		return qGui;
 		
 	}
 
@@ -111,20 +104,12 @@ public class CGui extends JFrame{
 		
 	}
 
-	public void setNumberTellers(int numberTellers) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	public void setTellerGenerationDelay(int tellerGenerationDelay) {
 		cb.setTellerGenerationDelay(tellerGenerationDelay);
 		cb.getSliderTeller().setValue(tellerGenerationDelay);
 		
 	}
 
-	public void update(Observable arg0, Object arg1) {
-				
-	}
-	
 
 }

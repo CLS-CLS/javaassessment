@@ -36,7 +36,8 @@ public class Controller {
 		for (TellerGui tg : tellersGui){
 			bank.setObserver(tg);
 		}
-
+		
+		bank.setObserver(gui.getQueueGui());
 
 	}
 

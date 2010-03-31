@@ -101,68 +101,7 @@ public class Bank extends Thread{
 
 
 
-	//generates a predefined set of transactions for 
-	//proof of Accurate Transactions
-	private void proofOfAccurateTransactions(){
-/*
-		ArrayList<Account> accounts;
-		//loads customers and accounts and creates connects the accounts
-		//with the customers
-		try{
-			customers = MyUtilities.loadCustomers("customers_proof.txt");
-			accounts = MyUtilities.loadAccounts("accounts_proof.txt",customers);
-			am.addAcounts(accounts);   //adds the account to the account manager
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			System.exit(1);
-		}
-
-		//Add the accounts to the customer (connects the customer to the accounts)
-		for (Account aca: am.getAccountList()){
-			for(Customer customer: aca.getOwnerList()){
-				customer.
-				addAccount(aca);
-			}
-		}
-
-
-		ArrayList<Transaction> trans = new ArrayList<Transaction>();
-		log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
-		log.addLogEventJoinQueue(qm.getNextNumber()+1, customers.get(2), LogEvent.ENTERQUEUE);
-		log.addLogEventJoinQueue(qm.getNextNumber()+2,customers.get(3),LogEvent.ENTERQUEUE);
-		log.addLogEventJoinQueue(qm.getNextNumber()+3, customers.get(1), LogEvent.ENTERQUEUE);
-
-		try {
-			trans.add(new Transaction(Transaction.OPEN, new Account(), 200));
-			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(0),100));
-			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(1),150));
-			qm.addQueueElement(customers.get(0), trans);
-			trans=new ArrayList<Transaction>();
-			trans.add(new Transaction(Transaction.OPEN, new Account(),500));
-			qm.addQueueElement(customers.get(2), trans);
-			trans=new ArrayList<Transaction>();
-			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),100));
-			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),50));
-			trans.add(new Transaction(Transaction.DEPOSIT, customers.get(3).getAccountList().get(0),250));
-			trans.add(new Transaction(Transaction.VIEWBALANCE, customers.get(3).getAccountList().get(0),0));
-			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),160));
-			trans.add(new Transaction(Transaction.OPEN, new Account(),600));
-			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0));
-			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),10));
-			trans.add(new Transaction(Transaction.DEPOSIT, customers.get(3).getAccountList().get(0),900));
-			trans.add(new Transaction(Transaction.VIEWBALANCE, customers.get(3).getAccountList().get(0),0));
-			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0));
-			qm.addQueueElement(customers.get(3), trans);
-			trans=new ArrayList<Transaction>();
-			trans.add(new Transaction(Transaction.DEPOSIT, am.getAccountList().get(1),50));
-			qm.addQueueElement(customers.get(1), trans);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-*/
-	}
-
+	
 	/**
 	 * generates random transactions for the given customer
 	 * The transaction may be 1 or 2
@@ -351,6 +290,98 @@ public void run(){
 	}
 
 	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	private void proofOfAccurateTransactions(){
+
+		ArrayList<Account> accounts;
+		//loads customers and accounts and creates connects the accounts
+		//with the customers
+		try{
+			customers = MyUtilities.loadCustomers("customers_proof.txt");
+			accounts = MyUtilities.loadAccounts("accounts_proof.txt",customers);
+			am.addAcounts(accounts);   //adds the account to the account manager
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		//Add the accounts to the customer (connects the customer to the accounts)
+		for (Account aca: am.getAccountList()){
+			for(Customer customer: aca.getOwnerList()){
+				customer.
+				addAccount(aca);
+			}
+		}
+
+
+		ArrayList<Transaction> trans = new ArrayList<Transaction>();
+		
+		try {
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
+			trans.add(new Transaction(Transaction.OPEN, new Account(), 200, null));
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(0),100, null));		
+			qm.addQueueElement(customers.get(0), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(3), LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),100, null));
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),50, null));
+			trans.add(new Transaction(Transaction.DEPOSIT, customers.get(3).getAccountList().get(0),250, null));
+			trans.add(new Transaction(Transaction.VIEWBALANCE, customers.get(3).getAccountList().get(0),0, null));
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),160, null));
+			trans.add(new Transaction(Transaction.OPEN, new Account(),600, null));
+			qm.addQueueElement(customers.get(3), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(2), LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.OPEN, new Account(),500, null));
+			qm.addQueueElement(customers.get(2), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(),customers.get(3),LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0, null));
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),10, null));
+			trans.add(new Transaction(Transaction.DEPOSIT, customers.get(3).getAccountList().get(0),900, null));
+			trans.add(new Transaction(Transaction.VIEWBALANCE, customers.get(3).getAccountList().get(0),0, null));
+			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0, null));
+			trans.add(new Transaction(Transaction.OPEN, new Account(), 200, null));
+			trans.add(new Transaction(Transaction.OPEN, new Account(), 400, null));
+			qm.addQueueElement(customers.get(3), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(1), LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.DEPOSIT, am.getAccountList().get(1),50, null));
+			trans.add(new Transaction(Transaction.TRANSFER, customers.get(1).getAccountList().get(0),200, am.getAccountList().get(4)));
+			trans.add(new Transaction(Transaction.TRANSFER, customers.get(1).getAccountList().get(0),700, am.getAccountList().get(2)));
+			qm.addQueueElement(customers.get(1), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(4), LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.TRANSFER, am.getAccountList().get(4),50, am.getAccountList().get(1)));
+			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,50, am.getAccountList().get(1)));
+			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,50, am.getAccountList().get(0)));
+			qm.addQueueElement(customers.get(4), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(1),150, null));
+			trans.add(new Transaction(Transaction.TRANSFER, customers.get(0).getAccountList().get(0),300, customers.get(0).getAccountList().get(1)));
+			qm.addQueueElement(customers.get(0), trans);
+			
+			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(5), LogEvent.ENTERQUEUE);
+			trans=new ArrayList<Transaction>();
+			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,150, am.getAccountList().get(3)));
+			trans.add(new Transaction(Transaction.OPEN, new Account(),300, customers.get(0).getAccountList().get(1)));
+			qm.addQueueElement(customers.get(5), trans);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	
 }
