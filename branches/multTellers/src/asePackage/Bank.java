@@ -1,5 +1,6 @@
 package asePackage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
@@ -80,9 +81,12 @@ public class Bank extends Thread{
 			//loads customers and accounts and connects the accounts
 			//with the customers
 			try{
-				customers = MyUtilities.loadCustomers("customers.txt");
-				accounts = MyUtilities.loadAccounts("accounts.txt",customers);
-				am.addAcounts(accounts);   //adds the account to the account manager
+				if(customers.isEmpty())
+					customers = MyUtilities.loadCustomers("customers.txt");
+				if(accounts.isEmpty()) {
+					accounts = MyUtilities.loadAccounts("accounts.txt",customers);
+					am.addAcounts(accounts);   //adds the account to the account manager
+				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -383,5 +387,14 @@ public void run(){
 
 	}
 
-	
+	public void loadCustomers(File file) throws Exception {
+		customers = MyUtilities.loadCustomers(file.getAbsolutePath());
+	}
+	public void loadAccounts(File file) throws Exception {
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		String fileName = file.getAbsolutePath();
+		System.out.println(fileName);
+		accounts = MyUtilities.loadAccounts(fileName, customers);
+		am.addAcounts(accounts);
+	}
 }
