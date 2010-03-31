@@ -52,7 +52,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 	private JScrollPane	scrollPane;   
 	private JButton startButton = new JButton("Run Bank");
 	private JButton closeButton = new JButton("Close Bank");
-	private JToggleButton pauseButton = new JToggleButton("Pause");
+	//private JToggleButton pauseButton = new JToggleButton("Pause");
 	private QueueGui queueGui;
 	private ArrayList<TellerGui> tellerGuiList = new ArrayList<TellerGui>();
 	private JCheckBox queueCheckbox;
@@ -117,7 +117,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 
 	private void createDisplayPanel() {
 		displayPanel = new JPanel();
-		textArea = new JTextArea(35, 45);
+		textArea = new JTextArea(20, 45);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		displayPanel.add(scrollPane);
@@ -142,7 +142,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 		helperPanel.add(startButton);
 		helperPanel.add(closeButton);
 		closeButton.setEnabled(false);
-		helperPanel.add(pauseButton);
+		//helperPanel.add(pauseButton);
 		
 		sliderCustomer = new JSlider(JSlider.VERTICAL, MIN_DELAY, MAX_DELAY, customerGenerationDelay);
 		customerPanel.add(sliderCustomer);
@@ -214,9 +214,9 @@ public class GUI extends JFrame implements GuiControl,Observer
 	public void addCloseButtonListener (ActionListener al){
 		closeButton.addActionListener(al);
 	}
-	public void addPauseButtonListener (ActionListener al){
-		pauseButton.addActionListener(al);
-	}
+//	public void addPauseButtonListener (ActionListener al){
+//		pauseButton.addActionListener(al);
+//	}
 	
 	public void addTellersMenuItemListener(ActionListener al){
 		for (int i = 0; i < MAXNUMBEROFTELLERS ;i++){
@@ -267,7 +267,7 @@ public class GUI extends JFrame implements GuiControl,Observer
 		}
 		Point p =this.getLocation();
 		for (TellerGui tGui :tellerGuiList)
-			tGui.setLocation(p.x + tGui.getWidth()*tGui.getId() , p.y + this.getHeight());
+			tGui.setLocation(p.x + tGui.getWidth()*(tGui.getId()-1) , p.y + this.getHeight());
 		
 	}
 	

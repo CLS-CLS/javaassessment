@@ -12,6 +12,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JSlider;
+import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -35,7 +36,7 @@ public class Controller {
 		gui.addCustomerSliderListener(new CustomerSlideListener());
 		gui.addTellerSliderListener(new TellerSlideListener());
 		gui.addCloseButtonListener(new CloseButtonListener());
-		gui.addPauseButtonListener(new PauseButtonListener());
+		//gui.addPauseButtonListener(new PauseButtonListener());
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		gui.addQueueCheckboxListener(new QueueCheckboxListener());
 
@@ -87,19 +88,10 @@ public class Controller {
 		}
 	}
 	
-	class PauseButtonListener implements ActionListener{
-
-		public void actionPerformed(ActionEvent e) {
-			if(bank.isPaused()) {
-				bank.setPaused(false);
-				((JComponent)e.getSource()).setEnabled(true);
-			}
-			else {
-				bank.setPaused(true);
-				((JComponent)e.getSource()).setEnabled(true);
-			}
-		}
-	}
+//	class PauseButtonListener implements ActionListener{
+//		public synchronized void actionPerformed(ActionEvent e) {
+//		}
+//	}
 	
 	class NumberOfTellersListener implements ActionListener{
 

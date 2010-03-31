@@ -24,10 +24,10 @@ public class Teller extends Thread{
 	private String errorMessage;  
 	
 		
-	public Teller(QueueManager qm, AccountManager accountManager, Log log, int tellerID,CountDownLatch countDown) {
-		super("T("+tellerID+")");
+	public Teller(AccountManager accountManager, Log log, int tellerID,CountDownLatch countDown) {
+		super("Teller("+tellerID+")");
 		this.countDown = countDown;
-		this.qm = qm;
+		this.qm = QueueManager.getInstance();
 		this.accountManager = accountManager;
 		this.log = log;
 		this.id = tellerID;

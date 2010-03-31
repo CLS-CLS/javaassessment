@@ -13,6 +13,7 @@ import java.util.Observable;
  */
 
 public class QueueManager{
+	private static QueueManager qm = new QueueManager();
 	private final static int MAXIMUMNUMBEROFELEMENTS = 10;
 	private final static int FIRSTQUEUENUMBER = 1;
 	private ArrayList<Queue> customerQueue;
@@ -22,7 +23,7 @@ public class QueueManager{
 	 * The empty constructor which initialise the object with an empty queue and
 	 * with a default queue number. 
 	 */
-	public QueueManager() {
+	private QueueManager() {
 		this.customerQueue=new ArrayList<Queue>();
 		this.nextQueueNumber=FIRSTQUEUENUMBER;
 	}
@@ -32,10 +33,7 @@ public class QueueManager{
 	 * @param customerQueue a customer queue
 	 * @param nextQueueNumber next available queue number
 	 */
-	public QueueManager(ArrayList<Queue> customerQueue, int nextQueueNumber){
-		this.customerQueue = customerQueue;
-		this.nextQueueNumber = nextQueueNumber;
-	}
+	
 	
 	/**
 	 * Will add a new element in the queue. The new queue element it created starting from
@@ -119,5 +117,10 @@ public class QueueManager{
 		notifyAll();
 		
 	}
+	
+	public static QueueManager getInstance(){
+		return qm;
+	}
+	
 	
 }
