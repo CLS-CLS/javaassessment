@@ -10,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class QueueGui extends JFrame implements Observer{
+	private static final long serialVersionUID = 1L;
+	
 	JPanel panel;
 	JScrollPane scrollPane;
 	JTextArea textArea;

@@ -1,6 +1,7 @@
 package asePackage;
 
 public class NotCorrectConstructorArgumentsException  extends Exception{
+	private static final long serialVersionUID = 1L;
 	String[] str;
 	
 	public NotCorrectConstructorArgumentsException(String[] str){
