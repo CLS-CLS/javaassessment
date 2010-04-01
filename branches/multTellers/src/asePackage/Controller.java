@@ -42,11 +42,11 @@ public class Controller {
 		gui.addAccountItemListener(new LoadAccountActionlistener());
 		
 		//registers the observers
-		bank.setObserver(gui);
-		bank.setObserver(gui.getQueueGui());
+		bank.getLog().addObserver(gui);
+		bank.getLog().addObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
 		for (TellerGui tg : tellersGui){
-			bank.setObserver(tg);
+			bank.getLog().addObserver(tg);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class Controller {
 			//get the already existing Guis of the tellers and unregister them
 			//from the bank
 			ArrayList<TellerGui> tellerGuis = gui.getTellerGuis();
-			for (TellerGui tg :tellerGuis) bank.removeObserver(tg);
+			for (TellerGui tg :tellerGuis) bank.getLog().deleteObserver(tg);
 			
 			//gets the action command which contains the information how many tellers we are
 			//going to use and cast this information to int.
@@ -138,7 +138,7 @@ public class Controller {
 			gui.createTellerGuis();
 			
 			// register to the bank the new tellers Guis
-			for (TellerGui tg :tellerGuis) bank.setObserver(tg);			
+			for (TellerGui tg :tellerGuis) bank.getLog().addObserver(tg);			
 		}		
 	}
 	class QueueCheckboxListener implements ItemListener{

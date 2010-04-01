@@ -29,12 +29,15 @@ public class Bank extends Thread implements TimeObserver {
 	 * holds information about the customers in the queue
 	 */
 	private boolean isOpen = false;
-	private boolean isPaused = false;
 	private int customerGenerationDelay;
 	private QueueManager qm;
 	private Teller[] tellers = new Teller[numberOfTellers];
 	private ArrayList<Customer> customers;
 	private boolean proofOfAccurateTransactions = false;
+	/**
+	 * used to determine when all the tellers have finished their work so the
+	 * program can proceed to generate statistics
+	 */
 	CountDownLatch countDown;
 
 	/*
@@ -82,7 +85,7 @@ public class Bank extends Thread implements TimeObserver {
 		//with the customers
 		try{
 			if(customers.isEmpty())
-				customers = MyUtilities.loadCustomers("custommers.txt");
+				customers = MyUtilities.loadCustomers("customers.txt");
 			if(accounts.isEmpty()) {
 				accounts = MyUtilities.loadAccounts("accounts.txt",customers);
 				am.addAcounts(accounts);   //adds the account to the account manager
@@ -121,17 +124,17 @@ public class Bank extends Thread implements TimeObserver {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		for (int i = 0;i < numberOfTransactions;i++){
-			Account account = selectRandomAccount(customer);
-			Account foreignAccount = selectRandomAccountQM(account);
-
+			Account account = selectRandomAccountFromCustomer(customer);
+			Account foreignAccount = selectRandomForeignAccount(account);
 			trans.add(Transaction.generateRandomTransaction(account, foreignAccount, rndGen));
 		}
 		return trans;
 	}
-	/*
-	 * IOAN 27.03
-	 */
-	private Account selectRandomAccountQM(Account account) {
+	
+	
+
+	
+	private Account selectRandomForeignAccount(Account account) {
 		boolean success=false;
 		ArrayList<Account> accounts = am.getAccountList();
 		int randomValue;
@@ -147,6 +150,7 @@ public class Bank extends Thread implements TimeObserver {
 			}
 		}
 		return newAccount;
+
 	}
 
 	/**
@@ -154,7 +158,7 @@ public class Bank extends Thread implements TimeObserver {
 	 * @param customer
 	 * @return a random account, null if the customer has no accounts
 	 */
-	private Account selectRandomAccount(Customer customer) {
+	private Account selectRandomAccountFromCustomer(Customer customer) {
 		Account account = null;
 		ArrayList<Account> accounts = customer.getAccountList();
 		if(accounts.size()>0){
@@ -165,7 +169,7 @@ public class Bank extends Thread implements TimeObserver {
 	}
 
 
-
+    //TODO comments
 	private Customer pickRandomCustomer() {
 		Customer result = null;
 		boolean success=false;
@@ -178,6 +182,8 @@ public class Bank extends Thread implements TimeObserver {
 		}
 		return result;
 	}
+	
+	//TODO comments
 
 	private void generateQueueElement(Customer cust){
 		int currentQueueNumber=0;
@@ -232,7 +238,12 @@ public class Bank extends Thread implements TimeObserver {
 	public boolean isOpen(){
 		return isOpen;
 	}
-
+	
+	/**
+	 * sets the bank open or close, also communicating this information
+	 * to all the tellers
+	 * @param bool if the bank is open
+	 */
 	public void setOpen(boolean bool){
 		isOpen = bool;
 		for (Teller t : tellers){
@@ -249,11 +260,9 @@ public class Bank extends Thread implements TimeObserver {
 		return customerGenerationDelay;
 	}
 
-	public void setObserver(Observer o){
-		log.addObserver(o);
-	}
-	public void removeObserver(Observer o) {
-		log.deleteObserver(o);
+	
+	public Log getLog(){
+		return log;
 	}
 
 	public int getTellerGenerationDelay() {
@@ -263,19 +272,17 @@ public class Bank extends Thread implements TimeObserver {
 		Teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
 
-	public void setPaused(boolean isPaused) {
-		this.isPaused = isPaused;
-		Teller.setBankIsPaused(isPaused);
-	}
-
-	public boolean isPaused() {
-		return isPaused;
-	}
 
 	public int getNumberOfTellers() {
 		return numberOfTellers;
 	}
-
+	
+	/**
+	 * sets the number of teller in the Bank. Also updates the teller maxtix
+	 * to correspond its size to the number of tellers and creates a  countDown latch
+	 * with the specific number of tellers
+	 * @param numberOfTellers 
+	 */
 	public void setNumberOfTellers(int numberOfTellers) {
 		this.numberOfTellers = numberOfTellers;
 		countDown = new CountDownLatch(numberOfTellers);
@@ -302,7 +309,8 @@ public class Bank extends Thread implements TimeObserver {
 
 
 
-	////////////////////////////////////////////////////////////////////////////////
+	///////////////////PROOF OF ACCURATE TRASNACTIONS/////////////////////////////////////
+	
 	private void proofOfAccurateTransactions(){
 
 		ArrayList<Account> accounts;
@@ -326,7 +334,7 @@ public class Bank extends Thread implements TimeObserver {
 			}
 		}
 
-
+        //TODO details of the proofs in the report????
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 
 		try {
@@ -391,7 +399,8 @@ public class Bank extends Thread implements TimeObserver {
 		}
 
 	}
-
+	
+	//////////////////////////////// ALI'S ADDITION - LOAD CUSTOMER / ACCOUNTS ////////////
 	public void loadCustomers(File file) throws Exception {
 		customers = MyUtilities.loadCustomers(file.getAbsolutePath());
 	}
@@ -404,8 +413,10 @@ public class Bank extends Thread implements TimeObserver {
 	}
 
 
-	/////////////////////////////////////////////////////////////////////////
-
+	////////////////IMPLEMENTED METHODS OF THE TimeObserver INTERFACE ///////////////////////
+	/**
+	 * if the time is up closes the bank
+	 */
 	public void endOfTime() {
 		setOpen(false);
 	}
