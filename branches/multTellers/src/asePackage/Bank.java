@@ -78,8 +78,6 @@ public class Bank extends Thread implements TimeObserver {
 	private void loadData(boolean proofOfAccurateTransactions) {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 
-		if(proofOfAccurateTransactions == true) proofOfAccurateTransactions();
-		else {
 			//loads customers and accounts and connects the accounts
 			//with the customers
 			try{
@@ -103,7 +101,7 @@ public class Bank extends Thread implements TimeObserver {
 				}
 			}                    
 		}
-	}
+
 
 
 
@@ -202,6 +200,11 @@ public void run(){
 		for (int i = 0; i < numberOfTellers; i++)
 			tellers[i].start();
 		
+		if(proofOfAccurateTransactions){
+			setOpen(false);
+			proofOfAccurateTransactions();
+		}
+		else
 		while(isOpen){
 			Customer customer = pickRandomCustomer();
 			generateQueueElement(customer);
