@@ -29,7 +29,7 @@ public class ClockModel extends Observable implements BankClock{
 	}
 
 	private boolean isEndOfTime() {
-		return (seconds <=0 && minutes <=0);
+		return (minutes <=0 && seconds <=0);
 	}
 
 	public void run() {
@@ -73,6 +73,14 @@ public class ClockModel extends Observable implements BankClock{
 	
 	public boolean deleteTimeObserver(TimeObserver tobs){
 		return timeObservers.remove(tobs);
+	}
+
+	public void setToZero() {
+		minutes = 0;
+		seconds = 1;
+		notifyObservers();
+		notifyTimeObservers();
+		
 	}
 	
 }

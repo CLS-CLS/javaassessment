@@ -7,4 +7,6 @@ package clockUtils;
 
 public interface BankClock extends Runnable, TimeObservable {
 
+	void setToZero();
+
 }
