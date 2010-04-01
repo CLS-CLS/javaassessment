@@ -85,7 +85,7 @@ public class GUI extends JFrame implements Observer
 	private JRadioButton offButton;
 	private JLabel picture;
 	
-	private JComponent clock;
+	private JFrame clock;
 	
 	
 	public GUI(){
@@ -113,9 +113,11 @@ public class GUI extends JFrame implements Observer
 														//the close button(x) is pressed
 	}
 	
-	GUI(JComponent clockGUI){
+	GUI(JFrame clockGUI){
 		this();
 		clock = clockGUI;
+		Point p = this.getLocation();
+		clock.setLocation(p.x+this.getWidth()+queueGui.getWidth(), 0);
 		
 	}
 

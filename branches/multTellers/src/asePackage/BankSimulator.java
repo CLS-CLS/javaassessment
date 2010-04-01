@@ -1,4 +1,5 @@
 package asePackage;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import clockUtils.ClockGUIDigital;
@@ -14,10 +15,10 @@ public class BankSimulator {
 				JOptionPane.INFORMATION_MESSAGE,null,
 				new String[]{"Original GUI","Alternative GUI"},0);
 		if (result == 0 ) {
-			ClockModel clkModel = new ClockModel(1, 15);
-			ClockGUIDigital clkGui = new ClockGUIDigital(clkModel);
+			ClockModel clkModel = new ClockModel(0, 5);
+			JFrame clkGui = new ClockGUIDigital(clkModel);
 			Bank bank = new Bank();
-			GUI gui = new GUI();
+			GUI gui = new GUI(clkGui);
 			new Controller(gui, bank,clkModel);
 		}
 		else

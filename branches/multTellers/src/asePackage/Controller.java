@@ -103,6 +103,7 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(false);
 			((JComponent)e.getSource()).setEnabled(false);
+			if (clockModel!=null) clockModel.setToZero();
 		}
 	}
 
