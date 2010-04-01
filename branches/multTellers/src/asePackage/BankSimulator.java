@@ -15,6 +15,7 @@ public class BankSimulator {
 				JOptionPane.INFORMATION_MESSAGE,null,
 				new String[]{"Original GUI","Alternative GUI"},0);
 		if (result == 0 ) {
+			//sets up a clock with 30 seconds countdown
 			ClockModel clkModel = new ClockModel(0, 30);
 			JFrame clkGui = new ClockGUIDigital(clkModel);
 			Bank bank = new Bank();
