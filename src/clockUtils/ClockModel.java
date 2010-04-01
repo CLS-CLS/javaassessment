@@ -5,7 +5,18 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import org.hamcrest.core.IsEqual;
-
+/**
+ * @author Chris
+ * A countDown clock. Starts the countdown
+ * from a given value until it reaches 0.
+ * 
+ * Implements Observable Gui Observers can register on it
+ * Implements BankClock so Observers that are intrested only when the countDown 
+ * is over can register on it.
+ * BankClock interface extends runnable too.
+ * 
+ *
+ */
 public class ClockModel extends Observable implements BankClock{
 	boolean endOfTime = false;
 	int minutes;
@@ -75,8 +86,12 @@ public class ClockModel extends Observable implements BankClock{
 		return timeObservers.remove(tobs);
 	}
 
+	/**
+	 * resets the clock
+	 */
 	public void setToZero() {
 		minutes = 0;
+		//set seconds to 1 so the next call of the decrease will give 0 
 		seconds = 1;
 		notifyObservers();
 		notifyTimeObservers();
