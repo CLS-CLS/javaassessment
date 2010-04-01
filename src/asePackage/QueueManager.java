@@ -7,11 +7,11 @@ import java.util.ArrayList;
  * It contains a list all the queue elements and also methods to add and remove elements from the queue.
  * In addition to that it provides a testing method that returns true or false depending on the list
  * if is empty or not. The last method of the class returns the next available queue number.
- * @author Ioan
  *
  */
 
 public class QueueManager{
+	//Inside element for Singleton pattern
 	private static QueueManager qm = new QueueManager();
 	private final static int MAXIMUMNUMBEROFELEMENTS = 10;
 	private final static int FIRSTQUEUENUMBER = 1;
@@ -95,6 +95,11 @@ public class QueueManager{
 		return this.nextQueueNumber;
 	}
 	
+	/**
+	 * Implements a comparator to find out if a customer is or not in the queue
+	 * @param cust required customer
+	 * @return true if customer in queue, false if not
+	 */
 	public synchronized boolean containsCustomer(Customer cust){
 		for(Queue q:customerQueue){
 			if(q.getCustomer().equals(cust))return true;
@@ -103,6 +108,10 @@ public class QueueManager{
 		
 	}
 	
+	/**
+	 * Creates a string in which appears all the customers present in the queue
+	 * @return string with all customers from the queue
+	 */
 	public synchronized String queueCustomersToString(){
 		String str = new String();
 		int counter = 0;
@@ -111,15 +120,18 @@ public class QueueManager{
 			str += counter +") " + q.getCustomer().toString() + "\n";
 		}
 		return str;
-	}
+	}	
+	
+	/**
+	 * Used to notify all the threads when the bank is closed and 
+	 * we don't expect any more customers to be added
+	 */
 	public synchronized void awakeAllThreads() {
-		notifyAll();
-		
+		notifyAll();		
 	}
 	
+	//Singleton appeal method
 	public static QueueManager getInstance(){
 		return qm;
-	}
-	
-	
+	}	
 }

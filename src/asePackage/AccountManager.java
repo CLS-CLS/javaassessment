@@ -4,7 +4,6 @@ import java.util.ArrayList;
 /**
  * AccountManager class retains a list of accounts and what will be the next available id.
  * It also provides the methods necessary for managing a list of accounts.
- * @author Ioan 
  */
 
 public class AccountManager {

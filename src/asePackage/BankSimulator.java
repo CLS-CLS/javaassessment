@@ -1,6 +1,7 @@
 package asePackage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import clockUtils.ClockGUIDigital;
 import clockUtils.ClockModel;
@@ -14,13 +15,19 @@ public class BankSimulator {
 		int result = JOptionPane.showOptionDialog(null,"Select GUI","Selector",0,
 				JOptionPane.INFORMATION_MESSAGE,null,
 				new String[]{"Original GUI","Alternative GUI"},0);
-		if (result == 0 ) {
+		if (result == 0) {
+			
 			//sets up a clock with 30 seconds countdown
-			ClockModel clkModel = new ClockModel(0, 30);
-			JFrame clkGui = new ClockGUIDigital(clkModel);
-			Bank bank = new Bank();
-			GUI gui = new GUI(clkGui);
-			new Controller(gui, bank,clkModel);
+			final ClockModel clkModel = new ClockModel(0, 30);
+			final JFrame clkGui = new ClockGUIDigital(clkModel);
+			final Bank bank = new Bank();
+			
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					GUI gui = new GUI(clkGui);
+					new Controller(gui, bank,clkModel);
+				}
+			});
 		}
 		else
 			if(result == 1) {

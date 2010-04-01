@@ -1,5 +1,8 @@
 package asePackage;
-
+/**
+ * @author Ioan
+ *
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

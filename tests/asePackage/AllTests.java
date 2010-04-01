@@ -1,5 +1,8 @@
 package asePackage;
-
+/**
+ * @author Ioan
+ *
+ */
 import org.junit.runner.*;
 import org.junit.runners.*;
 import org.junit.runners.Suite.SuiteClasses;

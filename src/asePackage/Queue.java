@@ -7,8 +7,6 @@ import java.util.ArrayList;
  * place in the program queue of customers and also a list with his transactions. 
  * It also has defined methods to add a new customer to the list or to extract him. 
  * The class also contains a method which returns the customer queue number.
- * 
- * @author Ioan
  */
 public class Queue {
 	private Customer queueCustomer;

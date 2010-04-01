@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 
 /**
- * @author Ali
  * Customer class that holds details about a customer (first name, last name,
  * allowed number of accounts, his/her identification number, and his/her account(s))
  * and methods to get and set the identification number, methods to add an account to

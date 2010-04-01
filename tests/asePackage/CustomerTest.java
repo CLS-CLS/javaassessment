@@ -2,10 +2,8 @@ package asePackage;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-
 /**
- * 
- * @author Ali
+ * @author Ioan
  *
  */
 
