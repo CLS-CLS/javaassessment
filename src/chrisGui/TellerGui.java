@@ -31,7 +31,7 @@ import com.sun.java.swing.plaf.motif.MotifBorders.BevelBorder;
 import sun.awt.image.ToolkitImage;
 
 public class TellerGui extends JFrame implements Observer {
-	private static final String TELLERIMAGE = "images/teller.jpg";
+	private static final String TELLERIMAGE = "/teller.jpg";
 	private JTextArea ta;
 	
 	private Image tellerImage;
@@ -72,7 +72,7 @@ public class TellerGui extends JFrame implements Observer {
 	 * instantiates the image and waits to get loaded
 	 */
 	private void loadImage() {
-		tellerImage = Toolkit.getDefaultToolkit().createImage(TELLERIMAGE);
+		tellerImage = Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(TELLERIMAGE));
 		mt = new MediaTracker(this);
 		mt.addImage(tellerImage, 1);
 		try { mt.waitForID(1); }
