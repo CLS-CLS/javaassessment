@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * @author Chris
  * Provides general load save methods as well as more specific load save methods
  * concerning account and customers records.
  */
@@ -38,6 +37,7 @@ public class MyUtilities<E> {
 			ioe.printStackTrace();
 		}
 	}
+	
 	/**
 	 * @deprecated 
 	 * @param data
@@ -48,8 +48,7 @@ public class MyUtilities<E> {
 		String stringToAppend = new String();
 		for (String str: data){
 			stringToAppend +=str+",";
-		}
-		
+		}		
 		
 		try {
 			BufferedWriter bw;
@@ -63,8 +62,7 @@ public class MyUtilities<E> {
 		catch (IOException ioe) {
 			System.out.println("Error while saving file : ");
 			ioe.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	/**
@@ -88,7 +86,7 @@ public class MyUtilities<E> {
 	}
 	
 	/**
-	 * 
+	 * Load accounts in our program
 	 * @param fileName the filename that contains the account data
 	 * @param customers the arraylist of all the customers
 	 * @return an arraylist of all the accounts objects 
@@ -100,7 +98,6 @@ public class MyUtilities<E> {
 		
 		ArrayList<String[]> data = loadFile(fileName);
 		ArrayList<Account> accounts = new ArrayList<Account>();
-		
 		
 		for(String[] str :data){
 			ArrayList<Customer> ownerList = new ArrayList<Customer>();
@@ -133,16 +130,14 @@ public class MyUtilities<E> {
 		//validFileTypeException
 		if (accounts.size()==0) throw new NotValidFileTypeException("Accounts");
 		return accounts;
-	}
-	
+	}	
 	
 	/**
-	 * finds the customer with the given customerID
+	 * Finds the customer with the given customerID
 	 * @param customerId 
 	 * @param customers the list of the customers will search into
 	 * @return the customer with specific customerID ,null if there is not one.
 	 */
-
 	private static Customer findCustomerFromID(int customerId,
 			ArrayList<Customer> customers) {
 		for (Customer customer:customers){
@@ -150,9 +145,14 @@ public class MyUtilities<E> {
 		}
 		return null;
 	}
-     
-	
-	
+
+	/**
+	 * Load customers from required file
+	 * @param fileName external container
+	 * @return arraylist of customers
+	 * @throws FileNotFoundException
+	 * @throws NotValidFileTypeException
+	 */
 	public static ArrayList<Customer> loadCustomers(String fileName) throws FileNotFoundException,
 	NotValidFileTypeException{
 		ArrayList<String[]> data = loadFile(fileName);
@@ -171,7 +171,11 @@ public class MyUtilities<E> {
 		return customers;
 	}
 	
-	
+	/**
+	 * Save all the customers from our customer list to a file
+	 * @param customers list of customers
+	 * @param fileName destination file name
+	 */
 	public static void saveCustomersToFile(ArrayList<Customer> customers, String fileName) {
 		String result="";
 		for(int i=0; i<customers.size(); i++) {
@@ -180,7 +184,11 @@ public class MyUtilities<E> {
 		saveStringToFile(result, fileName);
 	}
 	
-	
+	/**
+	 * Save all the final accounts from the account manager to a file
+	 * @param am account manager
+	 * @param fileName destination file name
+	 */
 	public static void saveAccountsToFile(AccountManager am, String fileName) {
 		String result="";
 		for(int i=0; i<am.getAccountList().size(); i++) {
@@ -189,6 +197,11 @@ public class MyUtilities<E> {
 		saveStringToFile(result, fileName);
 	}
 	
+	/**
+	 * Round a double to two digits
+	 * @param initialValue
+	 * @return modified value
+	 */
     public static double roundDouble(double initialValue)
     {
         BigDecimal bd = new BigDecimal(initialValue);

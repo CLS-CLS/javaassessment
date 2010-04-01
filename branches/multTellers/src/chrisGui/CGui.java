@@ -9,7 +9,7 @@ import asePackage.*;
 public class CGui extends JFrame{
 	//the location of the image it is going to be used by the componenents 
 	//of this gui
-	private static final String IMAGELOCATION = "images/teller.jpg";
+	private static final String IMAGELOCATION = "/teller.jpg";
 	private static Image backGroundImage;
 	
 	//the control buttons of this Gui
@@ -45,7 +45,8 @@ public class CGui extends JFrame{
 	 * loads the image and blocks the program until the image is fully loaded	
 	 */
 	private void loadImage() {
-		backGroundImage = Toolkit.getDefaultToolkit().createImage(IMAGELOCATION);
+		backGroundImage = Toolkit.getDefaultToolkit().createImage(
+				this.getClass().getResource(IMAGELOCATION));
 		MediaTracker mt = new MediaTracker(this);
 		mt.addImage(backGroundImage, 1);
 		try { mt.waitForID(1); }

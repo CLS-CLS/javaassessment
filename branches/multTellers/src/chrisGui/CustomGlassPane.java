@@ -6,7 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 public class CustomGlassPane extends JPanel implements Runnable {
-	private static final String IMAGE = "images/rolo.jpg";
+	private static final String IMAGE = "/rolo.jpg";
 	int width, height;
 	int linePosition ; //the current position of the image
 	Image image;
@@ -18,7 +18,7 @@ public class CustomGlassPane extends JPanel implements Runnable {
 		setOpaque(false);
 		
 		//loads , scales,  and positions the image
-		image = Toolkit.getDefaultToolkit().createImage(IMAGE);
+		image = Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(IMAGE));
 		image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
 		linePosition = -height;
 	}

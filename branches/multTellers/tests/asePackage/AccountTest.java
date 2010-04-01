@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Ali
+ * @author Ioan
  *
  */
 public class AccountTest 

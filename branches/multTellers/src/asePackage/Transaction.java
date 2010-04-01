@@ -2,8 +2,6 @@ package asePackage;
 import java.util.Random;
 
 /**
- * @author Chris
- * 
  * Contains the type of transactions that is to be made and information about the
  * amount of money they are going to be transacted (in case the transaction is a 
  * deposit or withdrawal 

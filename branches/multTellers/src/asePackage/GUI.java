@@ -203,7 +203,9 @@ public class GUI extends JFrame implements Observer
         ButtonGroup group = new ButtonGroup();
         group.add(onButton);
         group.add(offButton);
-        picture = new JLabel(new ImageIcon("images/" + off + ".png"));
+        System.out.println(this.getClass().getResource(""));
+        picture = new JLabel(new ImageIcon(this.getClass().getResource("/"+off + ".png")));
+        System.out.println(this.getClass().getResource("/"));
         JPanel radioPanel = new JPanel(new GridLayout(0, 1));
         radioPanel.add(onButton);
         radioPanel.add(offButton);

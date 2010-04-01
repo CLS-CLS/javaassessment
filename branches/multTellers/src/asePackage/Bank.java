@@ -13,6 +13,9 @@ import clockUtils.TimeObserver;
  *
  */
 public class Bank extends Thread implements TimeObserver {
+	private static final String CUSTOMERFILE = "customers.txt";
+	private static final String ACCOUNTSFILE = "accounts.txt";
+	
 	private static final int INITIALCUSTOMERDELAY = 700;
 	private int numberOfTellers = 3;
 	/*
@@ -57,11 +60,6 @@ public class Bank extends Thread implements TimeObserver {
 		am = new AccountManager();
 
 		createTellers();
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-		//proofOfAccurateTransactions should be set as true for full testing of//
-		//transactions                                                         //
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-
 		loadData();
 
 	}
@@ -81,9 +79,9 @@ public class Bank extends Thread implements TimeObserver {
 		//with the customers
 		try{
 			if(customers.isEmpty())
-				customers = MyUtilities.loadCustomers("customers.txt");
+				customers = MyUtilities.loadCustomers(CUSTOMERFILE);
 			if(accounts.isEmpty()) {
-				accounts = MyUtilities.loadAccounts("accounts.txt",customers);
+				accounts = MyUtilities.loadAccounts(ACCOUNTSFILE,customers);
 				am.addAcounts(accounts);   //adds the account to the account manager
 			}
 		}

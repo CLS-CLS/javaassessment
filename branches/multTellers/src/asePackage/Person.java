@@ -1,7 +1,6 @@
 package asePackage;
 
 /**
- * @author Ali
  * Person class that holds details about a person (first name and last name)
  * and methods to get and set first name and last name
  */

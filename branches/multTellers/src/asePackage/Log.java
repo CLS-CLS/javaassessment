@@ -7,7 +7,6 @@ import java.util.Observable;
  * Log class is the event manager for the log. It will control the list of events 
  * created on the program execution. It contains methods for adding new log events
  * and also methods for creating statistic information from the log.
- * @author Ioan
  */
 
 public class Log extends Observable {
@@ -43,8 +42,11 @@ public class Log extends Observable {
 		notifyObservers(le);
 	}
 
-	/*
-	 * NEW
+	/**
+	 * Add a new log event in our log manager for entering queue situation
+	 * @param queueNumber queue number of the customer
+	 * @param customer instance of the customer who will do the transaction
+	 * @param status
 	 */
 	public synchronized void addLogEventJoinQueue(int queueNumber, Customer customer, String status) {
 		LogEvent le = new LogEvent(queueNumber, customer, status);
@@ -52,8 +54,13 @@ public class Log extends Observable {
 		setChanged();
 		notifyObservers(le);
 	}
-	/*
-	 * NEW
+
+	/**
+	 * Add a new log event in our log manager for the exit queue situation
+	 * @param queueNumber queue number of the customer
+	 * @param tellerID teller that served the customer
+	 * @param customer instance of the customer who will do the transaction
+	 * @param status 
 	 */
 	public synchronized void addLogEventExitQueue(int queueNumber, int tellerID, Customer customer, String status) {
 		LogEvent le = new LogEvent(queueNumber, tellerID, customer, status);
@@ -61,14 +68,27 @@ public class Log extends Observable {
 		setChanged();
 		notifyObservers(le);
 	}
+	
+	/**
+	 * Add a new log event in our log manager for the starting a transaction situation
+	 * @param queueNumber queue number of the customer
+	 * @param tellerID teller that served the customer
+	 * @param customer instance of the customer who will do the transaction
+	 * @param transaction all the data about the transaction
+	 * @param status
+	 */
 	public synchronized void addLogEventStartTrans(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status) {
 		LogEvent le = new LogEvent(queueNumber, tellerID, customer, transaction, status);
 		logEventList.add(le);
 		setChanged();
 		notifyObservers(le);
 	}
-	/*
-	 * NEW
+
+
+	/**
+	 * Add a new Log for statistics
+	 * @param status
+	 * @param message statistics text
 	 */
 	public synchronized void addLogEventStatistics(String status, String message) {
 		LogEvent le = new LogEvent(status, message);
@@ -112,7 +132,7 @@ public class Log extends Observable {
 		return total;
 	}
 	/**
-	 * compute the total amount of money withdrawn in the time of program execution and which 
+	 * Compute the total amount of money withdrawn in the time of program execution and which 
 	 * was done from a successful transaction.
 	 * @return total withdrawn money
 	 */
@@ -129,7 +149,11 @@ public class Log extends Observable {
 		return total;
 	}
 	
-	
+	/**
+	 * Compute the total amount of money transfered in the time of program execution and which 
+	 * was done from a successful transaction.
+	 * @return total transfered money
+	 */
 	private double getTransferedTotal() {
 		double total=0;
 		for(int i=0;i<logEventList.size();i++) {
@@ -142,7 +166,7 @@ public class Log extends Observable {
 	}
 	
 	/**
-	 * compute the total amount of money withdrawn in the time of program execution and which 
+	 * Compute the total amount of money withdrawn in the time of program execution and which 
 	 * was done from a successful transaction by a single customer.
 	 * @param customer the customer that needs his total
 	 * @return total withdrawn money

@@ -164,8 +164,8 @@ public class Controller {
 	class ProofActionListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
-			gui.setProofPicture(new ImageIcon("images/"+ e.getActionCommand()
-                    + ".png"));
+			gui.setProofPicture(new ImageIcon(this.getClass().getResource("/"+ e.getActionCommand()
+                    + ".png")));
 			bank.setProofOfAccurateTransactions(e.getActionCommand().equals("on"));
 		}
 		

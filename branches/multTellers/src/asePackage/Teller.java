@@ -2,11 +2,6 @@ package asePackage;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
-/**
- * 
- * @author Chris
- *
- */
 public class Teller extends Thread{
 	private int id;
 	private QueueManager qm;
@@ -54,7 +49,7 @@ public class Teller extends Thread{
 	 * Makes all the transactions that the customers wants to do if they are valid
 	 * @throws InterruptedException 
 	 */
-	public void doTransaction() throws InterruptedException{
+	public void doTransactions() throws InterruptedException{
 		if (customerInQueue==null) return;
 		Customer currentCustomer = customerInQueue.getCustomer();
 		ArrayList<Transaction> transactions = customerInQueue.getTransactionList();
@@ -305,7 +300,7 @@ public class Teller extends Thread{
 
 	/**
 	 * Test if the customer account and the foreign are open, if the customer is the owner of 
-	 * the account from which we get the 
+	 * the account from which we get the money and he has enough money in that account
 	 * @param transaction actual transaction
 	 * @param currentCustomer 
 	 * @return true if the conditions are passed
@@ -332,6 +327,14 @@ public class Teller extends Thread{
 		return isValid;
 	}
 
+	/**
+	 * Test if the customer account is open, if the customer is the owner of 
+	 * the account from which we get the money, if he has enough money in that account
+	 * and he didn't reach his withdraw limit
+	 * @param transaction actual transaction
+	 * @param currentCustomer 
+	 * @return true if the conditions are passed
+	 */
 	private boolean checkValidWidrawal(Transaction transaction,	Customer currentCustomer) {
 		boolean isValid = true;
 		//in case the account was closed during the bank session we give a 
@@ -371,13 +374,24 @@ public class Teller extends Thread{
 		}
 
 	}
+	
+	/*
+	 * The execution method
+	 * (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	public void run(){
+		//while the bank is open and the queue is empty runs
 		while(!bankIsClosed || !qm.isQueueEmpty() ) {
 			try {			
 				if (!bankIsPaused){
+					//get a new customer from the queue
 					getNextCustomer();
+					//delay the execution to part down the work in the gui
 					Thread.sleep(tellerGenerationDelay/4);
-					doTransaction();
+					//do the transactions
+					doTransactions();
+					//customer leaves the tellers
 					customerLeaves();
 				}
 				Thread.sleep(tellerGenerationDelay);
@@ -385,9 +399,13 @@ public class Teller extends Thread{
 				e.printStackTrace();
 			}
 		}
+		//substract one position from the list with running threads
 		countDown.countDown();
 	}
 
+	/*
+	 * Get the customer out from the bank and write a log event for that
+	 */
 	private void customerLeaves() {
 		if(customerInQueue != null) {
 			System.out.println(customerInQueue.getCustomer());
@@ -396,6 +414,7 @@ public class Teller extends Thread{
 		}
 	}
 
+	//Get and set methods
 	public void setBankClosed(boolean bankIsClosed) {
 		this.bankIsClosed = bankIsClosed;
 	}

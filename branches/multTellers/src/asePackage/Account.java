@@ -3,7 +3,6 @@ package asePackage;
 import java.util.ArrayList;
 
 /**
- * @author Ali
  * Account class contains all the details about an account. It also includes a list of it's 
  * owners. The class also provides methods to perform operations of set and get on the existent
  * data

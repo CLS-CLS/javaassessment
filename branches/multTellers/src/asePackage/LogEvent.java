@@ -6,7 +6,6 @@ package asePackage;
  * bank running time. It will contain information about the customer, the transaction,
  * queue number and about the modified account. It also contains a status variable which
  * say if the transaction was successful and if not what was the error.
- * @author Ioan
  */
 public class LogEvent {
 	public static final String SUCCESS = "Success";
@@ -77,8 +76,13 @@ public class LogEvent {
 			else
 				this.oldBalance=this.newBalance+transaction.getAmount();
 	}
-	/*
-	 * NEW for entering queue
+	
+	/**
+	 * The constructor for the case of customer entering the queue
+	
+	 * @param queueNumber current customer queue number
+	 * @param customer current customer
+	 * @param status type of the log event 
 	 */
 	public LogEvent(int queueNumber, Customer customer, String status){
 		this.queueNumber=queueNumber;
@@ -93,8 +97,11 @@ public class LogEvent {
 		this.oldBalance=-1;
 		this.message="";
 	}
-	/*
-	 * NEW for statistics
+	
+	/**
+	 * Creates a new log event for the statistics
+	 * @param status event status
+	 * @param message
 	 */
 	public LogEvent(String status, String message){
 		this.customer = null;
@@ -102,8 +109,13 @@ public class LogEvent {
 		this.status=status;
 		this.message=message;
 	}
-	/*
-	 * NEW for exit queue
+
+	/**
+	 * Create a log event for the case of customer exiting the bank
+	 * @param queueNumber customer queue number
+	 * @param tellerID teller id for the one who served our customer
+	 * @param customer
+	 * @param status
 	 */
 	public LogEvent(int queueNumber, int tellerID, Customer customer, String status) {
 		this.queueNumber=queueNumber;
@@ -118,8 +130,14 @@ public class LogEvent {
 		this.oldBalance=-1;
 		this.message="";
 	}
-	/*
-	 * NEW for starting transaction
+
+	/**
+	 * Create a log event for the start a new transaction
+	 * @param queueNumber customer queue number
+	 * @param tellerID teller id for the one who served our customer
+	 * @param customer
+	 * @param transaction
+	 * @param status
 	 */
 	public LogEvent(int queueNumber, int tellerID, Customer customer, Transaction transaction, String status) {
 		this.queueNumber=queueNumber;
@@ -265,8 +283,10 @@ public class LogEvent {
 								result=" - £" + amount + " where deposed in the account with the id " + foreignAccountID;
 		return result;
 	}	
-	/*
-	 * NEW
+	
+	/**
+	 * Get a message for entering queue event
+	 * @return message
 	 */
 	private String getEnterQueue() {
 		String result="";
@@ -274,8 +294,10 @@ public class LogEvent {
 			" " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
 		return result;
 	}
-	/*
-	 * NEW
+	
+	/**
+	 * Get a message for exiting queue event
+	 * @return message
 	 */
 	private String getExitQueue() {
 		String result="";
@@ -284,8 +306,11 @@ public class LogEvent {
 			"with queue number " + queueNumber + " to serve";
 		return result;
 	}
-	/*
-	 * NEW
+
+	/**
+	 * Get a message for starting a transaction event. The message
+	 * is optimised for each type of transaction
+	 * @return message
 	 */
 	private String getStartTransaction() {
 		String result;
@@ -312,8 +337,10 @@ public class LogEvent {
 									result+= transactionType + " " + foreignAccountID + " from account " + accountID + " £" + amount;
 		return result;
 	}
-	/*
-	 * NEW
+	
+	/**
+	 * Return a success message
+	 * @return message
 	 */
 	private String getSuccess() {
 		String result;
@@ -321,8 +348,10 @@ public class LogEvent {
 		result += getSuccessDetails();
 		return result;
 	}
-	/*
-	 * NEW
+	
+	/**
+	 * Return a fail message
+	 * @return message
 	 */
 	private String getFail() {
 		String result;
@@ -331,8 +360,9 @@ public class LogEvent {
 		return result;
 	}
 	
-	/*
-	 * NEW
+	/**
+	 * Return a exiting bank message
+	 * @return message
 	 */
 	private String getExitBank() {
 		String result="";
@@ -341,10 +371,13 @@ public class LogEvent {
 		return result;
 	}
 	
+	/**
+	 * Creates a message optimised for queue gui
+	 * @return
+	 */
 	public String toStringQueue() {
 		String result;
 		result = queueNumber + ". " + customer.getFirstName() + " " + customer.getLastName() + " (ID: " + customer.getId() + ")";
 		return result;
-	}
-	
+	}	
 }
