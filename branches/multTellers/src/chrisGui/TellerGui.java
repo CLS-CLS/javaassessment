@@ -33,10 +33,7 @@ import sun.awt.image.ToolkitImage;
 public class TellerGui extends JFrame implements Observer {
 	private static final String TELLERIMAGE = "images/teller.jpg";
 	private JTextArea ta;
-	private JRadioButton lazyButton = new JRadioButton("Lazy");
-	private JRadioButton okButton = new JRadioButton("Ok");
-	private JRadioButton hardButton = new JRadioButton("Hard\nWorking");
-	private ButtonGroup group = new ButtonGroup();
+	
 	private Image tellerImage;
 	private JPanel controlPanel = new JPanel();
 	private JPanel displayPanel = new JPanel();
@@ -50,7 +47,7 @@ public class TellerGui extends JFrame implements Observer {
 		this.id = id;
 		loadImage();
 		createTextArea();
-		createGroupButtons();
+		
 		displayPanel.setLayout(new FlowLayout());
 				
 		controlPanel.setBorder(BorderFactory.createBevelBorder(0));
@@ -69,22 +66,7 @@ public class TellerGui extends JFrame implements Observer {
 		setVisible(true);
 	}
 
-	private void createGroupButtons() {
-		group.add(lazyButton);
-		group.add(okButton);
-		group.add(hardButton);
-		controlPanel.add(lazyButton);
-		controlPanel.add(okButton);
-		controlPanel.add(hardButton);
-		okButton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				glassPane.setVisible(true);
-				glassPane.animate();
-				System.out.println("Asdasd");
-			}
-		});
-	}
+	
 
 	/**
 	 * instantiates the image and waits to get loaded
@@ -124,6 +106,7 @@ public class TellerGui extends JFrame implements Observer {
 		
 		
 		LogEvent logEvent = (LogEvent)arg1;
+		System.err.println(logEvent.getStatus());
 		if(id == logEvent.getTellerID()){
 			if(timeToErase){
 				ta.setText("");

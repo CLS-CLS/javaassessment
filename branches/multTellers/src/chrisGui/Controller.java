@@ -34,10 +34,10 @@ public class Controller {
 						
 		TellerGui[] tellersGui = gui.getTellerGuis();
 		for (TellerGui tg : tellersGui){
-			bank.setObserver(tg);
+			bank.getLog().addObserver(tg);
 		}
 		
-		bank.setObserver(gui.getQueueGui());
+		bank.getLog().addObserver(gui.getQueueGui());
 
 	}
 
