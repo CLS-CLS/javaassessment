@@ -48,8 +48,8 @@ public class Controller {
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		gui.addQueueCheckboxListener(new QueueCheckboxListener());
 		gui.addProofButtonActionListener(new ProofActionListener());
-		//gui.addCustomerItemListener(new LoadCustomerActionlistener());
-		//gui.addAccountItemListener(new LoadAccountActionlistener());
+		gui.addCustomerItemListener(new LoadCustomerActionlistener());
+		gui.addAccountItemListener(new LoadAccountActionlistener());
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();

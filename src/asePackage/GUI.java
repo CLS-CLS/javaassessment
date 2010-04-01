@@ -41,6 +41,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
 
+import asePackage.Controller.LoadAccountActionlistener;
+import asePackage.Controller.LoadCustomerActionlistener;
+
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.QEncoderStream;
 
 /**
@@ -85,6 +88,9 @@ public class GUI extends JFrame implements Observer
 	private JRadioButton offButton;
 	private JLabel picture;
 	
+	private JMenuItem loadCustomerItem = new JMenuItem("Load Customer");
+	private JMenuItem loadAccountItem = new JMenuItem("Load Account");
+	
 	private JFrame clock;
 	
 	
@@ -127,6 +133,8 @@ public class GUI extends JFrame implements Observer
 		mb = new JMenuBar();
 		JMenu mn = new JMenu("Options");
 		JMenu tellerSubMenu = new JMenu("Tellers");
+		mn.add(loadCustomerItem);
+		mn.add(loadAccountItem);
 		ButtonGroup bg = new ButtonGroup();
 		for (int i = 0; i < MAXNUMBEROFTELLERS; i++){
 			cb[i] = new JCheckBoxMenuItem(i+1 + "Teller(s)");
@@ -351,4 +359,12 @@ public class GUI extends JFrame implements Observer
 		picture.setIcon(imageIcon);
 		
 	}
+
+	public void addAccountItemListener(ActionListener la) {
+		loadAccountItem.addActionListener(la);
+	}
+	public void addCustomerItemListener(ActionListener la) {
+		loadCustomerItem.addActionListener(la);
+	}
+	
 }
