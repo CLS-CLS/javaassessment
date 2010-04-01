@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		MyUtilitiesTest.class,
 		QueueManagerTest.class,
 		QueueTest.class,
-		TellerTest.class
+		TellerTest.class,
+		ProofButtonsTest.class
 })
 	
 public class AllTests{

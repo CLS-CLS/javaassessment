@@ -20,7 +20,7 @@ public class LogEventTest {
 	@Before
 	public void setUp() throws Exception {
 		event1=new LogEvent();
-		event3=new LogEvent(3,1,new Customer("Chris", "Lytsikas", 1), new Transaction(Transaction.OPEN, new Account(), 100), "Fail", "errormessage");
+		event3=new LogEvent(3,1,new Customer("Chris", "Lytsikas", 1), new Transaction(Transaction.OPEN, new Account(), 100, null), "Fail", "errormessage");
 	}
 
 	/**

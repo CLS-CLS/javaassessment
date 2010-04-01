@@ -20,20 +20,22 @@ public class QueueTest {
 	private Queue queue3;
 	
 	/**
+	 * Initialisation
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		ArrayList<Transaction> transactionTest=new ArrayList<Transaction>();
-		transactionTest.add(new Transaction("deposit", new Account(1), 150));
-		transactionTest.add(new Transaction("withdrawal", new Account(2), 100));
+		transactionTest.add(new Transaction("deposit", new Account(1), 150, null));
+		transactionTest.add(new Transaction("withdrawal", new Account(2), 100, null));
 		
 		queue1=new Queue();
-		queue2=new Queue(new Customer("Ioan", "Eu", 1),new Transaction("deposit", new Account(2), 100),1);
+		queue2=new Queue(new Customer("Ioan", "Eu", 1),new Transaction("deposit", new Account(2), 100, null),1);
 		queue3=new Queue(new Customer("Ioan", "Eu", 1),transactionTest,2);
 	}
 
 	/**
+	 * Tests if the initialisation of the current queue number as a test for initialisation
 	 * Test method for {@link asePackage.Queue#Queue()}.
 	 */
 	@Test
@@ -42,8 +44,9 @@ public class QueueTest {
 		Integer currentValue=queue1.getQueueNumber();
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
-
+	
 	/**
+	 * Tests if the initialisation of the current queue number as a test for initialisation
 	 * Test method for {@link asePackage.Queue#Queue(asePackage.Customer, asePackage.Transaction, int)}.
 	 */
 	@Test
@@ -53,7 +56,9 @@ public class QueueTest {
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
 
+	
 	/**
+	 * Tests if the initialisation of the current queue number as a test for initialisation
 	 * Test method for {@link asePackage.Queue#Queue(asePackage.Customer, java.util.ArrayList, int)}.
 	 */
 	@Test
@@ -62,8 +67,9 @@ public class QueueTest {
 		Integer currentValue=queue3.getQueueNumber();
 		assertTrue("Wrong Output (Is: "+currentValue+"; Should be "+result+")",currentValue.equals(result));
 	}
-
+	
 	/**
+	 * Tests the get value for a customer
 	 * Test method for {@link asePackage.Queue#getCustomer()}.
 	 */
 	@Test
@@ -74,6 +80,7 @@ public class QueueTest {
 	}
 
 	/**
+	 * Tests get transaction list for a customer.
 	 * Test method for {@link asePackage.Queue#getTransactionList()}.
 	 */
 	@Test
@@ -84,6 +91,7 @@ public class QueueTest {
 	}
 
 	/**
+	 * Test if a queue number is return corect
 	 * Test method for {@link asePackage.Queue#getQueueNumber()}.
 	 */
 	@Test

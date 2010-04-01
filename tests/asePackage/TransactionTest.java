@@ -16,6 +16,7 @@ public class TransactionTest {
 	Customer cust2;
 	ArrayList<Customer> customers = new ArrayList<Customer>();
 	Account aca;
+	Account aca2;
 	@Before
 	public void setUp(){
 		cust1 = new Customer("Chris","Lytsikas",1);
@@ -23,11 +24,13 @@ public class TransactionTest {
 		customers.add(cust1);
 		customers.add(cust2);
 		aca = new Account(1, 100, customers);
+		aca2 = new Account(2, 200, customers);
 	}
 	
+	//testing if running
 	@Test
 	public void genRandomTrans(){
-		Transaction trns = Transaction.generateRandomTransaction(aca, new Random(),true);
+		Transaction trns = Transaction.generateRandomTransaction(aca, aca2, new Random());
 		assertEquals(aca.getId(), trns.getAccount().getId());
 	}
 	
