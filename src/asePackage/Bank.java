@@ -56,14 +56,14 @@ public class Bank extends Thread implements TimeObserver {
 		qm = QueueManager.getInstance();
 		customers = new ArrayList<Customer>();
 		am = new AccountManager();
-		
+
 		createTellers();
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 		//proofOfAccurateTransactions should be set as true for full testing of//
 		//transactions                                                         //
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 
-		loadData(proofOfAccurateTransactions);
+		loadData();
 
 	}
 
@@ -75,37 +75,37 @@ public class Bank extends Thread implements TimeObserver {
 		return qm;
 	}
 
-	private void loadData(boolean proofOfAccurateTransactions) {
+	private void loadData() {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 
-			//loads customers and accounts and connects the accounts
-			//with the customers
-			try{
-				if(customers.isEmpty())
-					customers = MyUtilities.loadCustomers("customers.txt");
-				if(accounts.isEmpty()) {
-					accounts = MyUtilities.loadAccounts("accounts.txt",customers);
-					am.addAcounts(accounts);   //adds the account to the account manager
-				}
+		//loads customers and accounts and connects the accounts
+		//with the customers
+		try{
+			if(customers.isEmpty())
+				customers = MyUtilities.loadCustomers("custommers.txt");
+			if(accounts.isEmpty()) {
+				accounts = MyUtilities.loadAccounts("accounts.txt",customers);
+				am.addAcounts(accounts);   //adds the account to the account manager
 			}
-			catch(Exception e){
-				e.printStackTrace();
-				System.exit(1);
-			}
-
-			//Add the accounts to the customer (connects the customer to the accounts)
-			for (Account aca: am.getAccountList()){
-				for(Customer customer: aca.getOwnerList()){
-					customer.
-					addAccount(aca);
-				}
-			}                    
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			System.exit(1);
 		}
 
+		//Add the accounts to the customer (connects the customer to the accounts)
+		for (Account aca: am.getAccountList()){
+			for(Customer customer: aca.getOwnerList()){
+				customer.
+				addAccount(aca);
+			}
+		}                    
+	}
 
 
 
-	
+
+
 	/**
 	 * generates random transactions for the given customer
 	 * The transaction may be 1 or 2
@@ -121,10 +121,10 @@ public class Bank extends Thread implements TimeObserver {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		for (int i = 0;i < numberOfTransactions;i++){
-				Account account = selectRandomAccount(customer);
-				Account foreignAccount = selectRandomAccountQM(account);
-				
-				trans.add(Transaction.generateRandomTransaction(account, foreignAccount, rndGen));
+			Account account = selectRandomAccount(customer);
+			Account foreignAccount = selectRandomAccountQM(account);
+
+			trans.add(Transaction.generateRandomTransaction(account, foreignAccount, rndGen));
 		}
 		return trans;
 	}
@@ -136,7 +136,7 @@ public class Bank extends Thread implements TimeObserver {
 		ArrayList<Account> accounts = am.getAccountList();
 		int randomValue;
 		Account newAccount = null;
-		
+
 		if(accounts.size()>0){
 			while(!success){
 				randomValue = rndGen.nextInt(accounts.size());
@@ -195,11 +195,11 @@ public class Bank extends Thread implements TimeObserver {
 	}
 
 
-public void run(){
-		
+	public void run(){
+
 		for (int i = 0; i < numberOfTellers; i++)
 			tellers[i].start();
-		
+
 		if(proofOfAccurateTransactions){
 			setOpen(false);
 			proofOfAccurateTransactions();
@@ -211,11 +211,11 @@ public void run(){
 				try {Thread.sleep(customerGenerationDelay);}
 				catch (InterruptedException e) {e.printStackTrace();}
 			}
-		
+
 		// awakes the tellers that may be waiting for a customer in the queue
 		//as there is no new customers going to be added 
 		qm.awakeAllThreads();
-		
+
 		//waits until all the tellers are done their work
 		//(all the customers are served)
 		try {
@@ -280,14 +280,14 @@ public void run(){
 		this.numberOfTellers = numberOfTellers;
 		countDown = new CountDownLatch(numberOfTellers);
 		tellers = new Teller[numberOfTellers];
-		
+
 	}
 
 	public void createTellers() {
 		for (int i = 0; i < numberOfTellers; i++){
 			tellers[i] = new Teller(am,log,i+1,countDown);
 		}
-		
+
 	}
 
 	public boolean isProofOfAccurateTransactions() {
@@ -298,10 +298,10 @@ public void run(){
 		this.proofOfAccurateTransactions = proofOfAccurateTransactions;
 	}
 
-	
-	
-	
-	
+
+
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	private void proofOfAccurateTransactions(){
 
@@ -328,13 +328,13 @@ public void run(){
 
 
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
-		
+
 		try {
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
 			trans.add(new Transaction(Transaction.OPEN, new Account(), 200, null));
 			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(0),100, null));		
 			qm.addQueueElement(customers.get(0), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(3), LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),100, null));
@@ -344,12 +344,12 @@ public void run(){
 			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(3).getAccountList().get(0),160, null));
 			trans.add(new Transaction(Transaction.OPEN, new Account(),600, null));
 			qm.addQueueElement(customers.get(3), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(2), LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.OPEN, new Account(),500, null));
 			qm.addQueueElement(customers.get(2), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(),customers.get(3),LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.CLOSE, customers.get(3).getAccountList().get(0),0, null));
@@ -360,27 +360,27 @@ public void run(){
 			trans.add(new Transaction(Transaction.OPEN, new Account(), 200, null));
 			trans.add(new Transaction(Transaction.OPEN, new Account(), 400, null));
 			qm.addQueueElement(customers.get(3), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(1), LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.DEPOSIT, am.getAccountList().get(1),50, null));
 			trans.add(new Transaction(Transaction.TRANSFER, customers.get(1).getAccountList().get(0),200, am.getAccountList().get(4)));
 			trans.add(new Transaction(Transaction.TRANSFER, customers.get(1).getAccountList().get(0),700, am.getAccountList().get(2)));
 			qm.addQueueElement(customers.get(1), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(4), LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.TRANSFER, am.getAccountList().get(4),50, am.getAccountList().get(1)));
 			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,50, am.getAccountList().get(1)));
 			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,50, am.getAccountList().get(0)));
 			qm.addQueueElement(customers.get(4), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(0), LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.WITHDRAWAL, customers.get(0).getAccountList().get(1),150, null));
 			trans.add(new Transaction(Transaction.TRANSFER, customers.get(0).getAccountList().get(0),300, customers.get(0).getAccountList().get(1)));
 			qm.addQueueElement(customers.get(0), trans);
-			
+
 			log.addLogEventJoinQueue(qm.getNextNumber(), customers.get(5), LogEvent.ENTERQUEUE);
 			trans=new ArrayList<Transaction>();
 			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,150, am.getAccountList().get(3)));
@@ -402,10 +402,10 @@ public void run(){
 		accounts = MyUtilities.loadAccounts(fileName, customers);
 		am.addAcounts(accounts);
 	}
-	
-	
+
+
 	/////////////////////////////////////////////////////////////////////////
-	
+
 	public void endOfTime() {
 		setOpen(false);
 	}

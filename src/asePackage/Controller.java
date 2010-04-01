@@ -6,21 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JSlider;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import clockUtils.BankClock;
-import clockUtils.ClockModel;
+
 
 public class Controller {
 
@@ -29,54 +19,67 @@ public class Controller {
 	BankClock clockModel;
 	
 	/**
-	 * @param gui
-	 * @param bank
+	 * Constructor without a clock
 	 */
 	public Controller(GUI gui, Bank bank){
 		super();
 		this.gui = gui;
 		this.bank = bank;
 		
+		//sets the generatios delay in the JSlider from the initial value in the bank Class
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
-
+		
+		//adds listeners to the buttons of the GUI
 		gui.addRunButtonListener(new RunBankListener());
 		gui.addCustomerSliderListener(new CustomerSlideListener());
 		gui.addTellerSliderListener(new TellerSlideListener());
 		gui.addCloseButtonListener(new CloseButtonListener());
-		//gui.addPauseButtonListener(new PauseButtonListener());
 		gui.addTellersMenuItemListener(new NumberOfTellersListener());
 		gui.addQueueCheckboxListener(new QueueCheckboxListener());
 		gui.addProofButtonActionListener(new ProofActionListener());
 		gui.addCustomerItemListener(new LoadCustomerActionlistener());
 		gui.addAccountItemListener(new LoadAccountActionlistener());
+		
+		//registers the observers
 		bank.setObserver(gui);
 		bank.setObserver(gui.getQueueGui());
 		ArrayList<TellerGui> tellersGui = gui.getTellerGuis();
 		for (TellerGui tg : tellersGui){
 			bank.setObserver(tg);
 		}
-
-
 	}
 
-
+	/**
+	 * Constructor with clock
+	 * 
+	 */
 	public Controller(GUI gui2, Bank bank2, BankClock clkModel) {
 		this(gui2,bank2);
 		this.clockModel = clkModel;
 		clockModel.addTimeObserver(bank);
 	}
-
-
+	
+	/**
+	 * when the start button is pressed , runs the bank
+	 * by 1) setting the bank open, 2) disabling all the other buttons 
+	 * (except the close button), 3) start the countDown 
+	 *
+	 */
 	class RunBankListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			bank.setOpen(true);
 			bank.start();
+			
+			//disables buttons
 			((JComponent)e.getSource()).setEnabled(false);
 			gui.getCloseButton().setEnabled(true);
 			JComponent[] cbs = gui.getCb();
 			for (JComponent cb : cbs)cb.setEnabled(false);
-			if (clockModel!=null && !bank.isProofOfAccurateTransactions())new Thread(clockModel).start();
+			JComponent[] proofButtons = gui.getProofButtons();
+			for (JComponent pb : proofButtons)pb.setEnabled(false);
+			//starts the clock
+			if (clockModel != null && !bank.isProofOfAccurateTransactions())new Thread(clockModel).start();
 		}
 	}
 
@@ -88,6 +91,7 @@ public class Controller {
 			bank.setCustomerGenerationDelay(delay);
 		}		
 	}
+	
 
 	class TellerSlideListener implements ChangeListener{
 
@@ -97,7 +101,11 @@ public class Controller {
 			bank.setTellerGenerationDelay(delay);
 		}		
 	}
-
+	
+	/**
+	 * when the close button is pressed closes the bank and
+	 * resets the clock
+	 */
 	class CloseButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
@@ -107,22 +115,29 @@ public class Controller {
 		}
 	}
 
-	//	class PauseButtonListener implements ActionListener{
-	//		public synchronized void actionPerformed(ActionEvent e) {
-	//		}
-	//	}
-
+	/**
+	 * When the tellers radio buttons are clicked the method of this
+	 * class in invoked and sets the number of tellers in the GUI and Bank 
+	 * 
+	 */
 	class NumberOfTellersListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
+			//get the already existing Guis of the tellers and unregister them
+			//from the bank
 			ArrayList<TellerGui> tellerGuis = gui.getTellerGuis();
 			for (TellerGui tg :tellerGuis) bank.removeObserver(tg);
+			
+			//gets the action command which contains the information how many tellers we are
+			//going to use and cast this information to int.
 			int numberOfTellers =Integer.parseInt(e.getActionCommand());
+			//sets the number of tellers and Gui Tellers in the bank and the GUI
 			bank.setNumberOfTellers(numberOfTellers);
 			bank.createTellers();
 			gui.setNumberTellers(numberOfTellers);
 			gui.createTellerGuis();
-			// register to the observer the new teller guis
+			
+			// register to the bank the new tellers Guis
 			for (TellerGui tg :tellerGuis) bank.setObserver(tg);			
 		}		
 	}
@@ -139,6 +154,13 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * 
+	 * turns on / off the "Proof of accurate Transaction" mode
+	 * Also changes the displayed corresponding picture according to
+	 * the selection 
+	 *
+	 */
 	class ProofActionListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {

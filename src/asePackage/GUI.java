@@ -249,7 +249,10 @@ public class GUI extends JFrame implements Observer
         
 	    return proofPanel;
    	}
-
+	
+	public JComponent[] getProofButtons(){
+		return new JComponent[]{onButton,offButton};
+	}
 
 
 	public void setText(String report) {
