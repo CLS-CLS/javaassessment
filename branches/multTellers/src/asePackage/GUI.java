@@ -60,7 +60,7 @@ public class GUI extends JFrame implements Observer
 	
 	public GUI(){
 		
-		super("Simple GUI Stage 2");
+		super("Comlex GUI Stage 2");
 		createButtonPanel();
 		createDisplayPanel();
 	    createTellerGuis();
