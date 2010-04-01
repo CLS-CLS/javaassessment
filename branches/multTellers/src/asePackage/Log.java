@@ -83,7 +83,7 @@ public class Log extends Observable {
 	 * he cannot enter twice in the queue.
 	 * @return number of served customers
 	 */
-	private int getProcessedCustomersNumber() {
+	public int getProcessedCustomersNumber() {
 		int queueNumber=0;
 		
 		for(int i=0;i<logEventList.size();i++) {		

@@ -205,12 +205,12 @@ public void run(){
 			proofOfAccurateTransactions();
 		}
 		else
-		while(isOpen){
-			Customer customer = pickRandomCustomer();
-			generateQueueElement(customer);
-			try {Thread.sleep(customerGenerationDelay);}
-			catch (InterruptedException e) {e.printStackTrace();}
-		}
+			while(isOpen){
+				Customer customer = pickRandomCustomer();
+				generateQueueElement(customer);
+				try {Thread.sleep(customerGenerationDelay);}
+				catch (InterruptedException e) {e.printStackTrace();}
+			}
 		
 		// awakes the tellers that may be waiting for a customer in the queue
 		//as there is no new customers going to be added 
