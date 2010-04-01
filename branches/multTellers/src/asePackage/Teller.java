@@ -17,6 +17,7 @@ public class Teller extends Thread{
 	private boolean bankIsClosed = false;
 	private static boolean bankIsPaused = false;
 	private CountDownLatch countDown;
+	
 
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
