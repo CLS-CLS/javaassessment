@@ -11,6 +11,7 @@ import javax.swing.event.ChangeListener;
 
 class AlternativeGUI extends JFrame implements GuiControl
 {
+	private static final long serialVersionUID = 1L;
 	JTextField custs, out, in;
 	JButton button;
 	

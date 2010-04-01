@@ -16,15 +16,20 @@ public class Teller extends Thread{
 	private static int tellerGenerationDelay;
 	private boolean bankIsClosed = false;
 	private static boolean bankIsPaused = false;
-	private CountDownLatch countDown;
-	
+	private CountDownLatch countDown;	
 
 	/*
 	 *  holds a message about what went wrong if the transaction is not valid
 	 */
 	private String errorMessage;  
 
-
+	/**
+	 * The constructor for a teller object.
+	 * @param accountManager The account manager of the application
+	 * @param log The log manager of the application
+	 * @param tellerID new teller id
+	 * @param countDown the CountDownLatch element for closing the bank
+	 */
 	public Teller(AccountManager accountManager, Log log, int tellerID,CountDownLatch countDown) {
 		super("Teller("+tellerID+")");
 		this.countDown = countDown;
@@ -36,7 +41,7 @@ public class Teller extends Thread{
 	}
 
 	/**
-	 * gets the next customer from the queue.
+	 * Gets the next customer from the queue.
 	 */
 	public  void getNextCustomer(){
 		customerInQueue = qm.removeQueueElement();
@@ -56,7 +61,9 @@ public class Teller extends Thread{
 		boolean isValidTransaction;
 		for (Transaction transaction : transactions){
 
+			//add a log event to note the start of a new transaction
 			log.addLogEventStartTrans(customerInQueue.getQueueNumber(), id, currentCustomer, transaction, LogEvent.STARTTRANSACTION);
+			//set a small delay before starting the actual transaction
 			Thread.sleep(tellerGenerationDelay/2);
 
 			isValidTransaction = false;
@@ -83,24 +90,25 @@ public class Teller extends Thread{
 			if(transaction.getType().equals(Transaction.TRANSFER)){
 				isValidTransaction = doTransfer(transaction,currentCustomer);
 			}
-
-
+			
+			//create a log event for transaction result
 			generateReport(isValidTransaction,transaction);
 
+			//sleeps a small period of time before starting the next transaction
 			Thread.sleep(tellerGenerationDelay/4);			
 		}
-
-
 	}
 
-	/*
-	 * IOAN 27.03
-	 */	
+	/**
+	 * Realise a transfer operation
+	 */
 	private boolean doTransfer(Transaction transaction, Customer currentCustomer) {
 		double amount;
 		boolean isValidTransaction = 
 			isValidTransaction(transaction,currentCustomer);
 
+		//if all the conditions were meet it make the transfer from the old account
+		//to the new account for required amount of money
 		if (isValidTransaction){
 			Account custAccount = transaction.getAccount();
 			Account foreignAccount = transaction.getForeignAccount();
@@ -113,11 +121,14 @@ public class Teller extends Thread{
 		return isValidTransaction;
 	}
 
+	/**
+	 * Realise a deposit to foreign account transaction 
+	 */
 	private boolean doDepositForeignAccount(Transaction transaction, Customer currentCustomer) {
 		double amount;
 		boolean isValidTransaction = 
 			isValidTransaction(transaction,currentCustomer);
-
+		//if the conditions are meet the required amount of money are deposit in the required account
 		if (isValidTransaction){
 			Account foreignAccount = transaction.getForeignAccount();
 			amount=MyUtilities.roundDouble(transaction.getAmount());
@@ -136,14 +147,19 @@ public class Teller extends Thread{
 	private boolean viewBalance(Transaction transaction,
 			Customer currentCustomer) {
 		return isValidTransaction(transaction, currentCustomer);
-
 	}
 
+	/**
+	 * Closed the account required by the customer
+	 * @param transaction
+	 * @param currentCustomer
+	 * @return true if the transaction was done, else in the other case
+	 */
 	private boolean closeAccount(Transaction transaction, Customer currentCustomer) {
 		boolean isValidTransaction = isValidTransaction(transaction, currentCustomer);
 		if(isValidTransaction){
 			Account account = transaction.getAccount();
-			//sets the ammount to be withdrawed in the transaction so it can be used as
+			//sets the amount to be withdraw in the transaction so it can be used as
 			//info for the log 
 			transaction.setAmount(account.getBalance());
 			//first withdraws all the money from the account
@@ -154,6 +170,12 @@ public class Teller extends Thread{
 		return isValidTransaction;
 	}
 
+	/**
+	 * Open a new account for a customer if he meets the requirements
+	 * @param transaction
+	 * @param currentCustomer
+	 * @return true if the transaction was done, else in the other case
+	 */
 	private boolean openAccount(Transaction transaction, Customer currentCustomer) {
 		double amount;
 		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
@@ -167,6 +189,12 @@ public class Teller extends Thread{
 		return isValidTransaction;
 	}
 
+	/**
+	 * Realise a withdrawel from the customer account
+	 * @param transaction
+	 * @param currentCustomer
+	 * @return true if the transaction was done, else in the other case
+	 */
 	private boolean doWithdrawal(Transaction transaction, Customer currentCustomer) {
 		double amount;
 		boolean isValidTransaction = isValidTransaction(transaction,currentCustomer);
@@ -176,7 +204,6 @@ public class Teller extends Thread{
 		}
 		return isValidTransaction;
 	}
-
 
 	/**
 	 * deposits money in the an account. In order to the deposit to be complete 
@@ -201,15 +228,16 @@ public class Teller extends Thread{
 		return isValidTransaction;
 	}
 
-
-
 	/**
-	 * checks if the current transaction is valid (e.g. can be made). Valid transcations are
-	 * Deposit / Close : only if the customer owns the account he want to deposit money
+	 * checks if the current transaction is valid (e.g. can be made). Valid transactions are
+	 * Deposit / Close / View Balance: only if the customer owns the account used for the transaction
+	 * Deposit to foreign account: only if that account is existing
 	 * Withdrawal : only if the customer own the account he wants to withdraw money from
 	 * and also the money to be withdrawn does not exceed the money in the account
 	 * Open : An account can be opened only if the customer does not have more that the maximum 
 	 * account allowance.
+	 * Transfer: if both accounts exists, at list one is customer's account, and the customer has
+	 * enough money in his account to transfer
 	 * It also generates an error message in case the transaction is not valid
 	 * @param transaction the transaction to be validated
 	 * @return true if the transaction is valid, false otherwise
@@ -238,8 +266,6 @@ public class Teller extends Thread{
 				transaction.getType().equals(Transaction.VIEWBALANCE))
 			isValid = isValidDepCloView(transaction,currentCustomer);
 
-
-
 		if(transaction.getType().equals(Transaction.DEPOSITFOREIGNACCOUNT)){
 
 			//in case the account was closed during the bank session we give a 
@@ -253,11 +279,15 @@ public class Teller extends Thread{
 		if(transaction.getType().equals(Transaction.TRANSFER))
 			isValid = isValidTrasfer(transaction,currentCustomer);
 
-
 		return isValid;
 	}
 
-
+	/**
+	 * Test if the account is open and if the customer is the owner of the account
+	 * @param transaction actual transaction
+	 * @param currentCustomer 
+	 * @return true if the conditions are passed
+	 */
 	private boolean isValidDepCloView(Transaction transaction,	Customer currentCustomer) {
 		boolean isValid = true;
 		//in case the account was closed during the bank session we give a 
@@ -273,6 +303,13 @@ public class Teller extends Thread{
 		return isValid;
 	}
 
+	/**
+	 * Test if the customer account and the foreign are open, if the customer is the owner of 
+	 * the account from which we get the 
+	 * @param transaction actual transaction
+	 * @param currentCustomer 
+	 * @return true if the conditions are passed
+	 */
 	private boolean isValidTrasfer(Transaction transaction,	Customer currentCustomer) {
 		boolean isValid  = true;
 		if(transaction.getAccount().isClosed()==true){
@@ -351,10 +388,6 @@ public class Teller extends Thread{
 		countDown.countDown();
 	}
 
-
-
-
-
 	private void customerLeaves() {
 		if(customerInQueue != null) {
 			System.out.println(customerInQueue.getCustomer());
@@ -378,13 +411,6 @@ public class Teller extends Thread{
 	public static void setBankIsPaused(boolean bankIsPaused) {
 		Teller.bankIsPaused = bankIsPaused;
 	}
-
-
-
-
-
-
-
 }
 
 

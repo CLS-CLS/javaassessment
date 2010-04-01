@@ -1,50 +1,15 @@
 package asePackage;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
-
-import asePackage.Controller.LoadAccountActionlistener;
-import asePackage.Controller.LoadCustomerActionlistener;
-
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.QEncoderStream;
 
 /**
  * Graphical User Interface (GUI) that shows the results of the bank session 
@@ -54,14 +19,13 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.util.QEncoderStream;
 
 public class GUI extends JFrame implements Observer
 {
-/**
- * The panel containing the button and the textArea
- */
-	private static final String ONIMAGELOC = "images/on.png";
-	private static final String OFFIMAGELOC = "images/of.png";
+	private static final long serialVersionUID = 1L;
+
 	private static String on = "on";
 	private static String off = "off";
-	
+/**
+ * The panel containing the button and the textArea
+ */	
 	private JPanel buttonPanel; 
 	private JPanel displayPanel;
 	private JTextArea textArea;
@@ -327,8 +291,7 @@ public class GUI extends JFrame implements Observer
 	}
 
 	public void addTellerGui(TellerGui tGui) {
-		tellerGuiList.add(tGui);
-		Point p = this.getLocation();
+		tellerGuiList.add(tGui);		
 	}
 	
 	public void createTellerGuis() {

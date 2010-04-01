@@ -7,7 +7,8 @@ import javax.swing.*;
 
 
 public class ProofButtons extends JPanel implements ActionListener {
-    static String on = "on";
+	private static final long serialVersionUID = 1L;
+	static String on = "on";
     static String off = "off";
     
     JLabel picture;

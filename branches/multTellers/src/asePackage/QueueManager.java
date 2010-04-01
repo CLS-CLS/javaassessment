@@ -1,10 +1,9 @@
 package asePackage;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 /**
- * Queue Manager class is has the purpose to administrate the content elements of the program queue.
+ * Queue Manager class is has the purpose to administered the content elements of the program queue.
  * It contains a list all the queue elements and also methods to add and remove elements from the queue.
  * In addition to that it provides a testing method that returns true or false depending on the list
  * if is empty or not. The last method of the class returns the next available queue number.

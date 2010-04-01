@@ -4,7 +4,7 @@ package clockUtils;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import org.hamcrest.core.IsEqual;
+
 /**
  * @author Chris
  * A countDown clock. Starts the countdown

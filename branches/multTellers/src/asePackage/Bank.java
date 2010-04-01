@@ -2,13 +2,10 @@ package asePackage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Observer;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 import clockUtils.TimeObserver;
-
-import asePackage.Controller.TellerSlideListener;
 
 /**
  * 
@@ -17,7 +14,6 @@ import asePackage.Controller.TellerSlideListener;
  */
 public class Bank extends Thread implements TimeObserver {
 	private static final int INITIALCUSTOMERDELAY = 700;
-	private static final int OCCURANCEDEPOSITFOREIGNACCOUNT = 10;
 	private int numberOfTellers = 3;
 	/*
 	 * used to generate random numbers needed for creating random transactions
@@ -206,10 +202,9 @@ public class Bank extends Thread implements TimeObserver {
 		for (int i = 0; i < numberOfTellers; i++)
 			tellers[i].start();
 
-		if(proofOfAccurateTransactions){
-			setOpen(false);
+		if(proofOfAccurateTransactions)		
 			proofOfAccurateTransactions();
-		}
+		
 		else
 			while(isOpen){
 				Customer customer = pickRandomCustomer();
@@ -221,7 +216,10 @@ public class Bank extends Thread implements TimeObserver {
 		// awakes the tellers that may be waiting for a customer in the queue
 		//as there is no new customers going to be added 
 		qm.awakeAllThreads();
-
+		
+		if(proofOfAccurateTransactions)
+			setOpen(false);
+		
 		//waits until all the tellers are done their work
 		//(all the customers are served)
 		try {
@@ -411,7 +409,6 @@ public class Bank extends Thread implements TimeObserver {
 		accounts = MyUtilities.loadAccounts(fileName, customers);
 		am.addAcounts(accounts);
 	}
-
 
 	////////////////IMPLEMENTED METHODS OF THE TimeObserver INTERFACE ///////////////////////
 	/**

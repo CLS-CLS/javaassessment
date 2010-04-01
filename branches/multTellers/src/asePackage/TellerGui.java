@@ -1,29 +1,21 @@
 package asePackage;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 public class TellerGui extends JFrame implements Observer {
-	
+	private static final long serialVersionUID = 1L;
 	JPanel panel;
 	JScrollPane scrollPane;
 	JTextArea textArea;
 	private int id;
 	
+	/**
+	 * Create the interface for the required teller
+	 * @param id teller id for which is doing the visualisation
+	 */
 	public TellerGui(int id) {
 		super("Teller No " + id);
 		this.id = id;
@@ -40,6 +32,12 @@ public class TellerGui extends JFrame implements Observer {
 		setVisible(true);
 	}
 	
+	/**
+	 * Overwrite the update method for Observer interface.
+	 * Gets a logEvent from the Observable object and it tests
+	 * if the gui id is similar with the id of the teller who made the transaction.
+	 * If they are similar it will append the new message to the existent text.
+	 */
 	public void update(Observable o, Object arg) {
 		LogEvent logEvent = (LogEvent)arg;
 		if(id == logEvent.getTellerID()){
@@ -48,10 +46,17 @@ public class TellerGui extends JFrame implements Observer {
 		textArea.setCaretPosition( textArea.getDocument().getLength());
 	}
 
+	/**
+	 * Get method to return the id of the current teller gui
+	 * @return teller gui id
+	 */
 	public int getId() {
 		return id;
 	}
-	
+	/**
+	 * Set method for the id of the current teller gui
+	 * @param teller gui id
+	 */
 	public void setId(int id){
 		this.id = id;
 	}
