@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JPanel;
-
+/*
+ * a panel that has a background image and opaque set to false
+ */
 public class CustomPanel extends JPanel{
 	Image image;
 	

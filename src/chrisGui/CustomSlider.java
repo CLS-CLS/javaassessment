@@ -9,7 +9,11 @@ import java.awt.Toolkit;
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.plaf.SliderUI;
-
+/**
+ * 
+ * @author Chris
+ * A JSlider that has a backgound image
+ */
 public class CustomSlider extends JSlider{
 	private Image backGroundImage;
 	

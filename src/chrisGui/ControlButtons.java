@@ -6,7 +6,11 @@ import java.util.Hashtable;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
+/**
+ * 
+ * @author Chris
+ * A panel containing all the Buttons of the Gui
+ */
 public class ControlButtons extends CustomPanel{
 	
 	private Image backGroundImage;
