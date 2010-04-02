@@ -384,7 +384,7 @@ public class Bank extends Thread implements TimeObserver {
 			trans.add(new Transaction(Transaction.DEPOSITFOREIGNACCOUNT, null,150, am.getAccountList().get(3)));
 			trans.add(new Transaction(Transaction.OPEN, new Account(),300, customers.get(0).getAccountList().get(1)));
 			qm.addQueueElement(customers.get(5), trans);
-		}catch (Exception e) {
+		}catch (NotCorrectConstructorArgumentsException e) {
 			e.printStackTrace();
 		}
 

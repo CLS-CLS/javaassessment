@@ -1,46 +1,24 @@
 package chrisGui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextArea;
-
+import javax.swing.*;
 import asePackage.LogEvent;
 
-import com.sun.java.swing.plaf.motif.MotifBorders.BevelBorder;
 
-import sun.awt.image.ToolkitImage;
-
+@SuppressWarnings("serial")
 public class TellerGui extends JFrame implements Observer {
 	private static final String TELLERIMAGE = "/teller.jpg";
 	private JTextArea ta;
-	
 	private Image tellerImage;
-	private JPanel controlPanel = new JPanel();
 	private JPanel displayPanel = new JPanel();
-	private MediaTracker mt;
-	private int id;
-	private CustomGlassPane glassPane;
-	private boolean timeToErase;
+	private MediaTracker mt;   //used to load images 
+	private int id;            //the id of this teller gui
+	private CustomGlassPane glassPane;  
+	private boolean timeToErase;   //used to signal that the textArea should be cleaned 
+	                               //(erase all the contents)
 
 	public TellerGui(int id) {
 		super("Teller No " + id);
@@ -50,14 +28,12 @@ public class TellerGui extends JFrame implements Observer {
 		
 		displayPanel.setLayout(new FlowLayout());
 				
-		controlPanel.setBorder(BorderFactory.createBevelBorder(0));
-		controlPanel.setBackground(new Color(153,204,204));
+		
 		displayPanel.setBorder(BorderFactory.createBevelBorder(0));
 		setResizable(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		displayPanel.add(ta);
 		add(displayPanel,BorderLayout.NORTH);
-		add(controlPanel,BorderLayout.SOUTH);
 		
 		
 		pack();
@@ -79,7 +55,9 @@ public class TellerGui extends JFrame implements Observer {
 		catch(InterruptedException e) { }
 	}
 
+	@SuppressWarnings("serial")
 	private void createTextArea() {
+		//creates the text area with background image
 		
 		ta =  new JTextArea(10,45){
 			@Override
@@ -96,17 +74,16 @@ public class TellerGui extends JFrame implements Observer {
 
 	}
 
-	public static void main(String[] args) {
-		TellerGui tg = new TellerGui(1);
-		tg.ta.setText("ASDasdas");
+	
 
-	}
-
+	
+	/**
+	 * updates the gui with information about the transaction stage. After
+	 * the teller serves the customer and Gui automatically erases the information from the
+	 * display.
+	 */
 	public void update(Observable arg, Object arg1) {
-		
-		
 		LogEvent logEvent = (LogEvent)arg1;
-		System.err.println(logEvent.getStatus());
 		if(id == logEvent.getTellerID()){
 			if(timeToErase){
 				ta.setText("");
@@ -120,6 +97,7 @@ public class TellerGui extends JFrame implements Observer {
 				glassPane.animate();
 		}
 	}
-
+	
+ 
 	
 }

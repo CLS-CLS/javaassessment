@@ -427,9 +427,7 @@ public class Teller extends Thread{
 		return tellerGenerationDelay;
 	}
 
-	public static void setBankIsPaused(boolean bankIsPaused) {
-		Teller.bankIsPaused = bankIsPaused;
-	}
+	
 }
 
 
