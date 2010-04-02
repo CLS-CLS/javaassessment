@@ -17,7 +17,7 @@ public class QueueManager{
 	private final static int FIRSTQUEUENUMBER = 1;
 	private ArrayList<Queue> customerQueue;
 	private int nextQueueNumber;
-	
+
 	/**
 	 * The empty constructor which initialise the object with an empty queue and
 	 * with a default queue number. 
@@ -32,8 +32,8 @@ public class QueueManager{
 	 * @param customerQueue a customer queue
 	 * @param nextQueueNumber next available queue number
 	 */
-	
-	
+
+
 	/**
 	 * Will add a new element in the queue. The new queue element it created starting from
 	 * the customer information and his transaction list. The method will allocate automatically
@@ -76,7 +76,7 @@ public class QueueManager{
 			System.out.println(Thread.currentThread().getName() +" accesses cq" );
 			returnQueue = customerQueue.remove(0);
 			notifyAll();
-			
+
 		}
 		return returnQueue;
 	}
@@ -94,7 +94,7 @@ public class QueueManager{
 	public int getNextNumber(){
 		return this.nextQueueNumber;
 	}
-	
+
 	/**
 	 * Implements a comparator to find out if a customer is or not in the queue
 	 * @param cust required customer
@@ -105,9 +105,9 @@ public class QueueManager{
 			if(q.getCustomer().equals(cust))return true;
 		}
 		return false;
-		
+
 	}
-	
+
 	/**
 	 * Creates a string in which appears all the customers present in the queue
 	 * @return string with all customers from the queue
@@ -121,7 +121,7 @@ public class QueueManager{
 		}
 		return str;
 	}	
-	
+
 	/**
 	 * Used to notify all the threads when the bank is closed and 
 	 * we don't expect any more customers to be added
@@ -129,7 +129,7 @@ public class QueueManager{
 	public synchronized void awakeAllThreads() {
 		notifyAll();		
 	}
-	
+
 	//Singleton appeal method
 	public static QueueManager getInstance(){
 		return qm;

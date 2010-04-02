@@ -25,7 +25,7 @@ public class Account
 		this.balance = 0;
 		this.isClosed = false;
 	}
-	
+
 	/**
 	 * Creates the new Account instance starting with a value for the account id
 	 * and default values for the other informations.
@@ -38,7 +38,7 @@ public class Account
 		this.balance = 0;
 		this.isClosed = false;
 	}
-	
+
 	/**
 	 * Creates the new Account instance starting with a value for the account id
 	 * and for the owner. The balance is set as empty.
@@ -53,7 +53,7 @@ public class Account
 		this.balance = 0;
 		this.isClosed = false;
 	}
-	
+
 	/**
 	 * Creates the new Account instance starting with a value for the account id
 	 * and a list of owners. The account balance is set on 0.
@@ -67,7 +67,7 @@ public class Account
 		this.balance = 0;
 		this.isClosed=false;
 	}
-	
+
 	/**
 	 * Creates the new Account instance starting with a value for the account id
 	 * and a list of owners. The last inserted information is the account balance.
@@ -91,7 +91,7 @@ public class Account
 	{
 		return accountID;
 	}
-	
+
 	/**
 	 * Provides the current list of owners of the account.
 	 * @return owner list
@@ -100,7 +100,7 @@ public class Account
 	{
 		return ownerList;
 	}
-	
+
 	/**
 	 * Returns the current state of the balance. 
 	 * @return balance
@@ -109,7 +109,7 @@ public class Account
 	{
 		return balance;
 	}
-	
+
 	/**
 	 * It will add a new owner to the account.
 	 * @param owner required owner to be add
@@ -118,7 +118,7 @@ public class Account
 	{
 		this.ownerList.add(owner);
 	}
-	
+
 	/**
 	 * It will remove the required owner of the account.
 	 * @param owner required customer to be removed
@@ -127,7 +127,7 @@ public class Account
 	{
 		this.ownerList.remove(owner);
 	}
-	
+
 	/**
 	 * It decrease the current account balance with the required sum.
 	 * @param sum amount of money which will be withdrawn
@@ -136,7 +136,7 @@ public class Account
 	{
 		this.balance-=sum;
 	}
-	
+
 	/**
 	 * It increase the current account balance with the required sum.
 	 * @param sum amount of money which will be deposed
@@ -145,7 +145,7 @@ public class Account
 	{
 		this.balance+=sum;
 	}
-	
+
 	/**
 	 * Closes an account by setting a status variable to closed.
 	 */
@@ -153,7 +153,7 @@ public class Account
 	{
 		this.isClosed=true;
 	}
-	
+
 	/**
 	 * The method tests if the account has gotten a closed status or not.
 	 * @return class status
@@ -162,7 +162,7 @@ public class Account
 	{
 		return this.isClosed;
 	}
-	
+
 	/**
 	 * Returns all the information regarding the class into a string.
 	 */
@@ -190,7 +190,7 @@ public class Account
 		result = prime * result + accountID;
 		return result;
 	}
-	
+
 	/**
 	 * The method tests the equality between two account objects
 	 * based on their account id.

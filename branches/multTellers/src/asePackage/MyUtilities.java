@@ -14,7 +14,7 @@ import java.util.Scanner;
  * concerning account and customers records.
  */
 public class MyUtilities<E> {
-	
+
 	/**
 	 * Saves a given string to a given file
 	 * @param data the string to be saved
@@ -22,7 +22,7 @@ public class MyUtilities<E> {
 	 */
 	public static void saveStringToFile(String data, String fileName) {
 		File f = new File(fileName);
-		
+
 		try {
 			BufferedWriter bw;
 			bw = new BufferedWriter(new PrintWriter(f));
@@ -37,7 +37,7 @@ public class MyUtilities<E> {
 			ioe.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @deprecated 
 	 * @param data
@@ -49,7 +49,7 @@ public class MyUtilities<E> {
 		for (String str: data){
 			stringToAppend +=str+",";
 		}		
-		
+
 		try {
 			BufferedWriter bw;
 			bw = new BufferedWriter(new PrintWriter(f));
@@ -64,7 +64,7 @@ public class MyUtilities<E> {
 			ioe.printStackTrace();
 		}		
 	}
-	
+
 	/**
 	 * Loads data from the given file. The data is extracted as follows:
 	 * each line of the file is divided in substrings separated by commas and saved
@@ -82,9 +82,9 @@ public class MyUtilities<E> {
 			returnList.add(elements);
 		}
 		sc.close();
-	    return returnList;
+		return returnList;
 	}
-	
+
 	/**
 	 * Load accounts in our program
 	 * @param fileName the filename that contains the account data
@@ -95,20 +95,20 @@ public class MyUtilities<E> {
 	 */
 	public static ArrayList<Account> loadAccounts(String fileName,ArrayList<Customer> customers) throws FileNotFoundException,
 	NotValidFileTypeException{
-		
+
 		ArrayList<String[]> data = loadFile(fileName);
 		ArrayList<Account> accounts = new ArrayList<Account>();
-		
+
 		for(String[] str :data){
 			ArrayList<Customer> ownerList = new ArrayList<Customer>();
 			if (str.length <=2 || str.length > 4)throw new NotValidFileTypeException("Acccount");
-			
+
 			try{
 				int accountID = Integer.parseInt(str[0]);
 				double balance = Double.parseDouble(str[1]);
 				int customer1ID = Integer.parseInt(str[2]);
 				int customer2ID;
-				
+
 				Customer customer1 = findCustomerFromID(customer1ID,customers);
 				Customer customer2 = null;
 				ownerList.add(customer1); 
@@ -131,7 +131,7 @@ public class MyUtilities<E> {
 		if (accounts.size()==0) throw new NotValidFileTypeException("Accounts");
 		return accounts;
 	}	
-	
+
 	/**
 	 * Finds the customer with the given customerID
 	 * @param customerId 
@@ -170,7 +170,7 @@ public class MyUtilities<E> {
 		if (customers.size()==0) throw new NotValidFileTypeException("Customer");
 		return customers;
 	}
-	
+
 	/**
 	 * Save all the customers from our customer list to a file
 	 * @param customers list of customers
@@ -183,7 +183,7 @@ public class MyUtilities<E> {
 		}
 		saveStringToFile(result, fileName);
 	}
-	
+
 	/**
 	 * Save all the final accounts from the account manager to a file
 	 * @param am account manager
@@ -196,17 +196,17 @@ public class MyUtilities<E> {
 		}
 		saveStringToFile(result, fileName);
 	}
-	
+
 	/**
 	 * Round a double to two digits
 	 * @param initialValue
 	 * @return modified value
 	 */
-    public static double roundDouble(double initialValue)
-    {
-        BigDecimal bd = new BigDecimal(initialValue);
-        BigDecimal bd_round = bd.setScale( 2, BigDecimal.ROUND_HALF_UP );
-        return bd_round.doubleValue();
-    }
+	public static double roundDouble(double initialValue)
+	{
+		BigDecimal bd = new BigDecimal(initialValue);
+		BigDecimal bd_round = bd.setScale( 2, BigDecimal.ROUND_HALF_UP );
+		return bd_round.doubleValue();
+	}
 
 }

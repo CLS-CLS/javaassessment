@@ -7,15 +7,10 @@ import java.util.concurrent.CountDownLatch;
 
 import clockUtils.TimeObserver;
 
-/**
- * 
- * @author Chris
- *
- */
 public class Bank extends Thread implements TimeObserver {
 	private static final String CUSTOMERFILE = "customers.txt";
 	private static final String ACCOUNTSFILE = "accounts.txt";
-	
+
 	private static final int INITIALCUSTOMERDELAY = 700;
 	private int numberOfTellers = 3;
 	/*
@@ -99,20 +94,13 @@ public class Bank extends Thread implements TimeObserver {
 		}                    
 	}
 
-
-
-
-
 	/**
 	 * generates random transactions for the given customer
-	 * The transaction may be 1 or 2
+	 * The transaction may be 1 or 2. So we can create Transfer or
+	 * Deposit to foreign account transaction we generated a new foreign
+	 * account which to use when creating the new transaction.
 	 * @param customer the customer who will get a random transaction
 	 * @return an arraylist of the transactions generated for the given customer
-	 */
-	/*
-	 * MODIFIED
-	 * IOAN 27.03 //TODO comments
-	 * 
 	 */
 	private ArrayList<Transaction> generateTransactions(Customer customer) {
 		int numberOfTransactions = rndGen.nextInt(2)+1;
@@ -124,10 +112,15 @@ public class Bank extends Thread implements TimeObserver {
 		}
 		return trans;
 	}
-	
-	
 
-	
+	/**
+	 * To generate a new foreign account is needed to find a new account
+	 * different from one selected already. We try to generate random the new
+	 * account until a different account is generated. The new account may have
+	 * the same owner as the previous one.
+	 * @param account account required to be different
+	 * @return new foreign account
+	 */
 	private Account selectRandomForeignAccount(Account account) {
 		boolean success=false;
 		ArrayList<Account> accounts = am.getAccountList();
@@ -144,7 +137,6 @@ public class Bank extends Thread implements TimeObserver {
 			}
 		}
 		return newAccount;
-
 	}
 
 	/**
@@ -163,7 +155,11 @@ public class Bank extends Thread implements TimeObserver {
 	}
 
 
-    //TODO comments
+	/**
+	 * Get a new customer to be added to the queue if he is not already in the
+	 * bank(queue or served by a teller)
+	 * @return the new customer
+	 */
 	private Customer pickRandomCustomer() {
 		Customer result = null;
 		boolean success=false;
@@ -176,9 +172,13 @@ public class Bank extends Thread implements TimeObserver {
 		}
 		return result;
 	}
-	
-	//TODO comments
 
+	/**
+	 * Creates a new queue element with a given customer for which
+	 * a new set of transactions is generated. The log event for adding
+	 * a customer is also inserted here.
+	 * @param cust the new customer for which the element is created
+	 */
 	private void generateQueueElement(Customer cust){
 		int currentQueueNumber=0;
 		ArrayList<Transaction> trans = generateTransactions(cust);
@@ -188,21 +188,24 @@ public class Bank extends Thread implements TimeObserver {
 		cust.setInsideBank(true);
 	}
 
-
-
+	/**
+	 * Provides the final report from the log
+	 * @return report text
+	 */
 	public String getFinalReport() {
 		return log.toString();
 	}
 
 
 	public void run(){
-
+		//create the teller threads
 		for (int i = 0; i < numberOfTellers; i++)
 			tellers[i].start();
 
+		//Verify if the proofOfAccurateTransaction is set. In that case
+		//we get the default values
 		if(proofOfAccurateTransactions)		
-			proofOfAccurateTransactions();
-		
+			proofOfAccurateTransactions();		
 		else
 			while(isOpen){
 				Customer customer = pickRandomCustomer();
@@ -214,10 +217,11 @@ public class Bank extends Thread implements TimeObserver {
 		// awakes the tellers that may be waiting for a customer in the queue
 		//as there is no new customers going to be added 
 		qm.awakeAllThreads();
-		
+
+		//we close the bank after the queue is generated for the case of proof of accurate trans
 		if(proofOfAccurateTransactions)
 			setOpen(false);
-		
+
 		//waits until all the tellers are done their work
 		//(all the customers are served)
 		try {
@@ -234,7 +238,7 @@ public class Bank extends Thread implements TimeObserver {
 	public boolean isOpen(){
 		return isOpen;
 	}
-	
+
 	/**
 	 * sets the bank open or close, also communicating this information
 	 * to all the tellers
@@ -245,7 +249,6 @@ public class Bank extends Thread implements TimeObserver {
 		for (Teller t : tellers){
 			t.setBankClosed(!bool);
 		}
-
 	}
 
 	public void setCustomerGenerationDelay(int customerGenerationDelay) {
@@ -256,7 +259,6 @@ public class Bank extends Thread implements TimeObserver {
 		return customerGenerationDelay;
 	}
 
-	
 	public Log getLog(){
 		return log;
 	}
@@ -268,11 +270,10 @@ public class Bank extends Thread implements TimeObserver {
 		Teller.setTellerGenerationDelay(tellerGenerationDelay);
 	}
 
-
 	public int getNumberOfTellers() {
 		return numberOfTellers;
 	}
-	
+
 	/**
 	 * sets the number of teller in the Bank. Also updates the teller maxtix
 	 * to correspond its size to the number of tellers and creates a  countDown latch
@@ -283,14 +284,12 @@ public class Bank extends Thread implements TimeObserver {
 		this.numberOfTellers = numberOfTellers;
 		countDown = new CountDownLatch(numberOfTellers);
 		tellers = new Teller[numberOfTellers];
-
 	}
 
 	public void createTellers() {
 		for (int i = 0; i < numberOfTellers; i++){
 			tellers[i] = new Teller(am,log,i+1,countDown);
 		}
-
 	}
 
 	public boolean isProofOfAccurateTransactions() {
@@ -301,12 +300,8 @@ public class Bank extends Thread implements TimeObserver {
 		this.proofOfAccurateTransactions = proofOfAccurateTransactions;
 	}
 
-
-
-
-
 	///////////////////PROOF OF ACCURATE TRASNACTIONS/////////////////////////////////////
-	
+
 	private void proofOfAccurateTransactions(){
 
 		ArrayList<Account> accounts;
@@ -330,7 +325,6 @@ public class Bank extends Thread implements TimeObserver {
 			}
 		}
 
-        //TODO details of the proofs in the report????
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 
 		try {
@@ -395,7 +389,7 @@ public class Bank extends Thread implements TimeObserver {
 		}
 
 	}
-	
+
 	//////////////////////////////// ALI'S ADDITION - LOAD CUSTOMER / ACCOUNTS ////////////
 	public void loadCustomers(File file) throws Exception {
 		customers = MyUtilities.loadCustomers(file.getAbsolutePath());

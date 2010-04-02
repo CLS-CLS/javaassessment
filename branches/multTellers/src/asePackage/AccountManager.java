@@ -10,7 +10,7 @@ public class AccountManager {
 	private final static int FIRSTACCOUNTID = 100000;
 	private ArrayList <Account> accountList;
 	private int nextAccountId;
-	
+
 	/**
 	 * The constructor for the case when we don't have previous data.
 	 */
@@ -68,7 +68,7 @@ public class AccountManager {
 		ArrayList<Customer> customers = accountToDelete.getOwnerList();
 		accountToDelete.closeAccount();
 		for(Customer customer: customers) customer.removeAccount(accountToDelete);
-		
+
 		this.accountList.remove(accountToDelete);
 	}
 	/**
