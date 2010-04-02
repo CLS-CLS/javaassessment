@@ -1,6 +1,5 @@
 package asePackage;
 
-
 /**
  * The logEvent class contains details about one event that occurred in the 
  * bank running time. It will contain information about the customer, the transaction,
@@ -16,7 +15,7 @@ public class LogEvent {
 	public static final String EXITQUEUE = "exit queue";
 	public static final String STARTTRANSACTION = "start transaction";
 	public static final String EXITBANK = "left bank";
-	
+
 	private int queueNumber;
 	private String transactionType;
 	private Customer customer;
@@ -28,7 +27,7 @@ public class LogEvent {
 	private double amount;
 	private String status;
 	private String message;
-	
+
 	/**
 	 * The constructor for the case we don't have any information about the event
 	 */
@@ -66,7 +65,7 @@ public class LogEvent {
 		else
 			this.newBalance=transaction.getAccount().getBalance();
 		this.message=message;
-		
+
 		if(this.status.equals(FAIL)) {
 			this.oldBalance=this.newBalance;
 		}
@@ -76,10 +75,10 @@ public class LogEvent {
 			else
 				this.oldBalance=this.newBalance+transaction.getAmount();
 	}
-	
+
 	/**
 	 * The constructor for the case of customer entering the queue
-	
+
 	 * @param queueNumber current customer queue number
 	 * @param customer current customer
 	 * @param status type of the log event 
@@ -97,7 +96,7 @@ public class LogEvent {
 		this.oldBalance=-1;
 		this.message="";
 	}
-	
+
 	/**
 	 * Creates a new log event for the statistics
 	 * @param status event status
@@ -228,7 +227,7 @@ public class LogEvent {
 	public String getStatus() {
 		return this.status;
 	}
-	
+
 	/**
 	 * It will return all the details about the current event. The format of the result is depending on the type of event on which we saved the informations.
 	 * @return event description
@@ -253,7 +252,7 @@ public class LogEvent {
 
 		return result;
 	}
-	
+
 	/*
 	 * NEW
 	 */
@@ -283,7 +282,7 @@ public class LogEvent {
 								result=" - £" + amount + " where deposed in the account with the id " + foreignAccountID;
 		return result;
 	}	
-	
+
 	/**
 	 * Get a message for entering queue event
 	 * @return message
@@ -291,10 +290,10 @@ public class LogEvent {
 	private String getEnterQueue() {
 		String result="";
 		result="Customer " + customer.getId() + " (" + customer.getFirstName() +
-			" " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
+		" " + customer.getLastName() + ") " + ENTERQUEUE + " on position " + queueNumber;
 		return result;
 	}
-	
+
 	/**
 	 * Get a message for exiting queue event
 	 * @return message
@@ -302,8 +301,8 @@ public class LogEvent {
 	private String getExitQueue() {
 		String result="";
 		result="Teller " + tellerID + " receive customer " + customer.getId() +
-			" (" + customer.getFirstName() + " " + customer.getLastName() + ")" +
-			"with queue number " + queueNumber + " to serve";
+		" (" + customer.getFirstName() + " " + customer.getLastName() + ")" +
+		"with queue number " + queueNumber + " to serve";
 		return result;
 	}
 
@@ -337,7 +336,7 @@ public class LogEvent {
 									result+= transactionType + " " + foreignAccountID + " from account " + accountID + " £" + amount;
 		return result;
 	}
-	
+
 	/**
 	 * Return a success message
 	 * @return message
@@ -348,7 +347,7 @@ public class LogEvent {
 		result += getSuccessDetails();
 		return result;
 	}
-	
+
 	/**
 	 * Return a fail message
 	 * @return message
@@ -359,7 +358,7 @@ public class LogEvent {
 		result += " - " + getMessage();
 		return result;
 	}
-	
+
 	/**
 	 * Return a exiting bank message
 	 * @return message
@@ -367,10 +366,10 @@ public class LogEvent {
 	private String getExitBank() {
 		String result="";
 		result="Customer " + customer.getFirstName() + " " + customer.getLastName()+
-			" (ID: " + customer.getId() + ") left bank";
+		" (ID: " + customer.getId() + ") left bank";
 		return result;
 	}
-	
+
 	/**
 	 * Creates a message optimised for queue gui
 	 * @return

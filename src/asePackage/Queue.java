@@ -12,7 +12,7 @@ public class Queue {
 	private Customer queueCustomer;
 	private ArrayList<Transaction> transactionList;
 	private int queueNumber;
-	
+
 	/**
 	 * The constructor for the case we don't have an initial set of informations
 	 * about the customer and about his transactions.

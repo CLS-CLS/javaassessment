@@ -26,7 +26,7 @@ public class Controller {
 		this.gui = gui;
 		this.bank = bank;
 		
-		//sets the generatios delay in the JSlider from the initial value in the bank Class
+		//sets the generations delay in the JSlider from the initial value in the bank Class
 		gui.setCustomerGenerationDelay(bank.getCustomerGenerationDelay());
 		gui.setTellerGenerationDelay(bank.getTellerGenerationDelay());
 		

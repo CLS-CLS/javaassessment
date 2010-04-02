@@ -11,7 +11,7 @@ public class TellerGui extends JFrame implements Observer {
 	JScrollPane scrollPane;
 	JTextArea textArea;
 	private int id;
-	
+
 	/**
 	 * Create the interface for the required teller
 	 * @param id teller id for which is doing the visualisation
@@ -20,18 +20,18 @@ public class TellerGui extends JFrame implements Observer {
 		super("Teller No " + id);
 		this.id = id;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		textArea = new JTextArea(15, 25);
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 		panel = new JPanel();
 		panel.add(scrollPane);
-		
+
 		add(panel);
 		pack();
 		setVisible(true);
 	}
-	
+
 	/**
 	 * Overwrite the update method for Observer interface.
 	 * Gets a logEvent from the Observable object and it tests

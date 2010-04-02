@@ -85,7 +85,7 @@ public class Teller extends Thread{
 			if(transaction.getType().equals(Transaction.TRANSFER)){
 				isValidTransaction = doTransfer(transaction,currentCustomer);
 			}
-			
+
 			//create a log event for transaction result
 			generateReport(isValidTransaction,transaction);
 
@@ -374,7 +374,7 @@ public class Teller extends Thread{
 		}
 
 	}
-	
+
 	/*
 	 * The execution method
 	 * (non-Javadoc)
