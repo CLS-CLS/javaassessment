@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
  * The digital representation of the clock model.
  * The clock model and the GUI are connected using the observer pattern
  */
+@SuppressWarnings("serial")
 public class ClockGUIDigital extends JFrame implements Observer{
 	
 	//The "time left" display area

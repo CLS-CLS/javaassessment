@@ -20,7 +20,10 @@ public class BankSimulator {
 			final ClockModel clkModel = new ClockModel(0, 30);
 			final JFrame clkGui = new ClockGUIDigital(clkModel);
 			final Bank bank = new Bank();
-
+			
+			//used to solve some concurecy problems. If you manage to press the start button very fast
+			//immediately after loading the program the clock sometimes doesnot work. Using invokeLAter
+			//the program is accessible after all the components are fully instansiated.
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					GUI gui = new GUI(clkGui);

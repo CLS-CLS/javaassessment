@@ -18,6 +18,7 @@ import java.util.Observable;
  *
  */
 public class ClockModel extends Observable implements BankClock{
+	public static final int SECONDSOFDECREASE = 1;
 	boolean endOfTime = false;
 	int minutes;
 	int seconds;
@@ -29,6 +30,10 @@ public class ClockModel extends Observable implements BankClock{
 		this.seconds = seconds;
 	}
 	
+	/**
+	 * Decreases the timer by some seconds
+	 * @param value the seconds which the timer will be decreased
+	 */
 	private void decrease(int value){
 		seconds = seconds - value;
 		if (seconds < 0){
@@ -39,15 +44,23 @@ public class ClockModel extends Observable implements BankClock{
 		notifyObservers(new int[] {minutes , seconds});
 	}
 
+	/**
+	 * checks if the countdown is over
+	 * @return true if the countdown is over
+	 */
 	private boolean isEndOfTime() {
 		return (minutes <=0 && seconds <=0);
 	}
-
+    
+	/**
+	 * each second decreases the timer by SECONDEOFDECRESE seconds
+	 * and notify time the timeObservers when the count down i over
+	 */
 	public void run() {
 		while(!isEndOfTime()){
 			try {
 				Thread.sleep(1000);
-				decrease(1);
+				decrease(SECONDSOFDECREASE);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
