@@ -1,0 +1,63 @@
+
+ Teller 3 summary:
+---------------------------------
+Number of served customers : 3
+Total Deposited Money : £0.0
+Total Withdrawn Money : £100.0
+Total Transfered Money : £500.0
+
+ Teller 1 summary:
+---------------------------------
+Number of served customers : 3
+Total Deposited Money : £1150.0
+Total Withdrawn Money : £250.0
+Total Transfered Money : £0.0
+
+ Teller 2 summary:
+---------------------------------
+Number of served customers : 2
+Total Deposited Money : £900.0
+Total Withdrawn Money : £100.0
+Total Transfered Money : £0.0
+
+ Customer 1 summary:
+---------------------------------
+Number of entrance in the queue : 2
+Total Deposited Money : £0.0
+Total Withdrawn Money : £100.0
+Total Transfered Money : £300.0
+
+ Customer 4 summary:
+---------------------------------
+Number of entrance in the queue : 2
+Total Deposited Money : £1050.0
+Total Withdrawn Money : £350.0
+Total Transfered Money : £0.0
+
+ Customer 3 summary:
+---------------------------------
+Number of entrance in the queue : 1
+Total Deposited Money : £500.0
+Total Withdrawn Money : £0.0
+Total Transfered Money : £0.0
+
+ Customer 2 summary:
+---------------------------------
+Number of entrance in the queue : 1
+Total Deposited Money : £0.0
+Total Withdrawn Money : £0.0
+Total Transfered Money : £200.0
+
+ Customer 5 summary:
+---------------------------------
+Number of entrance in the queue : 1
+Total Deposited Money : £50.0
+Total Withdrawn Money : £0.0
+Total Transfered Money : £0.0
+
+ Customer 6 summary:
+---------------------------------
+Number of entrance in the queue : 1
+Total Deposited Money : £450.0
+Total Withdrawn Money : £0.0
+Total Transfered Money : £0.0

@@ -55,7 +55,7 @@ public class TellerGui extends JFrame implements Observer {
 		catch(InterruptedException e) { }
 	}
 
-	@SuppressWarnings("serial")
+	
 	private void createTextArea() {
 		//creates the text area with background image
 		
